@@ -2,36 +2,42 @@ import { useFrame, useThree } from '@react-three/fiber'
 import { damp3 } from 'maath/easing'
 import * as THREE from 'three'
 import { scrollState } from '../lib/scrollStore'
+import { heroState } from './heroState'
 
-const lookTarget = new THREE.Vector3(0, 0.2, 0)
+const _look = new THREE.Vector3()
+const baseLook = new THREE.Vector3(3.3, 0.45, 0.25)
 
 /**
- * Drives a slow, cinematic camera move synced to page scroll (via the global
- * scroll store that GSAP ScrollTrigger feeds) plus a subtle pointer parallax
- * and an idle sway. Uses maath's critically-damped smoothing so the motion is
- * silky and frame-rate independent. Renders nothing.
+ * Low, cinematic camera. Eases its position with maath damping (idle sway +
+ * pointer parallax + a slow pull-back on scroll) and lets its aim gently follow
+ * the ball, so the shot is never fully static. Renders nothing.
  */
 export function CameraRig({ reducedMotion = false }: { reducedMotion?: boolean }) {
   const { camera } = useThree()
 
   useFrame((state, delta) => {
-    const hero = scrollState.hero // 0 at top of hero → 1 as it scrolls away
+    const hero = scrollState.hero
     const time = state.clock.elapsedTime
 
-    // Slow idle sway keeps the shot alive even before the user scrolls.
-    const idleX = reducedMotion ? 0 : Math.sin(time * 0.25) * 0.22
-    const idleY = reducedMotion ? 0 : Math.cos(time * 0.2) * 0.1
-    const px = reducedMotion ? 0 : state.pointer.x * 0.5
-    const py = reducedMotion ? 0 : state.pointer.y * 0.3
+    const idleX = reducedMotion ? 0 : Math.sin(time * 0.22) * 0.18
+    const idleY = reducedMotion ? 0 : Math.cos(time * 0.18) * 0.08
+    const px = reducedMotion ? 0 : state.pointer.x * 0.4
+    const py = reducedMotion ? 0 : state.pointer.y * 0.22
 
-    // The camera also eases back and rises a touch as the hero scrolls past.
     damp3(
       camera.position,
-      [idleX + px, 1.55 + hero * 1.4 + idleY + py, 6.4 + hero * 2.2],
-      0.4,
+      [0.6 + idleX + px, 0.82 + hero * 1.3 + idleY + py, 6.0 + hero * 2.0],
+      0.45,
       delta,
     )
-    camera.lookAt(lookTarget)
+
+    // Aim mostly at the action, drifting slightly with the ball.
+    if (reducedMotion) {
+      _look.copy(baseLook)
+    } else {
+      _look.copy(baseLook).lerp(heroState.ball, 0.12)
+    }
+    camera.lookAt(_look)
   })
 
   return null

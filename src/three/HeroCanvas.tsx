@@ -1,6 +1,6 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { AdaptiveDpr, Environment, Lightformer, Sparkles } from '@react-three/drei'
+import { AdaptiveDpr, Sparkles, Stars } from '@react-three/drei'
 import * as THREE from 'three'
 import { WaterSurface } from './WaterSurface'
 import { WaterPoloPlay } from './WaterPoloPlay'
@@ -8,19 +8,21 @@ import { Particles } from './Particles'
 import { WaterPoloGoal } from './WaterPoloGoal'
 import { WATER_Y } from './wave'
 import { CameraRig } from './CameraRig'
+import { Lighting } from './Lighting'
+import { PostFX } from './PostFX'
 import { SceneLoader } from './Loader'
 import { palette } from '../lib/theme'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { isWebGLAvailable } from './webgl'
 
 /**
- * Hero water scene. Default-exported so it can be `React.lazy`-loaded — the
- * Three.js bundle never blocks first paint.
+ * Hero pool scene — two players passing a water polo ball under a starry sky,
+ * with cinematic lighting and post-processing. Default-exported for React.lazy.
  *
- * Renderer note: we use the stock R3F <Canvas>, i.e. three's WebGLRenderer,
- * which selects WebGL 2 where available and transparently falls back to
- * WebGL 1. We deliberately do NOT assume WebGPU. If WebGL is missing
- * entirely we render a calm static backdrop instead of crashing.
+ * Renderer note: stock R3F <Canvas> (three's WebGLRenderer → WebGL 2 with a
+ * WebGL 1 fallback). On desktop we render `flat` (no renderer tone mapping) and
+ * let the post stack own color via an ACES pass; on mobile we drop the post
+ * stack for performance and keep the renderer's default ACES tone mapping.
  */
 export default function HeroCanvas() {
   const reduced = usePrefersReducedMotion()
@@ -43,52 +45,37 @@ export default function HeroCanvas() {
   return (
     <Canvas
       dpr={[1, isMobile ? 1.5 : 2]}
-      gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-      camera={{ position: [0, 1.6, 6.5], fov: 42, near: 0.1, far: 100 }}
-      // Reduced motion → render on demand (a single static frame) instead of
-      // an animation loop.
+      flat={!isMobile}
+      gl={{ antialias: isMobile, alpha: false, powerPreference: 'high-performance' }}
+      camera={{ position: [0.6, 0.82, 6.0], fov: 50, near: 0.1, far: 100 }}
       frameloop={reduced ? 'demand' : 'always'}
       onCreated={({ gl, scene }) => {
-        gl.setClearColor(new THREE.Color(palette.bg), 0)
-        scene.fog = new THREE.Fog(palette.bg, 9, 24)
+        gl.setClearColor(new THREE.Color(palette.bg), 1)
+        scene.fog = new THREE.Fog(palette.bg, 14, 45)
       }}
     >
       <Suspense fallback={<SceneLoader />}>
-        <hemisphereLight args={[palette.brandLight, palette.bg, 0.45]} />
-        <directionalLight position={[4, 8, 3]} intensity={1.1} color={palette.silver} />
-        {/* Soft fill over the players so the caps and ball read in the dark scene. */}
-        <pointLight position={[2.2, 2.4, 2.6]} intensity={18} distance={12} decay={2} color={palette.brandLight} />
+        <Lighting />
 
-        {/* Baked-once studio environment (no network fetch) so the wet ball
-            picks up soft olive/silver reflections. */}
-        <Environment resolution={64} frames={1}>
-          <Lightformer intensity={2.2} position={[0, 4, -3]} scale={[8, 8, 1]} color={palette.brandLight} />
-          <Lightformer intensity={1.1} position={[-5, 2, 2]} scale={[3, 3, 1]} color={palette.silver} />
-          <Lightformer intensity={0.7} position={[5, 1, 3]} scale={[3, 3, 1]} color={palette.brand} />
-        </Environment>
+        {/* Night sky */}
+        <Stars radius={22} depth={10} count={isMobile ? 250 : 650} factor={2.4} saturation={0} fade speed={reduced ? 0 : 0.4} />
 
         <WaterSurface reducedMotion={reduced} segments={isMobile ? 48 : 96} />
 
         {/* Two players passing a water polo ball — the hero centrepiece. */}
         <WaterPoloPlay reducedMotion={reduced} />
 
-        {/* Water polo context: a goal at the far end of the pool. */}
-        <WaterPoloGoal position={[0, WATER_Y, -5.5]} width={3} height={0.95} emissiveIntensity={0.25} />
+        {/* A goal at the far end of the pool. */}
+        <WaterPoloGoal position={[0, WATER_Y, -5.5]} width={3} height={0.95} emissiveIntensity={0.2} />
 
-        {/* Atmosphere: drifting spray + fine glints on the air above the water. */}
-        <Particles count={isMobile ? 16 : 30} reducedMotion={reduced} />
-        <Sparkles
-          count={isMobile ? 18 : 36}
-          scale={[12, 3, 6]}
-          position={[0, 0.4, 0]}
-          size={2}
-          speed={reduced ? 0 : 0.3}
-          opacity={0.5}
-          color={palette.silver}
-        />
+        {/* Atmosphere: drifting spray + fine glints over the water. */}
+        <Particles count={isMobile ? 14 : 26} reducedMotion={reduced} />
+        <Sparkles count={isMobile ? 14 : 30} scale={[12, 3, 6]} position={[1.5, 0.6, 0.5]} size={2} speed={reduced ? 0 : 0.3} opacity={0.45} color={palette.silver} />
 
         <CameraRig reducedMotion={reduced} />
         <AdaptiveDpr pixelated />
+
+        {!isMobile && <PostFX />}
       </Suspense>
     </Canvas>
   )

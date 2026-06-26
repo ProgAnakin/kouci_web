@@ -67,8 +67,17 @@ export const PoloBall = forwardRef<THREE.Group, PoloBallProps>(function PoloBall
   return (
     <group ref={ref}>
       <mesh castShadow>
-        <sphereGeometry args={[radius, 48, 48]} />
-        <meshStandardMaterial map={tex} bumpMap={tex} bumpScale={0.015} roughness={0.48} metalness={0.02} />
+        <sphereGeometry args={[radius, 64, 64]} />
+        <meshPhysicalMaterial
+          map={tex}
+          bumpMap={tex}
+          bumpScale={0.02}
+          roughness={0.46}
+          metalness={0.02}
+          clearcoat={0.25}
+          clearcoatRoughness={0.4}
+          envMapIntensity={0.6}
+        />
       </mesh>
     </group>
   )
