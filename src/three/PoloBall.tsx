@@ -1,0 +1,75 @@
+import { forwardRef, useEffect, useMemo } from 'react'
+import * as THREE from 'three'
+
+/**
+ * Procedural water polo ball texture: the classic FINA yellow, the dimpled
+ * grip surface, and dark panel seams (an equator + meridians that map to great
+ * circles on the sphere). Used as both color map and bump map.
+ */
+function makeBallTexture(): THREE.CanvasTexture {
+  const size = 512
+  const canvas = document.createElement('canvas')
+  canvas.width = canvas.height = size
+  const ctx = canvas.getContext('2d')!
+
+  // Base yellow.
+  ctx.fillStyle = '#E8C24A'
+  ctx.fillRect(0, 0, size, size)
+
+  // Dimples — the grippy water polo texture.
+  const gap = 18
+  const r = 5
+  ctx.fillStyle = 'rgba(150, 120, 35, 0.32)'
+  for (let y = gap / 2; y < size; y += gap) {
+    const off = ((Math.round(y / gap)) % 2) * (gap / 2)
+    for (let x = gap / 2; x < size; x += gap) {
+      ctx.beginPath()
+      ctx.arc(x + off, y, r, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  }
+
+  // Panel seams: equator + two meridians (→ the recognizable cross of panels).
+  ctx.strokeStyle = '#2C2E1C'
+  ctx.lineWidth = 11
+  ctx.beginPath()
+  ctx.moveTo(0, size / 2)
+  ctx.lineTo(size, size / 2)
+  ctx.stroke()
+  for (const x of [size * 0.25, size * 0.75]) {
+    ctx.beginPath()
+    ctx.moveTo(x, 0)
+    ctx.lineTo(x, size)
+    ctx.stroke()
+  }
+
+  const tex = new THREE.CanvasTexture(canvas)
+  tex.anisotropy = 4
+  tex.colorSpace = THREE.SRGBColorSpace
+  return tex
+}
+
+interface PoloBallProps {
+  radius?: number
+}
+
+/**
+ * The water polo ball mesh, forwarding a group ref so the play controller can
+ * position and spin it each frame.
+ */
+export const PoloBall = forwardRef<THREE.Group, PoloBallProps>(function PoloBall(
+  { radius = 0.3 },
+  ref,
+) {
+  const tex = useMemo(makeBallTexture, [])
+  useEffect(() => () => tex.dispose(), [tex])
+
+  return (
+    <group ref={ref}>
+      <mesh castShadow>
+        <sphereGeometry args={[radius, 48, 48]} />
+        <meshStandardMaterial map={tex} bumpMap={tex} bumpScale={0.015} roughness={0.48} metalness={0.02} />
+      </mesh>
+    </group>
+  )
+})

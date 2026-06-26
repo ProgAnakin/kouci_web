@@ -3,8 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { AdaptiveDpr, Environment, Lightformer, Sparkles } from '@react-three/drei'
 import * as THREE from 'three'
 import { WaterSurface } from './WaterSurface'
-import { WaterPoloBall } from './WaterPoloBall'
-import { CausticGlow } from './CausticGlow'
+import { WaterPoloPlay } from './WaterPoloPlay'
 import { Particles } from './Particles'
 import { LaneRopes } from './LaneRopes'
 import { WaterPoloGoal } from './WaterPoloGoal'
@@ -56,8 +55,10 @@ export default function HeroCanvas() {
       }}
     >
       <Suspense fallback={<SceneLoader />}>
-        <hemisphereLight args={[palette.brandLight, palette.bg, 0.4]} />
-        <directionalLight position={[4, 8, 3]} intensity={1.0} color={palette.silver} />
+        <hemisphereLight args={[palette.brandLight, palette.bg, 0.45]} />
+        <directionalLight position={[4, 8, 3]} intensity={1.1} color={palette.silver} />
+        {/* Soft fill over the players so the caps and ball read in the dark scene. */}
+        <pointLight position={[2.2, 2.4, 2.6]} intensity={18} distance={12} decay={2} color={palette.brandLight} />
 
         {/* Baked-once studio environment (no network fetch) so the wet ball
             picks up soft olive/silver reflections. */}
@@ -68,8 +69,9 @@ export default function HeroCanvas() {
         </Environment>
 
         <WaterSurface reducedMotion={reduced} segments={isMobile ? 48 : 96} />
-        <CausticGlow position={[2.6, -0.55, 0.4]} reducedMotion={reduced} />
-        <WaterPoloBall reducedMotion={reduced} />
+
+        {/* Two players passing a water polo ball — the hero centrepiece. */}
+        <WaterPoloPlay reducedMotion={reduced} />
 
         {/* Water polo context: floating lane ropes + a goal at the far end. */}
         <LaneRopes reducedMotion={reduced} />

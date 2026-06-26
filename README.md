@@ -47,11 +47,13 @@ src/
 │  ├─ sections/            # Hero, Promise, Features, Showcase, Audience, EarlyAccess
 │  └─ ui/                  # Button, Field, Reveal, SectionHeading
 └─ three/                  # all the WebGL
-   ├─ HeroCanvas.tsx       # pool: water + ball + lane ropes + goal (lazy)
+   ├─ HeroCanvas.tsx       # pool: water + players + lane ropes + goal (lazy)
    ├─ WaterSurface.tsx     # shader water plane
    ├─ shaders/water.ts     # GLSL for the water (caustics, foam, fresnel)
    ├─ wave.ts              # JS mirror of the wave fn (floating objects)
-   ├─ WaterPoloBall.tsx
+   ├─ WaterPoloPlay.tsx    # two swimmers passing the ball (the hero scene)
+   ├─ Swimmer.tsx          # capped, numbered player with reaching arms
+   ├─ PoloBall.tsx         # recognizable water polo ball (seams + dimples)
    ├─ LaneRopes.tsx        # instanced lane-rope floats riding the swell
    ├─ WaterPoloGoal.tsx    # reusable floating goal (posts + net)
    ├─ Particles.tsx        # instanced atmospheric spray

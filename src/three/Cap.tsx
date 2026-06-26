@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
+import { makeNumberTexture } from './numberTexture'
 
 interface CapProps {
   position: [number, number, number]
@@ -15,23 +16,6 @@ const easeOutBack = (x: number) => {
   const c1 = 1.70158
   const c3 = c1 + 1
   return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2)
-}
-
-/** Draws a cap number on a transparent canvas → texture. */
-function makeNumberTexture(n: number): THREE.CanvasTexture {
-  const size = 64
-  const canvas = document.createElement('canvas')
-  canvas.width = canvas.height = size
-  const ctx = canvas.getContext('2d')!
-  ctx.clearRect(0, 0, size, size)
-  ctx.fillStyle = '#131512'
-  ctx.font = 'bold 42px sans-serif'
-  ctx.textAlign = 'center'
-  ctx.textBaseline = 'middle'
-  ctx.fillText(String(n), size / 2, size / 2 + 3)
-  const tex = new THREE.CanvasTexture(canvas)
-  tex.anisotropy = 4
-  return tex
 }
 
 /**
