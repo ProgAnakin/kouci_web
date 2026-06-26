@@ -17,11 +17,13 @@ export function useSmoothScroll(): void {
   useEffect(() => {
     if (reduced) return
 
+    // Frame-based lerp (not duration easing) → light, responsive, never sticky.
     const lenis = new Lenis({
-      duration: 1.1,
-      // Gentle exponential ease-out — settles smoothly without feeling floaty.
-      easing: (t) => 1 - Math.pow(1 - t, 4),
+      lerp: 0.14,
+      wheelMultiplier: 1.1,
       smoothWheel: true,
+      // Leave touch devices on their native (already-smooth) scrolling.
+      syncTouch: false,
     })
 
     lenis.on('scroll', ScrollTrigger.update)

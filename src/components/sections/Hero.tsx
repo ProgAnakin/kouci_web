@@ -1,9 +1,9 @@
-import { Suspense, lazy, useLayoutEffect, useRef } from 'react'
+import { Suspense, lazy, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { ButtonLink } from '../ui/Button'
-import { CanvasFallback } from '../../three/Loader'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
+import { useCanvasActivation } from '../../hooks/useCanvasActivation'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -15,12 +15,15 @@ export function Hero() {
   const contentRef = useRef<HTMLDivElement>(null)
   const reduced = usePrefersReducedMotion()
 
+  // Defer the heavy 3D to browser-idle, and pause it when scrolled off-screen.
+  const [backdropRef, mount, active] = useCanvasActivation<HTMLDivElement>({ rootMargin: '300px' })
+  const [loaded, setLoaded] = useState(false)
+
   // Orchestrated entrance + a scroll parallax that drifts the content up and
   // fades it as the hero scrolls away. Both skipped under reduced motion.
   useLayoutEffect(() => {
     if (reduced || !sectionRef.current || !contentRef.current) return
     const ctx = gsap.context(() => {
-      // Staggered reveal of the headline block.
       gsap.from(contentRef.current!.children, {
         y: 30,
         autoAlpha: 0,
@@ -30,7 +33,6 @@ export function Hero() {
         delay: 0.15,
       })
 
-      // Depth on scroll — without hijacking it.
       gsap.to(contentRef.current, {
         yPercent: -16,
         opacity: 0.3,
@@ -54,10 +56,22 @@ export function Hero() {
     >
       {/* Decorative 3D water backdrop. The accessible content is the headline
           and copy below — so the canvas itself is hidden from assistive tech. */}
-      <div className="absolute inset-0" aria-hidden="true">
-        <Suspense fallback={<CanvasFallback />}>
-          <HeroCanvas />
-        </Suspense>
+      <div ref={backdropRef} className="absolute inset-0" aria-hidden="true">
+        {/* Lightweight poster: shows instantly, the canvas fades in over it. */}
+        <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_70%_32%,rgba(126,139,99,0.16),transparent_55%),linear-gradient(to_bottom,#0c0d0a_0%,#131512_72%)]" />
+
+        {mount && (
+          <div
+            className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+              loaded ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <Suspense fallback={null}>
+              <HeroCanvas active={active} onReady={() => setLoaded(true)} />
+            </Suspense>
+          </div>
+        )}
+
         {/* Legibility veil over the water. */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-bg/55 via-bg/10 to-bg" />
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_15%_30%,transparent_40%,rgba(19,21,18,0.55))]" />

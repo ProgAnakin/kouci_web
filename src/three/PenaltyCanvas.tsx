@@ -12,7 +12,7 @@ import { isWebGLAvailable } from './webgl'
  * Penalty shot map scene: the goal mouth with scored vs. missed shots plotted
  * across it. Default-exported for React.lazy; mounted on scroll-in.
  */
-export default function PenaltyCanvas() {
+export default function PenaltyCanvas({ active = true }: { active?: boolean }) {
   const reduced = usePrefersReducedMotion()
 
   if (!isWebGLAvailable()) {
@@ -24,7 +24,7 @@ export default function PenaltyCanvas() {
       dpr={[1, 2]}
       gl={{ antialias: true, alpha: true }}
       camera={{ position: [0, 0, 4.2], fov: 44, near: 0.1, far: 100 }}
-      frameloop={reduced ? 'demand' : 'always'}
+      frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
       onCreated={({ gl }) => gl.setClearColor(new THREE.Color(palette.bg), 0)}
     >
       <Suspense fallback={<SceneLoader />}>

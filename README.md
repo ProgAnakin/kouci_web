@@ -109,14 +109,23 @@ The brand palette is defined in **three** mirrored places — keep them in sync:
 
 ## Performance notes
 
-- Heavy 3D scenes are **code-split** (`React.lazy`) and the two showcase
-  canvases only mount once they scroll near the viewport (`useInView`).
-- Repeated 3D elements (pins, shot markers) use **instancing** — one draw call
-  each.
+- Heavy 3D scenes are **code-split** (`React.lazy`). `useCanvasActivation`
+  defers each canvas's mount to **browser-idle** (it never competes with first
+  paint) and **pauses its render loop when scrolled off-screen**
+  (`frameloop="never"`), so idle canvases don't fight the scroll.
+- The hero shows a **static poster instantly** and crossfades the 3D in once
+  the renderer is ready.
+- **No post-processing library** — the cinematic grade is renderer ACES + MSAA
+  + a faux-bloom sprite + a CSS vignette (keeps the bundle light and runtime
+  cheap; see HeroCanvas).
+- Smooth scroll (Lenis) uses a light frame-based `lerp` and leaves touch
+  devices on native scrolling.
+- Repeated 3D elements (pins, shot markers, droplets, spray) use **instancing**
+  — one draw call each.
 - The water is a single shader-displaced plane; mobile drops the subdivision
-  count and the device pixel ratio is capped.
-- The custom water material and generated net texture are **explicitly
-  disposed** on unmount.
+  count and the device pixel ratio is capped (`AdaptiveDpr`).
+- Custom materials and generated textures are **explicitly disposed** on
+  unmount.
 
 ## Accessibility
 

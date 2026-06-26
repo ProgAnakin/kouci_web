@@ -2,10 +2,10 @@ import { lazy, Suspense, type ReactNode } from 'react'
 import { SectionHeading } from '../ui/SectionHeading'
 import { Reveal } from '../ui/Reveal'
 import { CanvasFallback } from '../../three/Loader'
-import { useInView } from '../../hooks/useInView'
+import { useCanvasActivation } from '../../hooks/useCanvasActivation'
 
 // Each demo is its own code-split bundle + WebGL context, only mounted when
-// it scrolls near the viewport.
+// it scrolls near the viewport — and paused again once it scrolls away.
 const TacticsCanvas = lazy(() => import('../../three/TacticsCanvas'))
 const PenaltyCanvas = lazy(() => import('../../three/PenaltyCanvas'))
 
@@ -17,11 +17,12 @@ interface PanelProps {
   /** Longer, screen-reader-only parallel description of the 3D content. */
   srDescription: ReactNode
   legend: ReactNode
-  canvas: ReactNode
+  /** Render the canvas; `active` gates its render loop while on screen. */
+  renderCanvas: (active: boolean) => ReactNode
 }
 
-function ShowcasePanel({ title, description, ariaLabel, srDescription, legend, canvas }: PanelProps) {
-  const [ref, inView] = useInView<HTMLDivElement>({ rootMargin: '300px' })
+function ShowcasePanel({ title, description, ariaLabel, srDescription, legend, renderCanvas }: PanelProps) {
+  const [ref, mount, active] = useCanvasActivation<HTMLDivElement>({ rootMargin: '300px' })
 
   return (
     <Reveal as="article" className="card overflow-hidden">
@@ -31,7 +32,7 @@ function ShowcasePanel({ title, description, ariaLabel, srDescription, legend, c
         aria-label={ariaLabel}
         className="relative aspect-[4/3] w-full bg-bg sm:aspect-[16/10]"
       >
-        {inView ? <Suspense fallback={<CanvasFallback />}>{canvas}</Suspense> : <CanvasFallback />}
+        {mount ? <Suspense fallback={<CanvasFallback />}>{renderCanvas(active)}</Suspense> : <CanvasFallback />}
       </div>
       <div className="p-6 md:p-8">
         <h3 className="text-xl font-semibold text-ink md:text-2xl">{title}</h3>
@@ -81,7 +82,7 @@ export function Showcase() {
                 colored by team and the whole sequence can be exported to MP4 or GIF.
               </p>
             }
-            canvas={<TacticsCanvas />}
+            renderCanvas={(active) => <TacticsCanvas active={active} />}
           />
 
           <ShowcasePanel
@@ -105,7 +106,7 @@ export function Showcase() {
                 frame. Goals are shown in olive, misses in silver.
               </p>
             }
-            canvas={<PenaltyCanvas />}
+            renderCanvas={(active) => <PenaltyCanvas active={active} />}
           />
         </div>
       </div>

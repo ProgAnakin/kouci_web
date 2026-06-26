@@ -24,7 +24,14 @@ import { isWebGLAvailable } from './webgl'
  * glow sprite (faux bloom), and a CSS vignette frames the hero. WebGLRenderer
  * selects WebGL 2 with a WebGL 1 fallback (no WebGPU assumed).
  */
-export default function HeroCanvas() {
+interface HeroCanvasProps {
+  /** When false the canvas stops rendering (off-screen) to free the scroll. */
+  active?: boolean
+  /** Called once the renderer is created (used to fade the canvas in). */
+  onReady?: () => void
+}
+
+export default function HeroCanvas({ active = true, onReady }: HeroCanvasProps) {
   const reduced = usePrefersReducedMotion()
 
   if (!isWebGLAvailable()) {
@@ -47,10 +54,12 @@ export default function HeroCanvas() {
       dpr={[1, isMobile ? 1.5 : 2]}
       gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
       camera={{ position: [0.6, 0.82, 6.0], fov: 50, near: 0.1, far: 100 }}
-      frameloop={reduced ? 'demand' : 'always'}
+      // Pause rendering when reduced-motion (single frame) or off-screen.
+      frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
       onCreated={({ gl, scene }) => {
         gl.setClearColor(new THREE.Color(palette.bg), 1)
         scene.fog = new THREE.Fog(palette.bg, 14, 45)
+        onReady?.()
       }}
     >
       <Suspense fallback={<SceneLoader />}>

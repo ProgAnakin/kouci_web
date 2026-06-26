@@ -13,7 +13,7 @@ import { isWebGLAvailable } from './webgl'
  * 3D arrows. Default-exported for React.lazy; only mounted once it scrolls
  * near the viewport (see Showcase).
  */
-export default function TacticsCanvas() {
+export default function TacticsCanvas({ active = true }: { active?: boolean }) {
   const reduced = usePrefersReducedMotion()
 
   if (!isWebGLAvailable()) {
@@ -26,7 +26,7 @@ export default function TacticsCanvas() {
       shadows
       gl={{ antialias: true, alpha: true }}
       camera={{ position: [0, 3.6, 6.4], fov: 40, near: 0.1, far: 100 }}
-      frameloop={reduced ? 'demand' : 'always'}
+      frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
       onCreated={({ gl }) => gl.setClearColor(new THREE.Color(palette.bg), 0)}
     >
       <Suspense fallback={<SceneLoader />}>
