@@ -1,5 +1,6 @@
 import { forwardRef, useEffect, useMemo } from 'react'
 import * as THREE from 'three'
+import { makeSpriteTexture } from './proceduralTextures'
 
 /**
  * Procedural water polo ball texture: the classic FINA yellow, the dimpled
@@ -62,7 +63,14 @@ export const PoloBall = forwardRef<THREE.Group, PoloBallProps>(function PoloBall
   ref,
 ) {
   const tex = useMemo(makeBallTexture, [])
-  useEffect(() => () => tex.dispose(), [tex])
+  const glowTex = useMemo(makeSpriteTexture, [])
+  useEffect(
+    () => () => {
+      tex.dispose()
+      glowTex.dispose()
+    },
+    [tex, glowTex],
+  )
 
   return (
     <group ref={ref}>
@@ -79,6 +87,10 @@ export const PoloBall = forwardRef<THREE.Group, PoloBallProps>(function PoloBall
           envMapIntensity={0.6}
         />
       </mesh>
+      {/* Cheap additive halo — fakes a soft bloom without a post pass. */}
+      <sprite scale={[radius * 5, radius * 5, 1]}>
+        <spriteMaterial map={glowTex} color="#f3d873" opacity={0.5} transparent depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} />
+      </sprite>
     </group>
   )
 })

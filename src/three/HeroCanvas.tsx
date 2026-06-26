@@ -9,7 +9,6 @@ import { WaterPoloGoal } from './WaterPoloGoal'
 import { WATER_Y } from './wave'
 import { CameraRig } from './CameraRig'
 import { Lighting } from './Lighting'
-import { PostFX } from './PostFX'
 import { SceneLoader } from './Loader'
 import { palette } from '../lib/theme'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
@@ -17,12 +16,13 @@ import { isWebGLAvailable } from './webgl'
 
 /**
  * Hero pool scene — two players passing a water polo ball under a starry sky,
- * with cinematic lighting and post-processing. Default-exported for React.lazy.
+ * with cinematic lighting. Default-exported for React.lazy.
  *
- * Renderer note: stock R3F <Canvas> (three's WebGLRenderer → WebGL 2 with a
- * WebGL 1 fallback). On desktop we render `flat` (no renderer tone mapping) and
- * let the post stack own color via an ACES pass; on mobile we drop the post
- * stack for performance and keep the renderer's default ACES tone mapping.
+ * The cinematic look is achieved without a post-processing pass (which is a
+ * heavy lazy chunk + per-frame GPU cost): the renderer's ACES Filmic tone
+ * mapping does the grade, MSAA handles edges, the ball carries a cheap additive
+ * glow sprite (faux bloom), and a CSS vignette frames the hero. WebGLRenderer
+ * selects WebGL 2 with a WebGL 1 fallback (no WebGPU assumed).
  */
 export default function HeroCanvas() {
   const reduced = usePrefersReducedMotion()
@@ -45,8 +45,7 @@ export default function HeroCanvas() {
   return (
     <Canvas
       dpr={[1, isMobile ? 1.5 : 2]}
-      flat={!isMobile}
-      gl={{ antialias: isMobile, alpha: false, powerPreference: 'high-performance' }}
+      gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
       camera={{ position: [0.6, 0.82, 6.0], fov: 50, near: 0.1, far: 100 }}
       frameloop={reduced ? 'demand' : 'always'}
       onCreated={({ gl, scene }) => {
@@ -74,8 +73,6 @@ export default function HeroCanvas() {
 
         <CameraRig reducedMotion={reduced} />
         <AdaptiveDpr pixelated />
-
-        {!isMobile && <PostFX />}
       </Suspense>
     </Canvas>
   )

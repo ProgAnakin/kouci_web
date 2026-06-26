@@ -4,14 +4,14 @@
  */
 export const SKIN = '#C98A63'
 
-/** Spread onto a <meshPhysicalMaterial> for skin. */
+/** Spread onto a <meshPhysicalMaterial> for skin (soft, slightly wet). */
 export const SKIN_PROPS = {
-  roughness: 0.5,
-  clearcoat: 0.25,
-  clearcoatRoughness: 0.35,
-  sheen: 0.45,
-  sheenColor: '#ffcf9e',
-  sheenRoughness: 0.6,
+  roughness: 0.42,
+  clearcoat: 0.35,
+  clearcoatRoughness: 0.3,
+  sheen: 0.6,
+  sheenColor: '#ffd6a8',
+  sheenRoughness: 0.55,
   metalness: 0,
 } as const
 

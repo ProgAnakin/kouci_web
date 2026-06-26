@@ -14,6 +14,8 @@ interface PlayerArmProps {
   pole: [number, number, number]
   upperLen?: number
   foreLen?: number
+  /** Overall limb thickness multiplier. */
+  girth?: number
 }
 
 const UP = new THREE.Vector3(0, 1, 0)
@@ -41,18 +43,20 @@ function orient(mesh: THREE.Object3D | null, p: THREE.Vector3, q: THREE.Vector3)
 }
 
 /**
- * A stylised, articulated arm solved with two-bone IK each frame: upper arm,
- * a defined elbow, forearm and a simplified hand reach toward `target` with a
- * natural bend. Lives in player-local space (the group sits at the player base,
- * un-transformed) so positions are simply world − base.
+ * A chunky, articulated arm solved with two-bone IK each frame: a soft shoulder,
+ * a plump upper arm, a defined elbow, forearm and a small rounded hand reach
+ * toward `target`. Thick joint spheres overlap the limbs so it reads as one
+ * continuous, chubby form rather than separate primitives. Lives in
+ * player-local space (group at the player base, un-transformed).
  */
 export function PlayerArm({
   base,
   shoulder,
   target,
   pole,
-  upperLen = 0.44,
-  foreLen = 0.42,
+  upperLen = 0.42,
+  foreLen = 0.4,
+  girth = 1,
 }: PlayerArmProps) {
   const upper = useRef<THREE.Mesh>(null)
   const fore = useRef<THREE.Mesh>(null)
@@ -69,7 +73,6 @@ export function PlayerArm({
     d = THREE.MathUtils.clamp(d, 0.05, maxD)
     _dir.normalize()
 
-    // Law of cosines → elbow position offset along the bend plane.
     const a = (upperLen * upperLen - foreLen * foreLen + d * d) / (2 * d)
     const h = Math.sqrt(Math.max(upperLen * upperLen - a * a, 0))
     _n.set(pole[0], pole[1], pole[2])
@@ -91,20 +94,25 @@ export function PlayerArm({
 
   return (
     <group>
+      {/* Soft shoulder cap that blends the arm into the body */}
+      <mesh position={shoulder} castShadow>
+        <sphereGeometry args={[0.2 * girth, 22, 18]} />
+        <meshPhysicalMaterial color={SKIN} {...SKIN_PROPS} />
+      </mesh>
       <mesh ref={upper} castShadow>
-        <cylinderGeometry args={[0.075, 0.1, 1, 14]} />
+        <cylinderGeometry args={[0.14 * girth, 0.18 * girth, 1, 18]} />
         <meshPhysicalMaterial color={SKIN} {...SKIN_PROPS} />
       </mesh>
       <mesh ref={elbow} castShadow>
-        <sphereGeometry args={[0.092, 18, 16]} />
+        <sphereGeometry args={[0.155 * girth, 22, 18]} />
         <meshPhysicalMaterial color={SKIN} {...SKIN_PROPS} />
       </mesh>
       <mesh ref={fore} castShadow>
-        <cylinderGeometry args={[0.058, 0.082, 1, 14]} />
+        <cylinderGeometry args={[0.12 * girth, 0.15 * girth, 1, 18]} />
         <meshPhysicalMaterial color={SKIN} {...SKIN_PROPS} />
       </mesh>
-      <mesh ref={hand} scale={[0.85, 0.7, 1.15]} castShadow>
-        <sphereGeometry args={[0.11, 18, 16]} />
+      <mesh ref={hand} scale={[0.95, 0.72, 1.15]} castShadow>
+        <sphereGeometry args={[0.165 * girth, 20, 18]} />
         <meshPhysicalMaterial color={SKIN} {...SKIN_PROPS} />
       </mesh>
     </group>

@@ -95,7 +95,8 @@ export const waterFragmentShader = /* glsl */ `
 
     gl_FragColor = vec4(col, uOpacity);
 
-    // Convert the linear color we computed into the renderer's output space.
+    // Match the renderer: ACES tone mapping, then encode to the output space.
+    #include <tonemapping_fragment>
     #include <colorspace_fragment>
   }
 `

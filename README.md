@@ -10,9 +10,13 @@ interactive 3D water scene.
 
 - **Vite + React + TypeScript**
 - **Three.js** via **React Three Fiber** + **@react-three/drei**
-- **@react-three/postprocessing** for the cinematic hero (Bloom · ACES · SMAA · Vignette)
 - **GSAP** (with ScrollTrigger) + **Lenis** smooth scroll; **maath** easing for camera damping
 - **Tailwind CSS** for all 2D UI
+
+The hero's cinematic grade is done **without a post-processing library** (to keep
+the bundle light and hold 60fps): the renderer's ACES Filmic tone mapping grades
+the frame, MSAA handles edges, the ball carries a cheap additive glow sprite
+(faux bloom), and a CSS radial gradient supplies the vignette.
 
 The 3D layer uses the standard WebGL renderer (WebGL 2 with automatic fallback
 to WebGL 1). WebGPU is intentionally **not** assumed.
@@ -48,10 +52,9 @@ src/
 │  ├─ sections/            # Hero, Promise, Features, Showcase, Audience, EarlyAccess
 │  └─ ui/                  # Button, Field, Reveal, SectionHeading
 └─ three/                  # all the WebGL
-   ├─ HeroCanvas.tsx       # pool scene: sky + lighting + players + post (lazy)
+   ├─ HeroCanvas.tsx       # pool scene: sky + lighting + players (lazy)
    ├─ Lighting.tsx         # cinematic rig (env + key/rim/bounce/fill)
-   ├─ PostFX.tsx           # EffectComposer: Bloom · ACES · SMAA · Vignette
-   ├─ WaterSurface.tsx     # shader water plane
+   ├─ WaterSurface.tsx     # shader water plane (ACES tone-mapped)
    ├─ shaders/water.ts     # GLSL for the water (caustics, foam, fresnel)
    ├─ wave.ts              # water-surface level constant
    ├─ WaterPoloPlay.tsx    # two players passing the ball (the hero scene)
