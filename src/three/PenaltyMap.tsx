@@ -58,7 +58,7 @@ function Bar({ size, position }: { size: [number, number, number]; position: [nu
   return (
     <mesh position={position}>
       <boxGeometry args={size} />
-      <meshStandardMaterial color={palette.silver} roughness={0.4} metalness={0.25} />
+      <meshPhysicalMaterial color={palette.silver} roughness={0.3} metalness={0.3} clearcoat={0.8} clearcoatRoughness={0.3} />
     </mesh>
   )
 }

@@ -1,9 +1,10 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { AdaptiveDpr } from '@react-three/drei'
+import { AdaptiveDpr, Environment, Lightformer } from '@react-three/drei'
 import * as THREE from 'three'
 import { WaterSurface } from './WaterSurface'
 import { WaterPoloBall } from './WaterPoloBall'
+import { CausticGlow } from './CausticGlow'
 import { CameraRig } from './CameraRig'
 import { SceneLoader } from './Loader'
 import { palette } from '../lib/theme'
@@ -51,9 +52,19 @@ export default function HeroCanvas() {
       }}
     >
       <Suspense fallback={<SceneLoader />}>
-        <hemisphereLight args={[palette.brandLight, palette.bg, 0.6]} />
-        <directionalLight position={[4, 8, 3]} intensity={1.1} color={palette.silver} />
+        <hemisphereLight args={[palette.brandLight, palette.bg, 0.4]} />
+        <directionalLight position={[4, 8, 3]} intensity={1.0} color={palette.silver} />
+
+        {/* Baked-once studio environment (no network fetch) so the wet ball
+            picks up soft olive/silver reflections. */}
+        <Environment resolution={64} frames={1}>
+          <Lightformer intensity={2.2} position={[0, 4, -3]} scale={[8, 8, 1]} color={palette.brandLight} />
+          <Lightformer intensity={1.1} position={[-5, 2, 2]} scale={[3, 3, 1]} color={palette.silver} />
+          <Lightformer intensity={0.7} position={[5, 1, 3]} scale={[3, 3, 1]} color={palette.brand} />
+        </Environment>
+
         <WaterSurface reducedMotion={reduced} segments={isMobile ? 48 : 96} />
+        <CausticGlow position={[2.6, -0.55, 0.4]} reducedMotion={reduced} />
         <WaterPoloBall reducedMotion={reduced} />
         <CameraRig reducedMotion={reduced} />
         <AdaptiveDpr pixelated />

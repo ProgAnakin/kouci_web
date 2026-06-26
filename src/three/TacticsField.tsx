@@ -78,7 +78,7 @@ export function TacticsField({ reducedMotion = false }: { reducedMotion?: boolea
       {/* Board */}
       <mesh position={[0, -0.05, 0]} receiveShadow>
         <boxGeometry args={[FIELD_W + 0.4, 0.1, FIELD_D + 0.4]} />
-        <meshStandardMaterial color={palette.surface} roughness={0.85} metalness={0.05} />
+        <meshPhysicalMaterial color={palette.surface} roughness={0.65} metalness={0.05} clearcoat={0.4} clearcoatRoughness={0.6} />
       </mesh>
 
       {/* Field markings */}
@@ -93,12 +93,21 @@ export function TacticsField({ reducedMotion = false }: { reducedMotion?: boolea
       <Goal x={-FIELD_W / 2} dir={1} />
       <Goal x={FIELD_W / 2} dir={-1} />
 
-      {/* Pins — one draw call via instancing, per-instance color. */}
-      <Instances limit={PINS.length} range={PINS.length} castShadow>
-        <cylinderGeometry args={[0.17, 0.17, 0.12, 24]} />
-        <meshStandardMaterial roughness={0.4} metalness={0.1} />
+      {/* Colored halos under the pins — one instanced draw call, additive. */}
+      <Instances limit={PINS.length} range={PINS.length}>
+        <ringGeometry args={[0.22, 0.32, 32]} />
+        <meshBasicMaterial transparent opacity={0.45} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
         {PINS.map((p, i) => (
-          <Instance key={i} position={[p.x, 0.06, p.z]} color={p.color} />
+          <Instance key={i} position={[p.x, 0.014, p.z]} rotation={[-Math.PI / 2, 0, 0]} color={p.color} />
+        ))}
+      </Instances>
+
+      {/* Pins — one draw call via instancing, per-instance color, glossy chip. */}
+      <Instances limit={PINS.length} range={PINS.length} castShadow>
+        <cylinderGeometry args={[0.17, 0.17, 0.14, 28]} />
+        <meshPhysicalMaterial roughness={0.3} metalness={0.1} clearcoat={1} clearcoatRoughness={0.25} />
+        {PINS.map((p, i) => (
+          <Instance key={i} position={[p.x, 0.07, p.z]} color={p.color} />
         ))}
       </Instances>
 

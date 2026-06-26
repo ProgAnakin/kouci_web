@@ -1,3 +1,5 @@
+import { Logo } from '../ui/Logo'
+
 // Social links are placeholders. TODO: point these at the real Kouci profiles.
 const socials = [
   { label: 'Instagram', href: '#' },
@@ -12,9 +14,8 @@ export function Footer() {
       <div className="container-content">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
-            <a href="#hero" className="flex items-center gap-2 font-display text-lg font-semibold text-ink">
-              <span className="grid h-7 w-7 place-items-center rounded-lg bg-brand text-bg">K</span>
-              Kouci
+            <a href="#hero" aria-label="Kouci — home" className="inline-flex rounded-full">
+              <Logo />
             </a>
             <p className="mt-4 text-sm leading-relaxed text-silver">
               Water polo tactical &amp; statistical analysis for coaches and analysts.

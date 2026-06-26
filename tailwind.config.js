@@ -15,8 +15,8 @@ export default {
         ink: '#E6E8E2', // Texto / text
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Sora', 'Inter', 'system-ui', 'sans-serif'],
+        sans: ['"Inter Variable"', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['"Sora Variable"', 'Sora', 'Inter', 'system-ui', 'sans-serif'],
       },
       maxWidth: {
         content: '72rem',

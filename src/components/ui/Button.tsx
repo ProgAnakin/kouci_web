@@ -3,17 +3,41 @@ import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'reac
 type Variant = 'primary' | 'ghost'
 
 const base =
-  'inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50'
+  'group relative inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-all duration-200 will-change-transform disabled:cursor-not-allowed disabled:opacity-50 active:scale-[0.98]'
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-brand text-bg hover:bg-brand-light',
-  ghost: 'border border-silver/30 text-ink hover:border-brand-light hover:text-brand-light',
+  primary:
+    'bg-brand text-bg hover:bg-brand-light hover:shadow-[0_8px_30px_-8px] hover:shadow-brand/60',
+  ghost:
+    'border border-silver/25 text-ink hover:border-brand-light/70 hover:bg-white/5 hover:text-brand-light',
+}
+
+function Arrow() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+      className="transition-transform duration-200 group-hover:translate-x-0.5"
+    >
+      <path
+        d="M3 8h9M8.5 4.5 12 8l-3.5 3.5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
 }
 
 type CommonProps = {
   variant?: Variant
   children: ReactNode
   className?: string
+  withArrow?: boolean
 }
 
 /** Anchor flavour — used for in-page links and CTAs. */
@@ -21,11 +45,13 @@ export function ButtonLink({
   variant = 'primary',
   children,
   className = '',
+  withArrow = false,
   ...rest
 }: CommonProps & AnchorHTMLAttributes<HTMLAnchorElement>) {
   return (
     <a className={`${base} ${variants[variant]} ${className}`} {...rest}>
       {children}
+      {withArrow && <Arrow />}
     </a>
   )
 }
@@ -35,11 +61,13 @@ export function Button({
   variant = 'primary',
   children,
   className = '',
+  withArrow = false,
   ...rest
 }: CommonProps & ButtonHTMLAttributes<HTMLButtonElement>) {
   return (
     <button className={`${base} ${variants[variant]} ${className}`} {...rest}>
       {children}
+      {withArrow && <Arrow />}
     </button>
   )
 }

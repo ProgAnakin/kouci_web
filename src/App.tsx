@@ -6,6 +6,7 @@ import { Features } from './components/sections/Features'
 import { Showcase } from './components/sections/Showcase'
 import { Audience } from './components/sections/Audience'
 import { EarlyAccess } from './components/sections/EarlyAccess'
+import { ScrollProgress } from './components/ui/ScrollProgress'
 import { usePageScroll } from './hooks/usePageScroll'
 
 export default function App() {
@@ -14,6 +15,7 @@ export default function App() {
 
   return (
     <>
+      <ScrollProgress />
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-brand focus:px-5 focus:py-2 focus:text-sm focus:font-medium focus:text-bg"

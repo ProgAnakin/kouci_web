@@ -1,5 +1,6 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
+import { Environment, Lightformer } from '@react-three/drei'
 import * as THREE from 'three'
 import { PenaltyMap } from './PenaltyMap'
 import { SceneLoader } from './Loader'
@@ -27,8 +28,12 @@ export default function PenaltyCanvas() {
       onCreated={({ gl }) => gl.setClearColor(new THREE.Color(palette.bg), 0)}
     >
       <Suspense fallback={<SceneLoader />}>
-        <hemisphereLight args={[palette.brandLight, palette.bg, 0.8]} />
+        <hemisphereLight args={[palette.brandLight, palette.bg, 0.65]} />
         <directionalLight position={[2, 3, 5]} intensity={1.1} color={palette.ink} />
+        <Environment resolution={48} frames={1}>
+          <Lightformer intensity={1.6} position={[0, 2, 5]} scale={[8, 5, 1]} color={palette.silver} />
+          <Lightformer intensity={0.7} position={[-3, 1, 3]} scale={[3, 3, 1]} color={palette.brandLight} />
+        </Environment>
         <PenaltyMap reducedMotion={reduced} />
       </Suspense>
     </Canvas>

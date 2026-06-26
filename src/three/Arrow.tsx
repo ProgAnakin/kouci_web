@@ -65,11 +65,11 @@ export function Arrow({
       <mesh ref={shaft}>
         {/* Unit-height cylinder; scaled along Y each frame. */}
         <cylinderGeometry args={[thickness, thickness, 1, 12]} />
-        <meshStandardMaterial color={color} roughness={0.5} metalness={0.1} />
+        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.35} roughness={0.45} metalness={0.1} />
       </mesh>
       <mesh ref={head}>
         <coneGeometry args={[thickness * 2.4, HEAD_LEN, 16]} />
-        <meshStandardMaterial color={color} roughness={0.5} metalness={0.1} />
+        <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.35} roughness={0.45} metalness={0.1} />
       </mesh>
     </group>
   )

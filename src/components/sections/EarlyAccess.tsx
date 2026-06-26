@@ -42,8 +42,17 @@ export function EarlyAccess() {
   }
 
   return (
-    <section id="early-access" aria-labelledby="early-access-title" className="border-t border-white/5 py-24 md:py-32">
-      <div className="container-content">
+    <section
+      id="early-access"
+      aria-labelledby="early-access-title"
+      className="relative overflow-hidden border-t border-white/5 py-24 md:py-32"
+    >
+      {/* Focal glow behind the card. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[720px] max-w-[90vw] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand/10 blur-3xl"
+      />
+      <div className="container-content relative">
         <Reveal className="card mx-auto max-w-3xl overflow-hidden p-8 md:p-12">
           <div className="text-center">
             <p className="eyebrow justify-center">Early access</p>

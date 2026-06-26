@@ -31,8 +31,17 @@ export function WaterPoloBall({ reducedMotion = false }: { reducedMotion?: boole
   return (
     <group ref={group} position={[2.6, 0.25, 0.4]}>
       <mesh castShadow>
-        <sphereGeometry args={[0.7, 48, 48]} />
-        <meshStandardMaterial color={palette.brandLight} roughness={0.45} metalness={0.05} />
+        <sphereGeometry args={[0.7, 64, 64]} />
+        {/* Wet-ball look: a clearcoat sheen over the olive, picking up the
+            environment reflections set up in HeroCanvas. */}
+        <meshPhysicalMaterial
+          color={palette.brandLight}
+          roughness={0.32}
+          metalness={0}
+          clearcoat={1}
+          clearcoatRoughness={0.22}
+          envMapIntensity={0.9}
+        />
       </mesh>
       {SEAM_ROTATIONS.map((rotation, i) => (
         <mesh key={i} rotation={rotation}>
