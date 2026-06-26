@@ -53,7 +53,7 @@ export default function HeroCanvas({ active = true, onReady }: HeroCanvasProps) 
     <Canvas
       dpr={[1, isMobile ? 1.5 : 2]}
       gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
-      camera={{ position: [0.6, 0.82, 6.0], fov: 50, near: 0.1, far: 100 }}
+      camera={{ position: [0.2, 0.85, 6.5], fov: 50, near: 0.1, far: 100 }}
       // Pause rendering when reduced-motion (single frame) or off-screen.
       frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
       onCreated={({ gl, scene }) => {

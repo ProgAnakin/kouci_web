@@ -9,16 +9,18 @@ import { CAP_DARK, CAP_LIGHT } from './playerLook'
 import { WATER_Y } from './wave'
 import { heroState } from './heroState'
 
-// Two players at the water line, set apart across the right of the frame.
-const A = new THREE.Vector3(2.3, WATER_Y, 0.6)
-const B = new THREE.Vector3(4.4, WATER_Y, 0.0)
+// Two players at the water line, pushed to the right so the headline (left) is
+// never covered.
+const A = new THREE.Vector3(3.2, WATER_Y, 0.6)
+const B = new THREE.Vector3(5.3, WATER_Y, 0.0)
 
-// Hand height the ball is thrown from / caught at (world Y).
-const HAND_Y = 0.5
+// Hand height the ball is thrown from / caught at (world Y). Kept low so the
+// pass arc stays in the players' zone, below the headline.
+const HAND_Y = 0.42
 const HAND_A = new THREE.Vector3(A.x + 0.35, HAND_Y, A.z)
 const HAND_B = new THREE.Vector3(B.x - 0.35, HAND_Y, B.z)
 
-const ARC_HEIGHT = 0.72
+const ARC_HEIGHT = 0.55
 const SPEED = 0.4 // one leg of the pass per ~2.5s
 
 const smooth = (p: number) => p * p * (3 - 2 * p)

@@ -5,7 +5,9 @@ import { scrollState } from '../lib/scrollStore'
 import { heroState } from './heroState'
 
 const _look = new THREE.Vector3()
-const baseLook = new THREE.Vector3(3.3, 0.45, 0.25)
+// Aimed left of the players so they sit in the right of the frame, clear of
+// the headline.
+const baseLook = new THREE.Vector3(2.4, 0.5, 0.2)
 
 /**
  * Low, cinematic camera. Eases its position with maath damping (idle sway +
@@ -26,16 +28,17 @@ export function CameraRig({ reducedMotion = false }: { reducedMotion?: boolean }
 
     damp3(
       camera.position,
-      [0.6 + idleX + px, 0.82 + hero * 1.3 + idleY + py, 6.0 + hero * 2.0],
+      [0.2 + idleX + px, 0.85 + hero * 1.3 + idleY + py, 6.5 + hero * 2.0],
       0.45,
       delta,
     )
 
-    // Aim mostly at the action, drifting slightly with the ball.
+    // Aim mostly at a fixed point; a gentle drift toward the ball keeps it alive
+    // without sweeping the players across the headline.
     if (reducedMotion) {
       _look.copy(baseLook)
     } else {
-      _look.copy(baseLook).lerp(heroState.ball, 0.12)
+      _look.copy(baseLook).lerp(heroState.ball, 0.06)
     }
     camera.lookAt(_look)
   })

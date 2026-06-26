@@ -72,11 +72,13 @@ export function Hero() {
           </div>
         )}
 
-        {/* Legibility veil over the water. */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-bg/55 via-bg/10 to-bg" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(120%_90%_at_15%_30%,transparent_40%,rgba(19,21,18,0.55))]" />
+        {/* Left scrim — keeps the headline fully legible over open water while
+            the players sit clear, on the right. */}
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#131512_0%,rgba(19,21,18,0.7)_40%,transparent_70%)]" />
+        {/* Top + bottom fades for grounding. */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-bg/45 via-transparent to-bg" />
         {/* Cinematic vignette (replaces the post-processing one — free). */}
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(130%_130%_at_50%_42%,transparent_52%,rgba(8,9,7,0.7))]" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(130%_130%_at_55%_45%,transparent_55%,rgba(8,9,7,0.7))]" />
       </div>
 
       <div ref={contentRef} className="container-content relative">
