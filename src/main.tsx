@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 // Self-hosted variable fonts — no external request, no FOUT.
 import '@fontsource-variable/inter'
 import '@fontsource-variable/sora'
+import 'lenis/dist/lenis.css'
 import App from './App.tsx'
 import './index.css'
 

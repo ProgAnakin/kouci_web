@@ -1,10 +1,11 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { AdaptiveDpr, Environment, Lightformer } from '@react-three/drei'
+import { AdaptiveDpr, Environment, Lightformer, Sparkles } from '@react-three/drei'
 import * as THREE from 'three'
 import { WaterSurface } from './WaterSurface'
 import { WaterPoloBall } from './WaterPoloBall'
 import { CausticGlow } from './CausticGlow'
+import { Particles } from './Particles'
 import { CameraRig } from './CameraRig'
 import { SceneLoader } from './Loader'
 import { palette } from '../lib/theme'
@@ -66,6 +67,19 @@ export default function HeroCanvas() {
         <WaterSurface reducedMotion={reduced} segments={isMobile ? 48 : 96} />
         <CausticGlow position={[2.6, -0.55, 0.4]} reducedMotion={reduced} />
         <WaterPoloBall reducedMotion={reduced} />
+
+        {/* Atmosphere: drifting spray + fine glints on the air above the water. */}
+        <Particles count={isMobile ? 16 : 30} reducedMotion={reduced} />
+        <Sparkles
+          count={isMobile ? 18 : 36}
+          scale={[12, 3, 6]}
+          position={[0, 0.4, 0]}
+          size={2}
+          speed={reduced ? 0 : 0.3}
+          opacity={0.5}
+          color={palette.silver}
+        />
+
         <CameraRig reducedMotion={reduced} />
         <AdaptiveDpr pixelated />
       </Suspense>

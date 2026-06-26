@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Instance, Instances } from '@react-three/drei'
+import { Instance, Instances, Sparkles } from '@react-three/drei'
 import * as THREE from 'three'
 import { palette, pinColors } from '../lib/theme'
 import { Arrow } from './Arrow'
@@ -26,6 +26,12 @@ const ARROWS: { from: [number, number, number]; to: [number, number, number]; co
   { from: [1.5, 0.16, -1.2], to: [0.9, 0.16, 0.6], color: pinColors[2] },
 ]
 
+const easeOutBack = (x: number) => {
+  const c1 = 1.70158
+  const c3 = c1 + 1
+  return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2)
+}
+
 /** Thin box used for field markings. */
 function Line({
   size,
@@ -47,8 +53,7 @@ function Line({
 }
 
 /** A simple goal frame: two posts + a crossbar. */
-function Goal({ x, dir }: { x: number; dir: 1 | -1 }) {
-  void dir
+function Goal({ x }: { x: number }) {
   return (
     <group position={[x, 0, 0]}>
       {[-0.9, 0.9].map((z) => (
@@ -67,10 +72,39 @@ function Goal({ x, dir }: { x: number; dir: 1 | -1 }) {
 
 export function TacticsField({ reducedMotion = false }: { reducedMotion?: boolean }) {
   const group = useRef<THREE.Group>(null)
+  const pinRefs = useRef<(THREE.Object3D | null)[]>([])
+  const haloRefs = useRef<(THREE.Object3D | null)[]>([])
+  const startRef = useRef<number | null>(null)
 
-  useFrame((_, delta) => {
-    if (reducedMotion || !group.current) return
-    group.current.rotation.y += delta * 0.08
+  useFrame((state) => {
+    const t = state.clock.elapsedTime
+
+    // Organic presentation sway of the whole board (no full spin).
+    if (group.current && !reducedMotion) {
+      group.current.rotation.y = Math.sin(t * 0.22) * 0.42
+      group.current.rotation.x = Math.sin(t * 0.35) * 0.04
+    }
+
+    if (reducedMotion) return
+    if (startRef.current === null) startRef.current = t
+    const elapsed = t - startRef.current
+
+    // Staggered pop-in + gentle idle float for the pins, and a pulsing halo.
+    for (let i = 0; i < PINS.length; i++) {
+      const prog = THREE.MathUtils.clamp((elapsed - i * 0.09) / 0.55, 0, 1)
+
+      const pin = pinRefs.current[i]
+      if (pin) {
+        pin.scale.setScalar(easeOutBack(prog))
+        pin.position.y = 0.07 + (prog >= 1 ? Math.sin(t * 1.3 + i) * 0.015 : 0)
+      }
+
+      const halo = haloRefs.current[i]
+      if (halo) {
+        const pulse = 1 + Math.sin(t * 1.6 + i) * 0.12
+        halo.scale.setScalar(prog * pulse)
+      }
+    }
   })
 
   return (
@@ -90,15 +124,22 @@ export function TacticsField({ reducedMotion = false }: { reducedMotion?: boolea
       <Line size={[0.04, 0.012, FIELD_D]} position={[-1.8, 0.011, 0]} color={palette.brand} opacity={0.35} />
       <Line size={[0.04, 0.012, FIELD_D]} position={[1.8, 0.011, 0]} color={palette.brand} opacity={0.35} />
 
-      <Goal x={-FIELD_W / 2} dir={1} />
-      <Goal x={FIELD_W / 2} dir={-1} />
+      <Goal x={-FIELD_W / 2} />
+      <Goal x={FIELD_W / 2} />
 
       {/* Colored halos under the pins — one instanced draw call, additive. */}
       <Instances limit={PINS.length} range={PINS.length}>
         <ringGeometry args={[0.22, 0.32, 32]} />
         <meshBasicMaterial transparent opacity={0.45} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
         {PINS.map((p, i) => (
-          <Instance key={i} position={[p.x, 0.014, p.z]} rotation={[-Math.PI / 2, 0, 0]} color={p.color} />
+          <Instance
+            key={i}
+            ref={(el: THREE.Object3D | null) => (haloRefs.current[i] = el)}
+            position={[p.x, 0.014, p.z]}
+            rotation={[-Math.PI / 2, 0, 0]}
+            scale={reducedMotion ? 1 : 0.0001}
+            color={p.color}
+          />
         ))}
       </Instances>
 
@@ -107,7 +148,13 @@ export function TacticsField({ reducedMotion = false }: { reducedMotion?: boolea
         <cylinderGeometry args={[0.17, 0.17, 0.14, 28]} />
         <meshPhysicalMaterial roughness={0.3} metalness={0.1} clearcoat={1} clearcoatRoughness={0.25} />
         {PINS.map((p, i) => (
-          <Instance key={i} position={[p.x, 0.07, p.z]} color={p.color} />
+          <Instance
+            key={i}
+            ref={(el: THREE.Object3D | null) => (pinRefs.current[i] = el)}
+            position={[p.x, 0.07, p.z]}
+            scale={reducedMotion ? 1 : 0.0001}
+            color={p.color}
+          />
         ))}
       </Instances>
 
@@ -122,6 +169,9 @@ export function TacticsField({ reducedMotion = false }: { reducedMotion?: boolea
           delay={i * 0.22}
         />
       ))}
+
+      {/* Fine glints drifting over the board. */}
+      <Sparkles count={20} scale={[FIELD_W, 1.4, FIELD_D]} position={[0, 0.6, 0]} size={1.6} speed={reducedMotion ? 0 : 0.25} opacity={0.4} color={palette.brandLight} />
 
       <Hotspot
         position={[0, 0.5, 1.4]}

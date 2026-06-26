@@ -19,6 +19,8 @@ export function Features() {
             <Reveal
               key={feature.id}
               as="article"
+              from="scale"
+              distance={36}
               aria-labelledby={`feature-${feature.id}`}
               className="card grid items-center gap-8 p-6 md:grid-cols-2 md:gap-12 md:p-10"
             >

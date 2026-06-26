@@ -1,15 +1,15 @@
 import { useFrame, useThree } from '@react-three/fiber'
+import { damp3 } from 'maath/easing'
 import * as THREE from 'three'
 import { scrollState } from '../lib/scrollStore'
 
-// Reused across frames to keep the render loop allocation-free.
-const targetPos = new THREE.Vector3()
 const lookTarget = new THREE.Vector3(0, 0.2, 0)
 
 /**
  * Drives a slow, cinematic camera move synced to page scroll (via the global
- * scroll store that GSAP ScrollTrigger feeds) plus a subtle pointer parallax.
- * Renders nothing — it just animates the active camera each frame.
+ * scroll store that GSAP ScrollTrigger feeds) plus a subtle pointer parallax
+ * and an idle sway. Uses maath's critically-damped smoothing so the motion is
+ * silky and frame-rate independent. Renders nothing.
  */
 export function CameraRig({ reducedMotion = false }: { reducedMotion?: boolean }) {
   const { camera } = useThree()
@@ -25,11 +25,12 @@ export function CameraRig({ reducedMotion = false }: { reducedMotion?: boolean }
     const py = reducedMotion ? 0 : state.pointer.y * 0.3
 
     // The camera also eases back and rises a touch as the hero scrolls past.
-    targetPos.set(idleX + px, 1.55 + hero * 1.4 + idleY + py, 6.4 + hero * 2.2)
-
-    // Frame-rate independent smoothing.
-    const smooth = 1 - Math.pow(0.0015, delta)
-    camera.position.lerp(targetPos, smooth)
+    damp3(
+      camera.position,
+      [idleX + px, 1.55 + hero * 1.4 + idleY + py, 6.4 + hero * 2.2],
+      0.4,
+      delta,
+    )
     camera.lookAt(lookTarget)
   })
 

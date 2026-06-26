@@ -8,8 +8,11 @@ import { Audience } from './components/sections/Audience'
 import { EarlyAccess } from './components/sections/EarlyAccess'
 import { ScrollProgress } from './components/ui/ScrollProgress'
 import { usePageScroll } from './hooks/usePageScroll'
+import { useSmoothScroll } from './hooks/useSmoothScroll'
 
 export default function App() {
+  // Inertial smooth scroll (reduced-motion safe) for a premium feel.
+  useSmoothScroll()
   // Bridges page scroll → the hero camera (and keeps ScrollTrigger alive).
   usePageScroll('#hero')
 

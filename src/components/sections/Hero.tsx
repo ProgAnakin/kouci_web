@@ -15,14 +15,25 @@ export function Hero() {
   const contentRef = useRef<HTMLDivElement>(null)
   const reduced = usePrefersReducedMotion()
 
-  // Content drifts up and fades as the hero scrolls away — depth without
-  // hijacking the scroll. Skipped entirely under reduced motion.
+  // Orchestrated entrance + a scroll parallax that drifts the content up and
+  // fades it as the hero scrolls away. Both skipped under reduced motion.
   useLayoutEffect(() => {
     if (reduced || !sectionRef.current || !contentRef.current) return
     const ctx = gsap.context(() => {
+      // Staggered reveal of the headline block.
+      gsap.from(contentRef.current!.children, {
+        y: 30,
+        autoAlpha: 0,
+        duration: 1.1,
+        ease: 'expo.out',
+        stagger: 0.12,
+        delay: 0.15,
+      })
+
+      // Depth on scroll — without hijacking it.
       gsap.to(contentRef.current, {
         yPercent: -16,
-        opacity: 0.35,
+        opacity: 0.3,
         ease: 'none',
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -53,7 +64,7 @@ export function Hero() {
       </div>
 
       <div ref={contentRef} className="container-content relative">
-        <p className="eyebrow animate-fade-up">Water polo intelligence</p>
+        <p className="eyebrow">Water polo intelligence</p>
         <h1 className="mt-5 max-w-4xl text-5xl font-bold leading-[0.95] text-ink sm:text-6xl md:text-7xl">
           Master <span className="text-brand-light">Every Play</span>
         </h1>

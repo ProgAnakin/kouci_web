@@ -29,6 +29,12 @@ const MISSES: [number, number][] = [
 const GOAL_W = 4
 const GOAL_H = 1.2
 
+const easeOutBack = (x: number) => {
+  const c1 = 1.70158
+  const c3 = c1 + 1
+  return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2)
+}
+
 function makeNetTexture(): THREE.CanvasTexture {
   const size = 128
   const canvas = document.createElement('canvas')
@@ -66,14 +72,34 @@ function Bar({ size, position }: { size: [number, number, number]; position: [nu
 export function PenaltyMap({ reducedMotion = false }: { reducedMotion?: boolean }) {
   const netTexture = useMemo(makeNetTexture, [])
   const goalMat = useRef<THREE.MeshStandardMaterial>(null)
+  const goalRefs = useRef<(THREE.Object3D | null)[]>([])
+  const missRefs = useRef<(THREE.Object3D | null)[]>([])
+  const startRef = useRef<number | null>(null)
 
   // Dispose the generated texture when the scene unmounts.
   useEffect(() => () => netTexture.dispose(), [netTexture])
 
   useFrame((state) => {
-    if (reducedMotion || !goalMat.current) return
+    const t = state.clock.elapsedTime
+
     // Gentle "heat" pulse on the scored shots.
-    goalMat.current.emissiveIntensity = 0.5 + Math.sin(state.clock.elapsedTime * 2) * 0.25
+    if (goalMat.current && !reducedMotion) {
+      goalMat.current.emissiveIntensity = 0.5 + Math.sin(t * 2) * 0.25
+    }
+
+    if (reducedMotion) return
+    if (startRef.current === null) startRef.current = t
+    const e = t - startRef.current
+
+    // Shots land one by one: goals first, then misses.
+    for (let i = 0; i < GOALS.length; i++) {
+      const g = goalRefs.current[i]
+      if (g) g.scale.setScalar(easeOutBack(THREE.MathUtils.clamp((e - i * 0.08) / 0.5, 0, 1)))
+    }
+    for (let i = 0; i < MISSES.length; i++) {
+      const m = missRefs.current[i]
+      if (m) m.scale.setScalar(easeOutBack(THREE.MathUtils.clamp((e - 0.7 - i * 0.1) / 0.5, 0, 1)))
+    }
   })
 
   return (
@@ -98,7 +124,7 @@ export function PenaltyMap({ reducedMotion = false }: { reducedMotion?: boolean 
       <Bar size={[GOAL_W + 0.12, 0.07, 0.07]} position={[0, GOAL_H / 2, 0]} />
       <Bar size={[GOAL_W + 0.12, 0.07, 0.07]} position={[0, -GOAL_H / 2, 0]} />
 
-      {/* Scored shots — emissive, pulsing */}
+      {/* Scored shots — emissive, pulsing, pop in one by one */}
       <Instances limit={GOALS.length} range={GOALS.length}>
         <sphereGeometry args={[0.085, 20, 20]} />
         <meshStandardMaterial
@@ -109,7 +135,12 @@ export function PenaltyMap({ reducedMotion = false }: { reducedMotion?: boolean 
           roughness={0.35}
         />
         {GOALS.map(([x, y], i) => (
-          <Instance key={i} position={[x, y, 0.06]} />
+          <Instance
+            key={i}
+            ref={(el: THREE.Object3D | null) => (goalRefs.current[i] = el)}
+            position={[x, y, 0.06]}
+            scale={reducedMotion ? 1 : 0.0001}
+          />
         ))}
       </Instances>
 
@@ -118,7 +149,12 @@ export function PenaltyMap({ reducedMotion = false }: { reducedMotion?: boolean 
         <sphereGeometry args={[0.06, 16, 16]} />
         <meshStandardMaterial color={palette.silver} roughness={0.6} transparent opacity={0.7} />
         {MISSES.map(([x, y], i) => (
-          <Instance key={i} position={[x, y, 0.06]} />
+          <Instance
+            key={i}
+            ref={(el: THREE.Object3D | null) => (missRefs.current[i] = el)}
+            position={[x, y, 0.06]}
+            scale={reducedMotion ? 1 : 0.0001}
+          />
         ))}
       </Instances>
 
