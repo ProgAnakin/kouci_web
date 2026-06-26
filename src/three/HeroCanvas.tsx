@@ -6,6 +6,9 @@ import { WaterSurface } from './WaterSurface'
 import { WaterPoloBall } from './WaterPoloBall'
 import { CausticGlow } from './CausticGlow'
 import { Particles } from './Particles'
+import { LaneRopes } from './LaneRopes'
+import { WaterPoloGoal } from './WaterPoloGoal'
+import { WATER_Y } from './wave'
 import { CameraRig } from './CameraRig'
 import { SceneLoader } from './Loader'
 import { palette } from '../lib/theme'
@@ -67,6 +70,10 @@ export default function HeroCanvas() {
         <WaterSurface reducedMotion={reduced} segments={isMobile ? 48 : 96} />
         <CausticGlow position={[2.6, -0.55, 0.4]} reducedMotion={reduced} />
         <WaterPoloBall reducedMotion={reduced} />
+
+        {/* Water polo context: floating lane ropes + a goal at the far end. */}
+        <LaneRopes reducedMotion={reduced} />
+        <WaterPoloGoal position={[0, WATER_Y, -5.5]} width={3} height={0.95} emissiveIntensity={0.25} />
 
         {/* Atmosphere: drifting spray + fine glints on the air above the water. */}
         <Particles count={isMobile ? 16 : 30} reducedMotion={reduced} />

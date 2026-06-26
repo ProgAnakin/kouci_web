@@ -47,14 +47,22 @@ src/
 │  ├─ sections/            # Hero, Promise, Features, Showcase, Audience, EarlyAccess
 │  └─ ui/                  # Button, Field, Reveal, SectionHeading
 └─ three/                  # all the WebGL
-   ├─ HeroCanvas.tsx       # animated water + floating ball (lazy)
+   ├─ HeroCanvas.tsx       # pool: water + ball + lane ropes + goal (lazy)
    ├─ WaterSurface.tsx     # shader water plane
-   ├─ shaders/water.ts     # GLSL for the water
+   ├─ shaders/water.ts     # GLSL for the water (caustics, foam, fresnel)
+   ├─ wave.ts              # JS mirror of the wave fn (floating objects)
    ├─ WaterPoloBall.tsx
-   ├─ CameraRig.tsx        # scroll-driven cinematic camera
-   ├─ TacticsCanvas.tsx    # field + instanced pins + animated 3D arrows (lazy)
+   ├─ LaneRopes.tsx        # instanced lane-rope floats riding the swell
+   ├─ WaterPoloGoal.tsx    # reusable floating goal (posts + net)
+   ├─ Particles.tsx        # instanced atmospheric spray
+   ├─ CausticGlow.tsx      # additive light pool under the ball
+   ├─ CameraRig.tsx        # scroll-driven cinematic camera (maath damping)
+   ├─ TacticsCanvas.tsx    # field + caps + animated 3D arrows (lazy)
+   ├─ Cap.tsx              # numbered water polo cap marker
    ├─ PenaltyCanvas.tsx    # goal + plotted shots (lazy)
+   ├─ PenaltyMap.tsx       # instanced scored/missed shots
    ├─ Arrow.tsx            # reusable self-drawing 3D arrow
+   ├─ netTexture.ts        # shared procedural goal-net texture
    ├─ Hotspot.tsx          # accessible in-scene hotspot
    └─ Loader.tsx           # in-canvas + DOM loaders
 ```

@@ -4,6 +4,7 @@ import { Instance, Instances } from '@react-three/drei'
 import * as THREE from 'three'
 import { palette } from '../lib/theme'
 import { Hotspot } from './Hotspot'
+import { makeNetTexture } from './netTexture'
 
 // Penalty shots plotted on the goal mouth. Goals land at the corners; misses
 // cluster centrally (keeper) or outside the frame.
@@ -33,31 +34,6 @@ const easeOutBack = (x: number) => {
   const c1 = 1.70158
   const c3 = c1 + 1
   return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2)
-}
-
-function makeNetTexture(): THREE.CanvasTexture {
-  const size = 128
-  const canvas = document.createElement('canvas')
-  canvas.width = canvas.height = size
-  const ctx = canvas.getContext('2d')!
-  ctx.clearRect(0, 0, size, size)
-  ctx.strokeStyle = 'rgba(197, 201, 192, 0.55)'
-  ctx.lineWidth = 2
-  const step = size / 8
-  for (let i = 0; i <= size; i += step) {
-    ctx.beginPath()
-    ctx.moveTo(i, 0)
-    ctx.lineTo(i, size)
-    ctx.stroke()
-    ctx.beginPath()
-    ctx.moveTo(0, i)
-    ctx.lineTo(size, i)
-    ctx.stroke()
-  }
-  const tex = new THREE.CanvasTexture(canvas)
-  tex.wrapS = tex.wrapT = THREE.RepeatWrapping
-  tex.repeat.set(8, 3)
-  return tex
 }
 
 function Bar({ size, position }: { size: [number, number, number]; position: [number, number, number] }) {

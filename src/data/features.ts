@@ -47,11 +47,11 @@ export const features: Feature[] = [
     eyebrow: 'Tactics with Animation',
     title: 'Draw it. Animate it. Send it.',
     description:
-      'Lay out plays on a real water polo field with colored pins and animated 3D arrows. When it clicks, export the whole sequence to MP4 or GIF and send it straight to your players.',
+      'Lay out plays on a real water polo field with numbered caps and animated 3D arrows. Set the center, draw the press, build your man-up — then export the whole sequence to MP4 or GIF and send it straight to your players.',
     points: [
-      'Full water polo field board',
-      'Animated pins and 3D arrows, color-coded',
-      'Export to MP4 or GIF to share',
+      'Full water polo field, 2m and 5m lines',
+      'Numbered caps and 3D arrows, color-coded by team',
+      'Export man-up and set plays to MP4 or GIF',
     ],
   },
   {

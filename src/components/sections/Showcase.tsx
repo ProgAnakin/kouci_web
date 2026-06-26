@@ -62,12 +62,12 @@ export function Showcase() {
         <div className="mt-14 grid gap-6 lg:grid-cols-2">
           <ShowcasePanel
             title="Animated tactics board"
-            description="Set the formation with colored pins, then watch the play animate along 3D arrows. Export the sequence to MP4 or GIF and send it to the group chat."
-            ariaLabel="3D water polo tactics board with animated pins and arrows"
+            description="Set the formation with numbered caps, then watch the play animate along 3D arrows. Export the sequence to MP4 or GIF and send it to the group chat."
+            ariaLabel="3D water polo tactics board with numbered caps and animated arrows"
             legend={
               <ul className="flex flex-wrap gap-x-6 gap-y-2 text-xs text-silver">
                 <li className="flex items-center gap-2">
-                  <Dot color="#9FAC82" /> Pins = players
+                  <Dot color="#9FAC82" /> Caps = players
                 </li>
                 <li className="flex items-center gap-2">
                   <Dot color="#C5C9C0" /> Arrows = movement &amp; passes
@@ -76,9 +76,9 @@ export function Showcase() {
             }
             srDescription={
               <p>
-                A 3D water polo field shown from above, with six player pins arranged in an attacking
-                set and three animated arrows tracing player movement toward the goal. Each pin and
-                arrow is color-coded, and the whole sequence can be exported to MP4 or GIF.
+                A 3D water polo field shown from above, with six numbered player caps arranged in an
+                attacking set and three animated arrows tracing movement toward the goal. Caps are
+                colored by team and the whole sequence can be exported to MP4 or GIF.
               </p>
             }
             canvas={<TacticsCanvas />}
