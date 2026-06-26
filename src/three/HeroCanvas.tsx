@@ -5,7 +5,6 @@ import * as THREE from 'three'
 import { WaterSurface } from './WaterSurface'
 import { WaterPoloPlay } from './WaterPoloPlay'
 import { Particles } from './Particles'
-import { LaneRopes } from './LaneRopes'
 import { WaterPoloGoal } from './WaterPoloGoal'
 import { WATER_Y } from './wave'
 import { CameraRig } from './CameraRig'
@@ -73,8 +72,7 @@ export default function HeroCanvas() {
         {/* Two players passing a water polo ball — the hero centrepiece. */}
         <WaterPoloPlay reducedMotion={reduced} />
 
-        {/* Water polo context: floating lane ropes + a goal at the far end. */}
-        <LaneRopes reducedMotion={reduced} />
+        {/* Water polo context: a goal at the far end of the pool. */}
         <WaterPoloGoal position={[0, WATER_Y, -5.5]} width={3} height={0.95} emissiveIntensity={0.25} />
 
         {/* Atmosphere: drifting spray + fine glints on the air above the water. */}

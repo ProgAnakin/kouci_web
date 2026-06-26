@@ -50,11 +50,10 @@ src/
    ├─ HeroCanvas.tsx       # pool: water + players + lane ropes + goal (lazy)
    ├─ WaterSurface.tsx     # shader water plane
    ├─ shaders/water.ts     # GLSL for the water (caustics, foam, fresnel)
-   ├─ wave.ts              # JS mirror of the wave fn (floating objects)
+   ├─ wave.ts              # water-surface level constant
    ├─ WaterPoloPlay.tsx    # two swimmers passing the ball (the hero scene)
    ├─ Swimmer.tsx          # capped, numbered player with reaching arms
    ├─ PoloBall.tsx         # recognizable water polo ball (seams + dimples)
-   ├─ LaneRopes.tsx        # instanced lane-rope floats riding the swell
    ├─ WaterPoloGoal.tsx    # reusable floating goal (posts + net)
    ├─ Particles.tsx        # instanced atmospheric spray
    ├─ CausticGlow.tsx      # additive light pool under the ball
