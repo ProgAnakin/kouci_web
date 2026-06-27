@@ -23,8 +23,8 @@ export function CameraRig({ reducedMotion = false }: { reducedMotion?: boolean }
 
     const idleX = reducedMotion ? 0 : Math.sin(time * 0.22) * 0.18
     const idleY = reducedMotion ? 0 : Math.cos(time * 0.18) * 0.08
-    const px = reducedMotion ? 0 : state.pointer.x * 0.4
-    const py = reducedMotion ? 0 : state.pointer.y * 0.22
+    const px = reducedMotion ? 0 : state.pointer.x * 0.55
+    const py = reducedMotion ? 0 : state.pointer.y * 0.3
 
     damp3(
       camera.position,

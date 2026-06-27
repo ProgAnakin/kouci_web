@@ -85,8 +85,12 @@ export function Player({
 
     if (head.current) {
       _ballLocal.copy(aim.current).sub(base)
-      const yaw = THREE.MathUtils.clamp(Math.atan2(_ballLocal.x, Math.max(_ballLocal.z, 0.4)), -0.7, 0.7)
-      const pitch = THREE.MathUtils.clamp((_ballLocal.y - HEAD_Y) * 0.18, -0.45, 0.4)
+      // Look toward the ball, nudged by the cursor so the players react to the
+      // mouse (the interactivity that justifies a live 3D scene).
+      const px = reducedMotion ? 0 : state.pointer.x
+      const py = reducedMotion ? 0 : state.pointer.y
+      const yaw = THREE.MathUtils.clamp(Math.atan2(_ballLocal.x, Math.max(_ballLocal.z, 0.4)) + px * 0.3, -0.85, 0.85)
+      const pitch = THREE.MathUtils.clamp((_ballLocal.y - HEAD_Y) * 0.18 - py * 0.2, -0.5, 0.45)
       const k = reducedMotion ? 1 : 0.12
       head.current.rotation.y += (yaw - head.current.rotation.y) * k
       head.current.rotation.x += (-pitch - head.current.rotation.x) * k

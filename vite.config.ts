@@ -10,6 +10,8 @@ export default defineConfig({
   build: {
     target: 'es2020',
     // Keep the 3D libraries in their own chunk so the initial UI paints fast.
+    // (All of three/r3f — including the GLTF loader used by the optional player
+    // models — loads lazily with the hero, after first paint.)
     rollupOptions: {
       output: {
         manualChunks: {

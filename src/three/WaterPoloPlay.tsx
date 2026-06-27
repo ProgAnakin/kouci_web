@@ -1,13 +1,19 @@
-import { useMemo, useRef } from 'react'
+import { lazy, Suspense, useMemo, useRef, type MutableRefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { Player } from './Player'
+import { ModelErrorBoundary } from './ModelErrorBoundary'
+import { PLAYER_MODELS, type PlayerModelDef } from './modelConfig'
 import { PoloBall } from './PoloBall'
 import { Droplets } from './Droplets'
 import { CausticGlow } from './CausticGlow'
 import { CAP_DARK, CAP_LIGHT } from './playerLook'
 import { WATER_Y } from './wave'
 import { heroState } from './heroState'
+
+// The GLTF loader (Draco, animation, skinning) is its own chunk — it only
+// downloads once a real model is configured, so the default build stays light.
+const ModelPlayer = lazy(() => import('./ModelPlayer').then((m) => ({ default: m.ModelPlayer })))
 
 // Two players at the water line, pushed to the right so the headline (left) is
 // never covered.
@@ -24,6 +30,40 @@ const ARC_HEIGHT = 0.55
 const SPEED = 0.4 // one leg of the pass per ~2.5s
 
 const smooth = (p: number) => p * p * (3 - 2 * p)
+
+interface HeroPlayerProps {
+  model: PlayerModelDef | null
+  position: [number, number, number]
+  capColor: string
+  number: number
+  aim: MutableRefObject<THREE.Vector3>
+  reducedMotion?: boolean
+  phase?: number
+  reachSide?: 'left' | 'right'
+}
+
+/** Renders the real model if one is configured, else the procedural player. */
+function HeroPlayer({ model, position, capColor, number, aim, reducedMotion, phase, reachSide }: HeroPlayerProps) {
+  const placeholder = (
+    <Player
+      position={position}
+      capColor={capColor}
+      number={number}
+      aim={aim}
+      reducedMotion={reducedMotion}
+      phase={phase}
+      reachSide={reachSide}
+    />
+  )
+  if (!model) return placeholder
+  return (
+    <ModelErrorBoundary fallback={placeholder}>
+      <Suspense fallback={placeholder}>
+        <ModelPlayer def={model} position={position} aim={aim} reducedMotion={reducedMotion} phase={phase} />
+      </Suspense>
+    </ModelErrorBoundary>
+  )
+}
 
 /**
  * The hero centrepiece: two water polo players passing the ball back and forth.
@@ -79,8 +119,26 @@ export function WaterPoloPlay({ reducedMotion = false }: { reducedMotion?: boole
 
   return (
     <group>
-      <Player position={A.toArray()} capColor={CAP_DARK} number={4} aim={aim} reducedMotion={reducedMotion} phase={0} reachSide="right" />
-      <Player position={B.toArray()} capColor={CAP_LIGHT} number={7} aim={aim} reducedMotion={reducedMotion} phase={1.4} reachSide="left" />
+      <HeroPlayer
+        model={PLAYER_MODELS.a}
+        position={A.toArray()}
+        capColor={CAP_DARK}
+        number={4}
+        aim={aim}
+        reducedMotion={reducedMotion}
+        phase={0}
+        reachSide="right"
+      />
+      <HeroPlayer
+        model={PLAYER_MODELS.b}
+        position={B.toArray()}
+        capColor={CAP_LIGHT}
+        number={7}
+        aim={aim}
+        reducedMotion={reducedMotion}
+        phase={1.4}
+        reachSide="left"
+      />
 
       <PoloBall ref={ball} radius={0.3} />
       <Droplets source={aim} reducedMotion={reducedMotion} />
