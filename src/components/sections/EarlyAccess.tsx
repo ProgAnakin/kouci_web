@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { track } from '@vercel/analytics'
 import { Button } from '../ui/Button'
 import { Field } from '../ui/Field'
 import { Reveal } from '../ui/Reveal'
@@ -40,6 +41,7 @@ export function EarlyAccess() {
       })
       if (!res.ok) throw new Error('Request failed')
       setStatus('success')
+      track('early_access_signup')
     } catch {
       setStatus('error')
     }

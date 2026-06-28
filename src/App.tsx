@@ -7,6 +7,7 @@ import { Showcase } from './components/sections/Showcase'
 import { Audience } from './components/sections/Audience'
 import { EarlyAccess } from './components/sections/EarlyAccess'
 import { ScrollProgress } from './components/ui/ScrollProgress'
+import { Analytics } from '@vercel/analytics/react'
 import { usePageScroll } from './hooks/usePageScroll'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 
@@ -38,6 +39,7 @@ export default function App() {
       </main>
 
       <Footer />
+      <Analytics />
     </>
   )
 }
