@@ -5,7 +5,11 @@ import { Reveal } from '../ui/Reveal'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-type Status = 'idle' | 'submitting' | 'success'
+// Where early-access signups are sent. Configure VITE_FORMSPREE_ENDPOINT in
+// your environment (see .env.example) — the form surfaces a clear error if unset.
+const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT
+
+type Status = 'idle' | 'submitting' | 'success' | 'error'
 
 export function EarlyAccess() {
   const [name, setName] = useState('')
@@ -27,17 +31,17 @@ export function EarlyAccess() {
 
     setStatus('submitting')
 
-    // TODO: connect this to a real email/early-access service.
-    // e.g. POST { name, email } to Mailchimp / ConvertKit / Resend / your API.
-    // Replace the simulated delay below with the real request and handle errors.
     try {
-      await new Promise((resolve) => setTimeout(resolve, 700))
-      // eslint-disable-next-line no-console
-      console.info('[Kouci] early-access signup (stub):', { name: name.trim(), email: email.trim() })
+      if (!FORMSPREE_ENDPOINT) throw new Error('Missing VITE_FORMSPREE_ENDPOINT')
+      const res = await fetch(FORMSPREE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({ name: name.trim(), email: email.trim() }),
+      })
+      if (!res.ok) throw new Error('Request failed')
       setStatus('success')
     } catch {
-      setStatus('idle')
-      setErrors({ email: 'Something went wrong. Please try again.' })
+      setStatus('error')
     }
   }
 
@@ -77,6 +81,14 @@ export function EarlyAccess() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate className="mx-auto mt-10 max-w-md space-y-5">
+              {status === 'error' && (
+                <div
+                  role="alert"
+                  className="rounded-xl border border-red-400/40 bg-red-400/10 px-4 py-3 text-center text-sm text-red-200"
+                >
+                  Something went wrong. Please try again.
+                </div>
+              )}
               <Field
                 id="name"
                 label="Name"
