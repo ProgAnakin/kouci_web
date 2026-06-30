@@ -21,10 +21,20 @@ export interface PlayerModelDef {
   headBone?: string
   /** Animation clip name to loop (defaults to the model's first clip). */
   idleClip?: string
+  /** Vertical offset (world units) added to the base position — lift a bust so
+   *  the head clears the waterline. */
+  offsetY?: number
+}
+
+// TEST: both players use the same static bust (player-4.glb) until player-7 lands.
+const player4: PlayerModelDef = {
+  url: '/assets/players/player-4.glb',
+  scale: 1.5,
+  rotationY: 0,
+  offsetY: 0.12,
 }
 
 export const PLAYER_MODELS: { a: PlayerModelDef | null; b: PlayerModelDef | null } = {
-  // a: { url: '/assets/players/player-4.glb', scale: 1, headBone: 'Head', idleClip: 'Idle' },
-  a: null,
-  b: null,
+  a: player4,
+  b: player4,
 }

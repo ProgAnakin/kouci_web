@@ -1,4 +1,4 @@
-import { useEffect, useMemo, type MutableRefObject } from 'react'
+import { useEffect, useMemo, useRef, type MutableRefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { GLTFLoader, DRACOLoader, SkeletonUtils, type GLTF } from 'three-stdlib'
 import * as THREE from 'three'
@@ -74,6 +74,9 @@ export function ModelPlayer({ def, position, aim, reducedMotion = false, phase =
     () => (def.headBone ? model.getObjectByName(def.headBone) : null),
     [model, def.headBone],
   )
+  const group = useRef<THREE.Group>(null)
+  const baseY = position[1] + (def.offsetY ?? 0)
+  const baseRotationY = def.rotationY ?? 0
 
   useEffect(() => {
     model.traverse((o) => {
@@ -93,18 +96,38 @@ export function ModelPlayer({ def, position, aim, reducedMotion = false, phase =
 
   useFrame((state, delta) => {
     if (!reducedMotion) mixer.update(delta)
+
     if (head) {
+      // Rigged model: track the ball + cursor with the head bone.
       _target.copy(aim.current)
       if (!reducedMotion) {
         _target.x += state.pointer.x * 0.6
         _target.y += state.pointer.y * 0.4 + Math.sin(state.clock.elapsedTime + phase) * 0.02
       }
       head.lookAt(_target)
+      return
+    }
+
+    // No skeleton (e.g. an image-to-3D bust): animate the whole model so it
+    // feels alive — bob on the water, sway, and lean toward the ball + cursor.
+    const g = group.current
+    if (g && !reducedMotion) {
+      const t = state.clock.elapsedTime
+      g.position.y = baseY + Math.sin(t * 1.15 + phase) * 0.03
+      const towardBall = THREE.MathUtils.clamp(aim.current.x - g.position.x, -1.5, 1.5)
+      g.rotation.y =
+        baseRotationY + Math.sin(t * 0.5 + phase) * 0.06 + towardBall * 0.08 + state.pointer.x * 0.1
+      g.rotation.z = Math.sin(t * 0.8 + phase * 1.3) * 0.02
     }
   })
 
   return (
-    <group position={position} rotation-y={def.rotationY ?? 0} scale={def.scale ?? 1}>
+    <group
+      ref={group}
+      position={[position[0], baseY, position[2]]}
+      rotation-y={baseRotationY}
+      scale={def.scale ?? 1}
+    >
       <primitive object={model} />
     </group>
   )
