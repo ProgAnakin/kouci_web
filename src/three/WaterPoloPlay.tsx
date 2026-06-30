@@ -2,6 +2,7 @@ import { lazy, Suspense, useMemo, useRef, type MutableRefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import { Player } from './Player'
+import { ModelArms } from './ModelArms'
 import { ModelErrorBoundary } from './ModelErrorBoundary'
 import { PLAYER_MODELS, type PlayerModelDef } from './modelConfig'
 import { PoloBall } from './PoloBall'
@@ -29,6 +30,17 @@ const HAND_B = new THREE.Vector3(B.x - 0.35, HAND_Y, B.z)
 const ARC_HEIGHT = 0.55
 const SPEED = 0.4 // one leg of the pass per ~2.5s
 
+// Procedural arms attached to the rig-less busts. Skin tone matches the model;
+// shoulder placement is tuned to where the bust's shoulders sit (scale/offsetY).
+// Slim, short limbs so they stay in proportion with the compact bust.
+const MODEL_SKIN = '#9C6840'
+const MODEL_SHOULDER_Y = 0.32
+const MODEL_SHOULDER_X = 0.36
+const MODEL_GIRTH = 0.5
+const MODEL_UPPER_LEN = 0.3
+const MODEL_FORE_LEN = 0.28
+const MODEL_SHOULDER_Z = 0.16
+
 const smooth = (p: number) => p * p * (3 - 2 * p)
 
 interface HeroPlayerProps {
@@ -44,6 +56,9 @@ interface HeroPlayerProps {
 
 /** Renders the real model if one is configured, else the procedural player. */
 function HeroPlayer({ model, position, capColor, number, aim, reducedMotion, phase, reachSide }: HeroPlayerProps) {
+  const [px, py, pz] = position
+  const base = useMemo(() => new THREE.Vector3(px, py, pz), [px, py, pz])
+
   const placeholder = (
     <Player
       position={position}
@@ -60,6 +75,21 @@ function HeroPlayer({ model, position, capColor, number, aim, reducedMotion, pha
     <ModelErrorBoundary fallback={placeholder}>
       <Suspense fallback={placeholder}>
         <ModelPlayer def={model} position={position} aim={aim} reducedMotion={reducedMotion} phase={phase} />
+        {/* Procedural arms so the rig-less bust can throw/catch the ball. */}
+        <ModelArms
+          base={base}
+          aim={aim}
+          reachSide={reachSide}
+          reducedMotion={reducedMotion}
+          phase={phase}
+          skin={MODEL_SKIN}
+          shoulderY={MODEL_SHOULDER_Y}
+          shoulderX={MODEL_SHOULDER_X}
+          shoulderZ={MODEL_SHOULDER_Z}
+          girth={MODEL_GIRTH}
+          upperLen={MODEL_UPPER_LEN}
+          foreLen={MODEL_FORE_LEN}
+        />
       </Suspense>
     </ModelErrorBoundary>
   )

@@ -16,6 +16,8 @@ interface PlayerArmProps {
   foreLen?: number
   /** Overall limb thickness multiplier. */
   girth?: number
+  /** Skin color (defaults to the shared procedural-player tone). */
+  skin?: string
 }
 
 const UP = new THREE.Vector3(0, 1, 0)
@@ -57,6 +59,7 @@ export function PlayerArm({
   upperLen = 0.42,
   foreLen = 0.4,
   girth = 1,
+  skin = SKIN,
 }: PlayerArmProps) {
   const upper = useRef<THREE.Mesh>(null)
   const fore = useRef<THREE.Mesh>(null)
@@ -97,23 +100,23 @@ export function PlayerArm({
       {/* Soft shoulder cap that blends the arm into the body */}
       <mesh position={shoulder} castShadow>
         <sphereGeometry args={[0.2 * girth, 22, 18]} />
-        <meshPhysicalMaterial color={SKIN} {...SKIN_PROPS} />
+        <meshPhysicalMaterial color={skin} {...SKIN_PROPS} />
       </mesh>
       <mesh ref={upper} castShadow>
         <cylinderGeometry args={[0.14 * girth, 0.18 * girth, 1, 18]} />
-        <meshPhysicalMaterial color={SKIN} {...SKIN_PROPS} />
+        <meshPhysicalMaterial color={skin} {...SKIN_PROPS} />
       </mesh>
       <mesh ref={elbow} castShadow>
         <sphereGeometry args={[0.155 * girth, 22, 18]} />
-        <meshPhysicalMaterial color={SKIN} {...SKIN_PROPS} />
+        <meshPhysicalMaterial color={skin} {...SKIN_PROPS} />
       </mesh>
       <mesh ref={fore} castShadow>
         <cylinderGeometry args={[0.12 * girth, 0.15 * girth, 1, 18]} />
-        <meshPhysicalMaterial color={SKIN} {...SKIN_PROPS} />
+        <meshPhysicalMaterial color={skin} {...SKIN_PROPS} />
       </mesh>
       <mesh ref={hand} scale={[0.95, 0.72, 1.15]} castShadow>
         <sphereGeometry args={[0.165 * girth, 20, 18]} />
-        <meshPhysicalMaterial color={SKIN} {...SKIN_PROPS} />
+        <meshPhysicalMaterial color={skin} {...SKIN_PROPS} />
       </mesh>
     </group>
   )
