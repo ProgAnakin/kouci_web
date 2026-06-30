@@ -1,24 +1,60 @@
-import { useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { getPost, formatDate } from '../lib/blog'
+import { Seo } from '../components/Seo'
+import { SITE_NAME, SITE_URL, DEFAULT_OG_IMAGE, absoluteUrl } from '../lib/site'
 import { NotFound } from './NotFound'
 
 export function BlogPost() {
   const { slug } = useParams<{ slug: string }>()
   const post = slug ? getPost(slug) : undefined
 
-  useEffect(() => {
-    if (!post) return
-    document.title = `${post.title} — Kouci`
-    return () => {
-      document.title = 'Kouci — Master Every Play'
-    }
-  }, [post])
-
   if (!post) return <NotFound />
+
+  const url = absoluteUrl(`/blog/${post.slug}`)
+  const image = absoluteUrl(post.cover || DEFAULT_OG_IMAGE)
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.excerpt,
+      image,
+      datePublished: post.date,
+      dateModified: post.date,
+      author: { '@type': 'Organization', name: post.author },
+      publisher: {
+        '@type': 'Organization',
+        name: SITE_NAME,
+        logo: { '@type': 'ImageObject', url: absoluteUrl('/og-image.png') },
+      },
+      mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+      keywords: post.tags.join(', '),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: absoluteUrl('/blog') },
+        { '@type': 'ListItem', position: 3, name: post.title, item: url },
+      ],
+    },
+  ]
 
   return (
     <main id="main" className="container-content pb-24 pt-32 md:pt-40">
+      <Seo
+        title={`${post.title} | ${SITE_NAME}`}
+        description={post.excerpt}
+        path={`/blog/${post.slug}`}
+        image={post.cover || DEFAULT_OG_IMAGE}
+        type="article"
+        publishedTime={post.date}
+        author={post.author}
+        tags={post.tags}
+        jsonLd={jsonLd}
+      />
+
       <article className="mx-auto max-w-2xl">
         <Link
           to="/blog"
@@ -79,3 +115,6 @@ export function BlogPost() {
     </main>
   )
 }
+
+// Route entry for vite-react-ssg's lazy loader.
+export const Component = BlogPost

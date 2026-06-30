@@ -5,7 +5,7 @@ import { ButtonLink } from '../ui/Button'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { useCanvasActivation } from '../../hooks/useCanvasActivation'
 
-gsap.registerPlugin(ScrollTrigger)
+if (typeof window !== 'undefined') gsap.registerPlugin(ScrollTrigger)
 
 // The 3D water bundle is code-split so the headline paints immediately.
 const HeroCanvas = lazy(() => import('../../three/HeroCanvas'))

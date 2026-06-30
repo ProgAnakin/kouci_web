@@ -28,3 +28,6 @@ export function NotFound() {
     </main>
   )
 }
+
+// Route entry for vite-react-ssg's lazy loader.
+export const Component = NotFound

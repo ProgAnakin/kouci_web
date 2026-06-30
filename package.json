@@ -6,7 +6,7 @@
   "description": "Kouci — Master Every Play. Landing page for the water polo tactical & statistical analysis app.",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "node scripts/gen-seo.mjs && tsc -b && vite-react-ssg build",
     "preview": "vite preview",
     "typecheck": "tsc -b"
   },
@@ -21,8 +21,9 @@
     "marked": "^18.0.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^7.18.1",
-    "three": "^0.169.0"
+    "react-router-dom": "^6.30.4",
+    "three": "^0.169.0",
+    "vite-react-ssg": "^0.9.1-beta.1"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.20",

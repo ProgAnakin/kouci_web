@@ -101,10 +101,16 @@ export function getPost(slug: string): Post | undefined {
   return posts.find((p) => p.slug === slug)
 }
 
-/** Human date, e.g. "30 Jun 2026". Returns '' for an empty/invalid date. */
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
+/**
+ * Human date, e.g. "30 Jun 2026". Formatted in UTC with no locale lookup, so it
+ * is byte-for-byte identical between the Node build (SSG) and the browser —
+ * avoiding hydration mismatches. Returns '' for an empty/invalid date.
+ */
 export function formatDate(iso: string): string {
   if (!iso) return ''
-  const d = new Date(iso)
+  const d = new Date(`${iso}T00:00:00Z`)
   if (Number.isNaN(d.getTime())) return iso
-  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+  return `${String(d.getUTCDate()).padStart(2, '0')} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`
 }

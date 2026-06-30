@@ -4,7 +4,7 @@ import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { usePrefersReducedMotion } from './usePrefersReducedMotion'
 
-gsap.registerPlugin(ScrollTrigger)
+if (typeof window !== 'undefined') gsap.registerPlugin(ScrollTrigger)
 
 /**
  * Premium inertial smooth-scroll (Lenis) driven off GSAP's ticker so it stays

@@ -1,20 +1,48 @@
-import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { getAllPosts, formatDate } from '../lib/blog'
 import { Reveal } from '../components/ui/Reveal'
+import { Seo } from '../components/Seo'
+import { SITE_NAME, SITE_URL, absoluteUrl } from '../lib/site'
+
+const DESCRIPTION =
+  'Water polo tactical breakdowns, statistical analysis, and product updates from Kouci — power plays, penalty maps, set plays, and more for coaches and analysts.'
 
 export function BlogIndex() {
   const posts = getAllPosts()
 
-  useEffect(() => {
-    document.title = 'Blog — Kouci'
-    return () => {
-      document.title = 'Kouci — Master Every Play'
-    }
-  }, [])
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Blog',
+      name: `${SITE_NAME} Blog`,
+      description: DESCRIPTION,
+      url: absoluteUrl('/blog'),
+      blogPost: posts.map((post) => ({
+        '@type': 'BlogPosting',
+        headline: post.title,
+        url: absoluteUrl(`/blog/${post.slug}`),
+        datePublished: post.date,
+        description: post.excerpt,
+      })),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: absoluteUrl('/blog') },
+      ],
+    },
+  ]
 
   return (
     <main id="main" className="container-content pb-24 pt-32 md:pt-40">
+      <Seo
+        title="Blog — Water Polo Tactics & Analysis | Kouci"
+        description={DESCRIPTION}
+        path="/blog"
+        jsonLd={jsonLd}
+      />
       <header className="max-w-2xl">
         <span className="eyebrow">Blog</span>
         <h1 className="mt-4 text-4xl font-semibold leading-tight text-ink md:text-5xl">
@@ -69,3 +97,6 @@ export function BlogIndex() {
     </main>
   )
 }
+
+// Route entry for vite-react-ssg's lazy loader.
+export const Component = BlogIndex
