@@ -33,21 +33,33 @@ export function BlogIndex() {
             <Reveal key={post.slug} delay={i * 0.05} from="up">
               <Link
                 to={`/blog/${post.slug}`}
-                className="card group flex h-full flex-col p-6 md:p-8"
+                className="card group flex h-full flex-col overflow-hidden"
               >
-                {post.tags[0] && (
-                  <span className="text-xs font-medium uppercase tracking-[0.18em] text-brand-light">
-                    {post.tags[0]}
-                  </span>
+                {post.cover && (
+                  <div className="aspect-[16/9] w-full overflow-hidden">
+                    <img
+                      src={post.cover}
+                      alt=""
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
+                  </div>
                 )}
-                <h2 className="mt-3 text-xl font-semibold text-ink transition-colors group-hover:text-brand-light md:text-2xl">
-                  {post.title}
-                </h2>
-                <p className="mt-3 flex-1 leading-relaxed text-silver">{post.excerpt}</p>
-                <div className="mt-6 flex items-center gap-2 text-xs text-silver/70">
-                  <span>{formatDate(post.date)}</span>
-                  <span aria-hidden="true">·</span>
-                  <span>{post.readingTime} min read</span>
+                <div className="flex flex-1 flex-col p-6 md:p-8">
+                  {post.tags[0] && (
+                    <span className="text-xs font-medium uppercase tracking-[0.18em] text-brand-light">
+                      {post.tags[0]}
+                    </span>
+                  )}
+                  <h2 className="mt-3 text-xl font-semibold text-ink transition-colors group-hover:text-brand-light md:text-2xl">
+                    {post.title}
+                  </h2>
+                  <p className="mt-3 flex-1 leading-relaxed text-silver">{post.excerpt}</p>
+                  <div className="mt-6 flex items-center gap-2 text-xs text-silver/70">
+                    <span>{formatDate(post.date)}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{post.readingTime} min read</span>
+                  </div>
                 </div>
               </Link>
             </Reveal>

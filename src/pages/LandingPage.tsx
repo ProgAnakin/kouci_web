@@ -3,6 +3,7 @@ import { PromiseSection } from '../components/sections/Promise'
 import { Features } from '../components/sections/Features'
 import { Showcase } from '../components/sections/Showcase'
 import { Audience } from '../components/sections/Audience'
+import { Reviews } from '../components/sections/Reviews'
 import { EarlyAccess } from '../components/sections/EarlyAccess'
 import { usePageScroll } from '../hooks/usePageScroll'
 
@@ -21,6 +22,7 @@ export function LandingPage() {
       <Features />
       <Showcase />
       <Audience />
+      <Reviews />
       <EarlyAccess />
     </main>
   )

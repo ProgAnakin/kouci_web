@@ -52,6 +52,15 @@ export function BlogPost() {
           </div>
         </header>
 
+        {post.cover && (
+          <img
+            src={post.cover}
+            alt=""
+            className="mt-10 aspect-[16/9] w-full rounded-2xl border border-white/10 object-cover"
+            loading="eager"
+          />
+        )}
+
         {/* Body is rendered from trusted, repo-committed Markdown (see lib/blog.ts). */}
         <div
           className="prose prose-kouci mt-10 max-w-none"

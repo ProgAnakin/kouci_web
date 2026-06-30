@@ -65,6 +65,16 @@ export default {
             a: { textDecoration: 'none', fontWeight: '500' },
             'a:hover': { textDecoration: 'underline' },
             'h2, h3': { fontFamily: theme('fontFamily.display').join(', ') },
+            img: {
+              borderRadius: theme('borderRadius.2xl'),
+              border: '1px solid rgba(255,255,255,0.08)',
+              width: '100%',
+            },
+            figcaption: {
+              textAlign: 'center',
+              fontSize: '0.85rem',
+              color: theme('colors.silver'),
+            },
           },
         },
       }),
