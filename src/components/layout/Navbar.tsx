@@ -1,15 +1,22 @@
 import { useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { ButtonLink } from '../ui/Button'
 import { Logo } from '../ui/Logo'
 
-const links = [
-  { href: '#features', label: 'Features' },
-  { href: '#showcase', label: 'Showcase' },
-  { href: '#audience', label: 'Who it’s for' },
+const sections = [
+  { id: 'features', label: 'Features' },
+  { id: 'showcase', label: 'Showcase' },
+  { id: 'audience', label: 'Who it’s for' },
 ]
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
+  const { pathname } = useLocation()
+  const isHome = pathname === '/'
+
+  // On the home page, section links are native anchors (smooth-scrolled by
+  // Lenis). From any other page they point back to the home section.
+  const sectionHref = (id: string) => (isHome ? `#${id}` : `/#${id}`)
 
   useEffect(() => {
     let raf = 0
@@ -25,6 +32,9 @@ export function Navbar() {
     }
   }, [])
 
+  const linkClass =
+    'relative text-sm text-silver transition-colors after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-brand-light after:transition-all after:duration-300 hover:text-ink hover:after:w-full'
+
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="container-content">
@@ -36,24 +46,26 @@ export function Navbar() {
               : 'border-white/5 bg-bg/40 py-3 backdrop-blur-md'
           }`}
         >
-          <a href="#hero" aria-label="Kouci — home" className="rounded-full">
+          <Link to="/" aria-label="Kouci — home" className="rounded-full">
             <Logo />
-          </a>
+          </Link>
 
           <ul className="hidden items-center gap-8 md:flex">
-            {links.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="relative text-sm text-silver transition-colors after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-brand-light after:transition-all after:duration-300 hover:text-ink hover:after:w-full"
-                >
-                  {link.label}
+            {sections.map((section) => (
+              <li key={section.id}>
+                <a href={sectionHref(section.id)} className={linkClass}>
+                  {section.label}
                 </a>
               </li>
             ))}
+            <li>
+              <Link to="/blog" className={linkClass} aria-current={pathname.startsWith('/blog') ? 'page' : undefined}>
+                Blog
+              </Link>
+            </li>
           </ul>
 
-          <ButtonLink href="#early-access" className="!px-5 !py-2">
+          <ButtonLink href={isHome ? '#early-access' : '/#early-access'} className="!px-5 !py-2">
             Get Early Access
           </ButtonLink>
         </nav>

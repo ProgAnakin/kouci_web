@@ -1,24 +1,28 @@
+import { lazy, Suspense } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Navbar } from './components/layout/Navbar'
 import { Footer } from './components/layout/Footer'
-import { Hero } from './components/sections/Hero'
-import { PromiseSection } from './components/sections/Promise'
-import { Features } from './components/sections/Features'
-import { Showcase } from './components/sections/Showcase'
-import { Audience } from './components/sections/Audience'
-import { EarlyAccess } from './components/sections/EarlyAccess'
 import { ScrollProgress } from './components/ui/ScrollProgress'
-import { Analytics } from '@vercel/analytics/react'
-import { usePageScroll } from './hooks/usePageScroll'
+import { ScrollToHash } from './components/ScrollToHash'
+import { LandingPage } from './pages/LandingPage'
 import { useSmoothScroll } from './hooks/useSmoothScroll'
 
+// The blog (router + markdown renderer + posts) is split out so the landing
+// page never pays for it. It loads on demand when /blog is visited.
+const BlogIndex = lazy(() => import('./pages/BlogIndex').then((m) => ({ default: m.BlogIndex })))
+const BlogPost = lazy(() => import('./pages/BlogPost').then((m) => ({ default: m.BlogPost })))
+const NotFound = lazy(() => import('./pages/NotFound').then((m) => ({ default: m.NotFound })))
+
+function RouteFallback() {
+  return <div aria-hidden="true" className="min-h-[60vh]" />
+}
+
 export default function App() {
-  // Inertial smooth scroll (reduced-motion safe) for a premium feel.
+  // Inertial smooth scroll (reduced-motion safe) for a premium feel, site-wide.
   useSmoothScroll()
-  // Bridges page scroll → the hero camera (and keeps ScrollTrigger alive).
-  usePageScroll('#hero')
 
   return (
-    <>
+    <BrowserRouter>
       <ScrollProgress />
       <a
         href="#main"
@@ -27,19 +31,19 @@ export default function App() {
         Skip to content
       </a>
 
+      <ScrollToHash />
       <Navbar />
 
-      <main id="main">
-        <Hero />
-        <PromiseSection />
-        <Features />
-        <Showcase />
-        <Audience />
-        <EarlyAccess />
-      </main>
+      <Suspense fallback={<RouteFallback />}>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/blog" element={<BlogIndex />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
 
       <Footer />
-      <Analytics />
-    </>
+    </BrowserRouter>
   )
 }

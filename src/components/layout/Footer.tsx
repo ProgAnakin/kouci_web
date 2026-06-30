@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Logo } from '../ui/Logo'
 
 interface IconProps {
@@ -51,14 +52,32 @@ export function Footer() {
       <div className="container-content">
         <div className="flex flex-col gap-10 md:flex-row md:items-start md:justify-between">
           <div className="max-w-sm">
-            <a href="#hero" aria-label="Kouci — home" className="inline-flex rounded-full">
+            <Link to="/" aria-label="Kouci — home" className="inline-flex rounded-full">
               <Logo />
-            </a>
+            </Link>
             <p className="mt-4 text-sm leading-relaxed text-silver">
               Water polo tactical &amp; statistical analysis for coaches and analysts.
               Master Every Play.
             </p>
           </div>
+
+          <nav aria-label="Explore" className="flex flex-col gap-3 text-sm">
+            <span className="text-xs font-medium uppercase tracking-[0.18em] text-silver/50">
+              Explore
+            </span>
+            <Link to="/blog" className="text-silver transition-colors hover:text-brand-light">
+              Blog
+            </Link>
+            <a href="/#features" className="text-silver transition-colors hover:text-brand-light">
+              Features
+            </a>
+            <a
+              href="/#early-access"
+              className="text-silver transition-colors hover:text-brand-light"
+            >
+              Early access
+            </a>
+          </nav>
 
           <nav aria-label="Social" className="flex flex-wrap items-center gap-x-5 gap-y-3">
             {socials
