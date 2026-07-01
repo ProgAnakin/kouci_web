@@ -88,8 +88,8 @@ export const PoloBall = forwardRef<THREE.Group, PoloBallProps>(function PoloBall
         />
       </mesh>
       {/* Cheap additive halo — fakes a soft bloom without a post pass. */}
-      <sprite scale={[radius * 5, radius * 5, 1]}>
-        <spriteMaterial map={glowTex} color="#f3d873" opacity={0.5} transparent depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} />
+      <sprite scale={[radius * 4.2, radius * 4.2, 1]}>
+        <spriteMaterial map={glowTex} color="#f3d873" opacity={0.38} transparent depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} />
       </sprite>
     </group>
   )

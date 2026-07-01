@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { AdaptiveDpr, Sparkles, Stars } from '@react-three/drei'
 import * as THREE from 'three'
 import { WaterSurface } from './WaterSurface'
-import { WaterPoloPlay } from './WaterPoloPlay'
+import { FloatingBall } from './FloatingBall'
 import { Particles } from './Particles'
 import { WaterPoloGoal } from './WaterPoloGoal'
 import { WATER_Y } from './wave'
@@ -15,8 +15,8 @@ import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { isWebGLAvailable } from './webgl'
 
 /**
- * Hero pool scene — two players passing a water polo ball under a starry sky,
- * with cinematic lighting. Default-exported for React.lazy.
+ * Hero pool scene — a water polo ball bobbing in front of a floating goal under
+ * a starry sky, with cinematic lighting. Default-exported for React.lazy.
  *
  * The cinematic look is achieved without a post-processing pass (which is a
  * heavy lazy chunk + per-frame GPU cost): the renderer's ACES Filmic tone
@@ -70,11 +70,16 @@ export default function HeroCanvas({ active = true, onReady }: HeroCanvasProps) 
 
         <WaterSurface reducedMotion={reduced} segments={isMobile ? 48 : 96} />
 
-        {/* Two players passing a water polo ball — the hero centrepiece. */}
-        <WaterPoloPlay reducedMotion={reduced} />
-
-        {/* A goal at the far end of the pool. */}
-        <WaterPoloGoal position={[0, WATER_Y, -5.5]} width={3} height={0.95} emissiveIntensity={0.2} />
+        {/* A water polo ball bobbing on the swell in front of a floating goal —
+            the hero centrepiece. */}
+        <WaterPoloGoal
+          position={[3.6, WATER_Y, -3.0]}
+          rotation={[0, -0.4, 0]}
+          width={3}
+          height={0.95}
+          emissiveIntensity={0.2}
+        />
+        <FloatingBall position={[2.7, WATER_Y, 1.2]} radius={0.46} reducedMotion={reduced} />
 
         {/* Atmosphere: drifting spray + fine glints over the water. */}
         <Particles count={isMobile ? 14 : 26} reducedMotion={reduced} />
