@@ -102,7 +102,12 @@ export function Footer() {
 
         <div className="mt-12 flex flex-col gap-2 border-t border-white/5 pt-6 text-xs text-silver/70 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} Kouci. All rights reserved.</span>
-          <span>Made for water polo.</span>
+          <div className="flex items-center gap-4">
+            <Link to="/privacy" className="transition-colors hover:text-brand-light">
+              Privacy
+            </Link>
+            <span>Made for water polo.</span>
+          </div>
         </div>
       </div>
     </footer>

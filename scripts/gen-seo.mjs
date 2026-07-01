@@ -23,6 +23,7 @@ const posts = readdirSync(BLOG_DIR)
 const routes = [
   { loc: '/', changefreq: 'weekly', priority: '1.0' },
   { loc: '/blog', changefreq: 'weekly', priority: '0.8' },
+  { loc: '/privacy', changefreq: 'yearly', priority: '0.2' },
   ...posts.map((p) => ({
     loc: `/blog/${p.slug}`,
     changefreq: 'monthly',

@@ -3,8 +3,10 @@ import { PromiseSection } from '../components/sections/Promise'
 import { Features } from '../components/sections/Features'
 import { Showcase } from '../components/sections/Showcase'
 import { Audience } from '../components/sections/Audience'
-import { Reviews } from '../components/sections/Reviews'
 import { EarlyAccess } from '../components/sections/EarlyAccess'
+// Reviews section is intentionally not rendered until real, attributable
+// testimonials exist (see src/components/sections/Reviews.tsx). Re-add <Reviews />
+// below <Audience /> once the placeholder quotes are replaced.
 import { Seo } from '../components/Seo'
 import { SITE_URL, SITE_NAME, SOCIAL_LINKS, absoluteUrl } from '../lib/site'
 import { usePageScroll } from '../hooks/usePageScroll'
@@ -67,7 +69,6 @@ export function LandingPage() {
         <Features />
         <Showcase />
         <Audience />
-        <Reviews />
         <EarlyAccess />
       </main>
     </>

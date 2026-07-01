@@ -87,8 +87,12 @@ export function Hero() {
           Master <span className="text-brand-light">Every Play</span>
         </h1>
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-silver">
-          Kouci turns raw match data into a tactical edge — player stats, penalty maps,
-          animated tactics and live game tracking, built for coaches who demand precision.
+          The iOS &amp; Android app that turns raw match data into a tactical edge — player stats,
+          penalty maps, animated tactics and live game tracking. Built for coaches who demand precision.
+        </p>
+        <p className="mt-4 inline-flex items-center gap-2 text-sm text-silver/70">
+          <span className="h-1.5 w-1.5 rounded-full bg-brand-light" aria-hidden="true" />
+          In development · early access opening soon
         </p>
         <div className="mt-9 flex flex-wrap items-center gap-4">
           <ButtonLink href="#early-access" withArrow>

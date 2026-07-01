@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { track } from '@vercel/analytics'
 import { Button } from '../ui/Button'
 import { Field } from '../ui/Field'
@@ -11,17 +12,23 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const FORMSPREE_ENDPOINT = import.meta.env.VITE_FORMSPREE_ENDPOINT
 
 type Status = 'idle' | 'submitting' | 'success' | 'error'
+type Errors = { name?: string; email?: string; consent?: string }
 
 export function EarlyAccess() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [errors, setErrors] = useState<{ name?: string; email?: string }>({})
+  const [consent, setConsent] = useState(false)
+  // Honeypot: real users leave this empty; bots that fill every field trip it,
+  // and Formspree silently drops any submission where `_gotcha` is non-empty.
+  const [botField, setBotField] = useState('')
+  const [errors, setErrors] = useState<Errors>({})
   const [status, setStatus] = useState<Status>('idle')
 
   function validate() {
-    const next: { name?: string; email?: string } = {}
+    const next: Errors = {}
     if (!name.trim()) next.name = 'Please enter your name.'
     if (!EMAIL_RE.test(email.trim())) next.email = 'Please enter a valid email address.'
+    if (!consent) next.consent = 'Please accept the privacy policy to continue.'
     setErrors(next)
     return Object.keys(next).length === 0
   }
@@ -37,7 +44,7 @@ export function EarlyAccess() {
       const res = await fetch(FORMSPREE_ENDPOINT, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ name: name.trim(), email: email.trim() }),
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), _gotcha: botField }),
       })
       if (!res.ok) throw new Error('Request failed')
       setStatus('success')
@@ -111,12 +118,47 @@ export function EarlyAccess() {
                 onChange={(e) => setEmail(e.target.value)}
                 error={errors.email}
               />
+
+              {/* Honeypot — visually hidden, not shown to real users. */}
+              <input
+                type="text"
+                name="_gotcha"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                className="hidden"
+                value={botField}
+                onChange={(e) => setBotField(e.target.value)}
+              />
+
+              <div>
+                <label className="flex items-start gap-3 text-left text-xs leading-relaxed text-silver/80">
+                  <input
+                    type="checkbox"
+                    checked={consent}
+                    onChange={(e) => setConsent(e.target.checked)}
+                    aria-invalid={errors.consent ? true : undefined}
+                    aria-describedby={errors.consent ? 'consent-error' : undefined}
+                    className="mt-0.5 h-4 w-4 shrink-0 rounded border border-white/20 bg-bg/60 accent-brand"
+                  />
+                  <span>
+                    I agree to the{' '}
+                    <Link to="/privacy" className="text-brand-light hover:underline">
+                      Privacy Policy
+                    </Link>{' '}
+                    and to being emailed about Kouci’s launch.
+                  </span>
+                </label>
+                {errors.consent && (
+                  <p id="consent-error" className="mt-2 text-xs text-red-300">
+                    {errors.consent}
+                  </p>
+                )}
+              </div>
+
               <Button type="submit" className="w-full" disabled={status === 'submitting'}>
                 {status === 'submitting' ? 'Sending…' : 'Request Access'}
               </Button>
-              <p className="text-center text-xs text-silver/70">
-                We’ll only use your email to tell you about Kouci’s launch.
-              </p>
             </form>
           )}
         </Reveal>
