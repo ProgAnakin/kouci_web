@@ -73,13 +73,17 @@ export default function HeroCanvas({ active = true, onReady }: HeroCanvasProps) 
         {/* A water polo ball bobbing on the swell in front of a floating goal —
             the hero centrepiece. */}
         <WaterPoloGoal
-          position={[3.6, WATER_Y, -3.0]}
-          rotation={[0, -0.4, 0]}
-          width={3}
-          height={0.95}
+          position={isMobile ? [4.3, WATER_Y, -2.6] : [6.4, WATER_Y, -2.6]}
+          rotation={[0, -0.62, 0]}
+          width={2.2}
+          height={0.9}
           emissiveIntensity={0.2}
         />
-        <FloatingBall position={[2.7, WATER_Y, 1.2]} radius={0.46} reducedMotion={reduced} />
+        <FloatingBall
+          position={isMobile ? [3.5, WATER_Y, 1.0] : [4.9, WATER_Y, 1.0]}
+          radius={0.44}
+          reducedMotion={reduced}
+        />
 
         {/* Atmosphere: drifting spray + fine glints over the water. */}
         <Particles count={isMobile ? 14 : 26} reducedMotion={reduced} />
