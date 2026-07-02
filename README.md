@@ -24,13 +24,17 @@ to WebGL 1). WebGPU is intentionally **not** assumed.
 ## Getting started
 
 ```bash
-npm install
+npm install      # also installs the Husky pre-commit hook
 npm run dev      # start the dev server (http://localhost:5173)
-npm run build    # type-check + production build → dist/
+npm run build    # sitemap + type-check + static-generate the site → dist/
 npm run preview  # preview the production build locally
+npm run check    # type-check + lint + format check (what CI runs)
 ```
 
-Node 18+ recommended.
+Node 18+ recommended. The production build is **statically generated**
+(`vite-react-ssg`): every route — the landing page, `/blog`, each post and
+`/privacy` — is pre-rendered to HTML with its own meta tags and JSON-LD, so
+crawlers and link unfurlers see real content.
 
 ## Project structure
 
@@ -43,8 +47,9 @@ src/
 │  └─ scrollStore.ts       # GSAP ↔ R3F scroll bridge (no re-renders)
 ├─ hooks/
 │  ├─ usePrefersReducedMotion.ts
-│  ├─ usePageScroll.ts     # ScrollTrigger → scrollStore
-│  └─ useInView.ts         # defer-mount heavy canvases
+│  ├─ usePageScroll.ts        # ScrollTrigger → scrollStore
+│  ├─ useSmoothScroll.ts      # Lenis inertial scroll
+│  └─ useCanvasActivation.ts  # defer-mount heavy canvases + pause off-screen
 ├─ data/
 │  └─ features.ts          # the four product pillars (copy)
 ├─ components/
@@ -93,13 +98,18 @@ The brand palette is defined in **three** mirrored places — keep them in sync:
 
 ## Where to plug things in
 
-- **Email capture** → `src/components/sections/EarlyAccess.tsx` has a clearly
-  marked `TODO` in `handleSubmit`. Swap the simulated delay for a real request
-  (Mailchimp / ConvertKit / Resend / your own API). Validation is already done.
-- **Real assets** (logo, 3D ball, field, share image) → see
-  [`public/assets/README.md`](./public/assets/README.md). Search the codebase
-  for `TODO` to find every insertion point.
-- **Social links** → placeholders in `src/components/layout/Footer.tsx`.
+- **Email capture** → `src/components/sections/EarlyAccess.tsx` posts to
+  **Formspree** via `VITE_FORMSPREE_ENDPOINT` (see `.env.example`); set that in
+  your environment and in the host's env vars.
+- **Blog posts** → add a Markdown file with frontmatter to
+  `src/content/blog/`; it's picked up at build time (no CMS). Images and cover
+  art go in `public/assets/blog/` — see that folder's `README.md`.
+- **Analytics** → Vercel Analytics is wired in `App.tsx`, with an
+  `early_access_signup` conversion event fired on a successful signup.
+- **Social links** → live Kouci profiles in `src/components/layout/Footer.tsx`
+  (toggle each with its `enabled` flag).
+- **Canonical domain** → update `SITE_URL` in `src/lib/site.ts` (and the same
+  value in `scripts/gen-seo.mjs`) when the custom domain lands.
 
 ## Performance notes
 
