@@ -10,8 +10,9 @@ export const HERO_COLORS = {
   capDark: '#57614a',
   capLight: '#8b915e',
   capTrim: '#2c3324',
-  ballYellow: '#d9bc55',
-  ballSeam: '#2e2a1c',
+  ballOlive: '#6d774e',
+  ballCream: '#eae0bf',
+  ballSeam: '#171812',
   goalWhite: '#eef0e8',
   foam: '#a8b394',
 }

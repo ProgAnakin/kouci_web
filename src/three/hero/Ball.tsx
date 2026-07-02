@@ -2,10 +2,11 @@ import { forwardRef, useEffect, useMemo } from 'react'
 import * as THREE from 'three'
 
 /**
- * Color texture modelled on a real FINA match ball (Mikasa-style): warm yellow
- * rubber split into vertical panels by four recessed seams, panels alternating
- * a subtle shade, dense pebbled grip grain, pole caps where the seams meet,
- * a faint equator join and a small brand print. 1024×512, equirectangular.
+ * Color texture modelled on a real match ball in the Kouci colourway (like the
+ * olive/cream Mikasa): rubber split into vertical panels by four recessed
+ * seams, panels alternating olive and cream with near-black joins, dense
+ * pebbled grip grain, pole caps where the seams meet, a soft equator join and
+ * a small brand print. 1024×512, equirectangular.
  */
 function makeColorTexture(): THREE.CanvasTexture {
   const w = 1024
@@ -15,52 +16,53 @@ function makeColorTexture(): THREE.CanvasTexture {
   canvas.height = h
   const ctx = canvas.getContext('2d')!
 
-  // Panels: 8 vertical bands (4 seams × 2 hemispheres), alternating tone.
+  // Panels: 8 vertical bands (4 seams × 2 hemispheres), alternating colour.
   const panel = w / 8
   for (let i = 0; i < 8; i++) {
-    ctx.fillStyle = i % 2 === 0 ? '#e3bc4e' : '#d8b143'
+    ctx.fillStyle = i % 2 === 0 ? '#57613c' : '#cfc492'
     ctx.fillRect(i * panel, 0, panel, h)
   }
 
-  // Pebbled grip: dense random grain, darker and lighter speckles.
+  // Pebbled grip: dense random grain, darker and lighter speckles (neutral
+  // tones that read on both the olive and the cream panels).
   for (let i = 0; i < 9000; i++) {
     const x = Math.random() * w
     const y = Math.random() * h
     const r = 1 + Math.random() * 2.2
     const light = Math.random() > 0.5
-    ctx.fillStyle = light ? 'rgba(255, 232, 150, 0.16)' : 'rgba(105, 82, 30, 0.18)'
+    ctx.fillStyle = light ? 'rgba(255, 248, 220, 0.13)' : 'rgba(38, 40, 28, 0.16)'
     ctx.beginPath()
     ctx.arc(x, y, r, 0, Math.PI * 2)
     ctx.fill()
   }
 
-  // Recessed seams: dark groove + light catch-edge on each side.
+  // Recessed seams: near-black groove + light catch-edge on each side.
   for (const u of [0, 0.25, 0.5, 0.75]) {
     const x = u * w
-    ctx.fillStyle = 'rgba(70, 56, 22, 0.85)'
+    ctx.fillStyle = 'rgba(23, 24, 18, 0.92)'
     ctx.fillRect(x - 4, 0, 8, h)
-    ctx.fillStyle = 'rgba(255, 235, 170, 0.25)'
+    ctx.fillStyle = 'rgba(255, 250, 228, 0.2)'
     ctx.fillRect(x - 7, 0, 3, h)
     ctx.fillRect(x + 4, 0, 3, h)
   }
   // Equator join — much subtler than the meridians.
-  ctx.fillStyle = 'rgba(96, 78, 34, 0.4)'
+  ctx.fillStyle = 'rgba(23, 24, 18, 0.45)'
   ctx.fillRect(0, h / 2 - 2, w, 4)
 
   // Pole caps (texture poles pinch, so wide flat bands read as neat discs).
-  ctx.fillStyle = '#c9a53c'
+  ctx.fillStyle = '#5c6543'
   ctx.fillRect(0, 0, w, 14)
   ctx.fillRect(0, h - 14, w, 14)
-  ctx.fillStyle = 'rgba(70, 56, 22, 0.8)'
+  ctx.fillStyle = 'rgba(23, 24, 18, 0.85)'
   ctx.fillRect(0, 14, w, 3)
   ctx.fillRect(0, h - 17, w, 3)
 
-  // Brand print on one panel, like the maker's mark on a match ball.
+  // Brand print on an olive panel, like the maker's mark on a match ball.
   ctx.save()
   ctx.translate(w * 0.315, h * 0.4)
   ctx.font = '700 30px "Sora", "Inter", sans-serif'
   ctx.textAlign = 'center'
-  ctx.fillStyle = 'rgba(60, 48, 20, 0.75)'
+  ctx.fillStyle = 'rgba(20, 22, 16, 0.8)'
   ctx.fillText('KOUCI', 0, 0)
   ctx.font = '600 15px "Inter", sans-serif'
   ctx.fillText('WATER POLO', 0, 24)
@@ -138,13 +140,13 @@ export const Ball = forwardRef<THREE.Group, BallProps>(function Ball({ radius = 
           map={colorTex}
           bumpMap={bumpTex}
           bumpScale={0.35}
-          roughness={0.58}
-          sheen={0.4}
-          sheenRoughness={0.6}
-          sheenColor={new THREE.Color('#f5df8a')}
-          clearcoat={0.12}
-          clearcoatRoughness={0.6}
-          envMapIntensity={0.75}
+          roughness={0.62}
+          sheen={0.22}
+          sheenRoughness={0.65}
+          sheenColor={new THREE.Color('#c9cfa0')}
+          clearcoat={0.08}
+          clearcoatRoughness={0.65}
+          envMapIntensity={0.45}
         />
       </mesh>
     </group>
