@@ -77,9 +77,10 @@ export function Goal({ position = [0, 0, 0], rotationY = 0, width = 3, height = 
     [net, frameMat, netMat],
   )
 
-  const r = 0.045
+  // Post radius follows the goal's size (FINA: ~8 cm posts on a 3 m mouth).
+  const r = width * 0.014
   const half = width / 2
-  const depth = 0.75
+  const depth = width * 0.25
   const floatR = r * 2.1
 
   return (

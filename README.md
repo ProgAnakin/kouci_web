@@ -56,12 +56,9 @@ src/
    ├─ Lighting.tsx         # cinematic rig (Lightformer env + key/rim/bounce)
    ├─ hero/                # the hero scene, built from scratch
    │  ├─ constants.ts      # water level + scene palette
-   │  ├─ choreography.ts   # the pass timeline (beats, poses, flight path)
-   │  ├─ armRig.ts         # smooth skinned two-bone arm (IK-driven)
-   │  ├─ ClayPlayer.tsx    # stylized clay player (torso, cap, skinned arms)
-   │  ├─ PassScene.tsx     # two players passing the ball in a loop
-   │  ├─ Water.tsx         # PBR water (vertex waves + analytic normals)
-   │  ├─ Ball.tsx          # dotted water polo ball (canvas texture)
+   │  ├─ BallScene.tsx     # match ball riding the swell (FINA proportions)
+   │  ├─ Water.tsx         # PBR water (vertex swell + animated normal detail)
+   │  ├─ Ball.tsx          # match-quality ball (pebbled grip, panel seams)
    │  ├─ Goal.tsx          # floating goal (posts, net, pontoons)
    │  └─ effects.tsx       # ripples + droplet spray
    ├─ CameraRig.tsx        # low cinematic camera (maath damping + ball follow)

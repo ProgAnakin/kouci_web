@@ -14,10 +14,13 @@ export function Ripples({
   center,
   reducedMotion = false,
   phase = 0,
+  scale = 1,
 }: {
   center: THREE.Vector3
   reducedMotion?: boolean
   phase?: number
+  /** Overall size multiplier (rings are sized for a player by default). */
+  scale?: number
 }) {
   const rings = useRef<THREE.Mesh[]>([])
   const mats = useMemo(
@@ -50,7 +53,7 @@ export function Ripples({
   })
 
   return (
-    <group position={[center.x, WATER_Y + 0.025, center.z]}>
+    <group position={[center.x, WATER_Y + 0.025, center.z]} scale={[scale, 1, scale]}>
       {Array.from({ length: RING_COUNT }).map((_, i) => (
         <mesh
           key={i}

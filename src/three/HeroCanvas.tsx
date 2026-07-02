@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { AdaptiveDpr, Stars } from '@react-three/drei'
 import * as THREE from 'three'
 import { Water } from './hero/Water'
-import { PassScene } from './hero/PassScene'
+import { BallScene, GOAL_WIDTH, GOAL_HEIGHT } from './hero/BallScene'
 import { Goal } from './hero/Goal'
 import { WATER_Y } from './hero/constants'
 import { CameraRig } from './CameraRig'
@@ -14,14 +14,14 @@ import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { isWebGLAvailable } from './webgl'
 
 /**
- * Hero pool scene — two clay players passing a water polo ball across calm
- * night water, a floating goal in the distance, under a starry sky.
- * Default-exported for React.lazy.
+ * Hero pool scene — a match ball riding realistic night water, with a floating
+ * goal behind it at true FINA proportions (the goal mouth is ~13.6 ball
+ * diameters wide). Default-exported for React.lazy.
  *
  * The cinematic look comes from ACES Filmic tone mapping, MSAA, a procedural
  * environment map (drei <Environment> with Lightformers — no network fetch)
- * feeding the glossy water/clay speculars, and a CSS vignette — no
- * post-processing pass, so the bundle stays light and the frame cheap.
+ * feeding the glossy water speculars, and a CSS vignette — no post-processing
+ * pass, so the bundle stays light and the frame cheap.
  */
 interface HeroCanvasProps {
   /** When false the canvas stops rendering (off-screen) to free the scroll. */
@@ -77,14 +77,17 @@ export default function HeroCanvas({ active = true, onReady }: HeroCanvasProps) 
 
         <Water reducedMotion={reduced} segments={isMobile ? 72 : 140} />
 
-        {/* Distant floating goal, far right where it can't collide with the
-            headline. Skipped on phones — too little width for it to read. */}
-        {!isMobile && (
-          <Goal position={[16, WATER_Y, -4]} rotationY={-0.5} width={2.8} height={0.9} />
-        )}
+        {/* Floating goal behind the ball, at true scale relative to it —
+            deep and right, so it never reaches the headline. */}
+        <Goal
+          position={[17.5, WATER_Y, -9]}
+          rotationY={-0.45}
+          width={GOAL_WIDTH}
+          height={GOAL_HEIGHT}
+        />
 
-        {/* The pass loop — the centrepiece. */}
-        <PassScene reducedMotion={reduced} offsetX={isMobile ? -0.4 : 0} />
+        {/* The match ball riding the swell — the centrepiece. */}
+        <BallScene position={isMobile ? [3.7, 2.2] : [4.5, 2.2]} reducedMotion={reduced} />
 
         <CameraRig reducedMotion={reduced} />
         <AdaptiveDpr pixelated />
