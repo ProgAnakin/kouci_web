@@ -7,6 +7,7 @@ import { SceneLoader } from './Loader'
 import { palette } from '../lib/theme'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { isWebGLAvailable } from './webgl'
+import { ErrorBoundary } from '../components/ui/ErrorBoundary'
 
 /**
  * Tactics board scene: a water polo field with instanced pins and animated
@@ -15,20 +16,20 @@ import { isWebGLAvailable } from './webgl'
  */
 export default function TacticsCanvas({ active = true }: { active?: boolean }) {
   const reduced = usePrefersReducedMotion()
+  const fallback = <div className="h-full w-full bg-surface" aria-hidden="true" />
 
-  if (!isWebGLAvailable()) {
-    return <div className="h-full w-full bg-surface" aria-hidden="true" />
-  }
+  if (!isWebGLAvailable()) return fallback
 
   return (
-    <Canvas
-      dpr={[1, 2]}
-      shadows
-      gl={{ antialias: true, alpha: true }}
-      camera={{ position: [0, 3.6, 6.4], fov: 40, near: 0.1, far: 100 }}
-      frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
-      onCreated={({ gl }) => gl.setClearColor(new THREE.Color(palette.bg), 0)}
-    >
+    <ErrorBoundary label="TacticsCanvas" fallback={fallback}>
+      <Canvas
+        dpr={[1, 2]}
+        shadows
+        gl={{ antialias: true, alpha: true }}
+        camera={{ position: [0, 3.6, 6.4], fov: 40, near: 0.1, far: 100 }}
+        frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
+        onCreated={({ gl }) => gl.setClearColor(new THREE.Color(palette.bg), 0)}
+      >
       <Suspense fallback={<SceneLoader />}>
         <hemisphereLight args={[palette.brandLight, palette.bg, 0.55]} />
         <directionalLight position={[3, 6, 4]} intensity={1.1} color={palette.ink} castShadow />
@@ -47,6 +48,7 @@ export default function TacticsCanvas({ active = true }: { active?: boolean }) {
           frames={reduced ? 1 : Infinity}
         />
       </Suspense>
-    </Canvas>
+      </Canvas>
+    </ErrorBoundary>
   )
 }

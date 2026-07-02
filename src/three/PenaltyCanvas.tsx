@@ -7,6 +7,7 @@ import { SceneLoader } from './Loader'
 import { palette } from '../lib/theme'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { isWebGLAvailable } from './webgl'
+import { ErrorBoundary } from '../components/ui/ErrorBoundary'
 
 /**
  * Penalty shot map scene: the goal mouth with scored vs. missed shots plotted
@@ -14,19 +15,19 @@ import { isWebGLAvailable } from './webgl'
  */
 export default function PenaltyCanvas({ active = true }: { active?: boolean }) {
   const reduced = usePrefersReducedMotion()
+  const fallback = <div className="h-full w-full bg-surface" aria-hidden="true" />
 
-  if (!isWebGLAvailable()) {
-    return <div className="h-full w-full bg-surface" aria-hidden="true" />
-  }
+  if (!isWebGLAvailable()) return fallback
 
   return (
-    <Canvas
-      dpr={[1, 2]}
-      gl={{ antialias: true, alpha: true }}
-      camera={{ position: [0, 0, 4.2], fov: 44, near: 0.1, far: 100 }}
-      frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
-      onCreated={({ gl }) => gl.setClearColor(new THREE.Color(palette.bg), 0)}
-    >
+    <ErrorBoundary label="PenaltyCanvas" fallback={fallback}>
+      <Canvas
+        dpr={[1, 2]}
+        gl={{ antialias: true, alpha: true }}
+        camera={{ position: [0, 0, 4.2], fov: 44, near: 0.1, far: 100 }}
+        frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
+        onCreated={({ gl }) => gl.setClearColor(new THREE.Color(palette.bg), 0)}
+      >
       <Suspense fallback={<SceneLoader />}>
         <hemisphereLight args={[palette.brandLight, palette.bg, 0.65]} />
         <directionalLight position={[2, 3, 5]} intensity={1.1} color={palette.ink} />
@@ -36,6 +37,7 @@ export default function PenaltyCanvas({ active = true }: { active?: boolean }) {
         </Environment>
         <PenaltyMap reducedMotion={reduced} />
       </Suspense>
-    </Canvas>
+      </Canvas>
+    </ErrorBoundary>
   )
 }

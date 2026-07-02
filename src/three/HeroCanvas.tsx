@@ -12,6 +12,7 @@ import { SceneLoader } from './Loader'
 import { palette } from '../lib/theme'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { isWebGLAvailable } from './webgl'
+import { ErrorBoundary } from '../components/ui/ErrorBoundary'
 
 /**
  * Hero pool scene — a match ball riding realistic night water, with a floating
@@ -33,33 +34,35 @@ interface HeroCanvasProps {
 export default function HeroCanvas({ active = true, onReady }: HeroCanvasProps) {
   const reduced = usePrefersReducedMotion()
 
-  if (!isWebGLAvailable()) {
-    return (
-      <div
-        className="h-full w-full"
-        style={{
-          background: `radial-gradient(120% 80% at 70% 10%, ${palette.brand}22, transparent 60%), ${palette.bg}`,
-        }}
-        aria-hidden="true"
-      />
-    )
-  }
+  // Static poster shown when WebGL is unavailable *or* the scene errors.
+  const fallback = (
+    <div
+      className="h-full w-full"
+      style={{
+        background: `radial-gradient(120% 80% at 70% 10%, ${palette.brand}22, transparent 60%), ${palette.bg}`,
+      }}
+      aria-hidden="true"
+    />
+  )
+
+  if (!isWebGLAvailable()) return fallback
 
   const isMobile =
     typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
 
   return (
-    <Canvas
-      dpr={[1, isMobile ? 1.5 : 2]}
-      gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
-      camera={{ position: [0.2, 0.85, 6.5], fov: 50, near: 0.1, far: 100 }}
-      frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
-      onCreated={({ gl, scene }) => {
-        gl.setClearColor(new THREE.Color(palette.bg), 1)
-        scene.fog = new THREE.Fog(palette.bg, 13, 42)
-        onReady?.()
-      }}
-    >
+    <ErrorBoundary label="HeroCanvas" fallback={fallback}>
+      <Canvas
+        dpr={[1, isMobile ? 1.5 : 2]}
+        gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}
+        camera={{ position: [0.2, 0.85, 6.5], fov: 50, near: 0.1, far: 100 }}
+        frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
+        onCreated={({ gl, scene }) => {
+          gl.setClearColor(new THREE.Color(palette.bg), 1)
+          scene.fog = new THREE.Fog(palette.bg, 13, 42)
+          onReady?.()
+        }}
+      >
       <Suspense fallback={<SceneLoader />}>
         {/* Lights + the baked Lightformer environment the speculars reflect. */}
         <Lighting />
@@ -93,5 +96,6 @@ export default function HeroCanvas({ active = true, onReady }: HeroCanvasProps) 
         <AdaptiveDpr pixelated />
       </Suspense>
     </Canvas>
+    </ErrorBoundary>
   )
 }
