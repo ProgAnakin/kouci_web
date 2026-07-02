@@ -52,23 +52,20 @@ src/
 │  ├─ sections/            # Hero, Promise, Features, Showcase, Audience, EarlyAccess
 │  └─ ui/                  # Button, Field, Reveal, SectionHeading
 └─ three/                  # all the WebGL
-   ├─ HeroCanvas.tsx       # pool scene: sky + lighting + players (lazy)
-   ├─ Lighting.tsx         # cinematic rig (env + key/rim/bounce/fill)
-   ├─ WaterSurface.tsx     # shader water plane (ACES tone-mapped)
-   ├─ shaders/water.ts     # GLSL for the water (caustics, foam, fresnel)
-   ├─ wave.ts              # water-surface level constant
-   ├─ WaterPoloPlay.tsx    # two players passing the ball (the hero scene)
-   ├─ Player.tsx           # stylized PBR player (cap, IK arms, breathing)
-   ├─ PlayerArm.tsx        # two-bone IK arm (upper + elbow + forearm + hand)
-   ├─ playerLook.ts        # skin / cap material constants
-   ├─ PoloBall.tsx         # recognizable water polo ball (seams + dimples)
-   ├─ Droplets.tsx         # instanced droplets shed by the airborne ball
-   ├─ WaterPoloGoal.tsx    # reusable floating goal (posts + net)
-   ├─ Particles.tsx        # instanced atmospheric spray
-   ├─ CausticGlow.tsx      # additive light pool under the ball
+   ├─ HeroCanvas.tsx       # pool scene: sky + lighting + pass loop (lazy)
+   ├─ Lighting.tsx         # cinematic rig (Lightformer env + key/rim/bounce)
+   ├─ hero/                # the hero scene, built from scratch
+   │  ├─ constants.ts      # water level + scene palette
+   │  ├─ choreography.ts   # the pass timeline (beats, poses, flight path)
+   │  ├─ armRig.ts         # smooth skinned two-bone arm (IK-driven)
+   │  ├─ ClayPlayer.tsx    # stylized clay player (torso, cap, skinned arms)
+   │  ├─ PassScene.tsx     # two players passing the ball in a loop
+   │  ├─ Water.tsx         # PBR water (vertex waves + analytic normals)
+   │  ├─ Ball.tsx          # dotted water polo ball (canvas texture)
+   │  ├─ Goal.tsx          # floating goal (posts, net, pontoons)
+   │  └─ effects.tsx       # ripples + droplet spray
    ├─ CameraRig.tsx        # low cinematic camera (maath damping + ball follow)
    ├─ heroState.ts         # ball position hand-off (play → camera)
-   ├─ proceduralTextures.ts# noise / sprite canvas textures
    ├─ numberTexture.ts     # shared cap-number texture
    ├─ TacticsCanvas.tsx    # field + caps + animated 3D arrows (lazy)
    ├─ Cap.tsx              # numbered water polo cap marker

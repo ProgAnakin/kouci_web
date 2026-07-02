@@ -2,30 +2,40 @@ import { Environment, Lightformer } from '@react-three/drei'
 import { palette } from '../lib/theme'
 
 /**
- * Cinematic lighting rig for the hero pool: a baked-once Lightformer
- * environment (offline, no HDRI fetch) for soft reflections, a warm key, a
- * cool rim/back light to separate the players from the dark water, a low
- * bounce from the surface, and a soft fill over the action.
+ * Cinematic lighting rig for the hero pool, tuned to the reference render:
+ * a soft cool "moon" key from high left-of-camera, a warm kicker from the
+ * right, a low bounce off the water, and a baked-once Lightformer environment
+ * (offline, no HDRI fetch) that gives the glossy water and clay speculars
+ * something real to reflect.
  */
 export function Lighting() {
   return (
     <>
-      <hemisphereLight args={[palette.brandLight, palette.bg, 0.4]} />
+      <hemisphereLight args={['#8b9678', palette.bg, 0.45]} />
 
-      {/* Key */}
-      <directionalLight position={[5, 7, 4]} intensity={1.7} color="#fff1df" />
-      {/* Rim / back — kicks the silhouettes */}
-      <directionalLight position={[-4, 3, -6]} intensity={1.2} color={palette.brandLight} />
-      {/* Bounce off the water */}
-      <pointLight position={[3, 0.1, 2.6]} intensity={5} distance={9} decay={2} color={palette.brand} />
-      {/* Warm fill over the players so the skin reads warm and the caps pop */}
-      <pointLight position={[3, 2.6, 3]} intensity={24} distance={13} decay={2} color="#ffdcb0" />
+      {/* Moon key — cool, high, slightly camera-left */}
+      <directionalLight position={[-3, 8, 5]} intensity={1.5} color="#e8eedd" />
+      {/* Warm kicker from camera-right, models the clay */}
+      <directionalLight position={[6, 4, 3]} intensity={0.9} color="#ffe6bd" />
+      {/* Rim / back — separates silhouettes from the dark water */}
+      <directionalLight position={[-2, 2.5, -7]} intensity={1.6} color={palette.brandLight} />
+      {/* Bounce off the water up into chins and arms — kept gentle so the PBR
+          water doesn't draw a hot specular column under it. */}
+      <pointLight position={[5, 0.5, 2]} intensity={2} distance={8} decay={2} color={palette.brand} />
 
       <Environment resolution={128} frames={1}>
-        <Lightformer intensity={2.2} position={[0, 4, -3]} scale={[10, 10, 1]} color={palette.brandLight} />
-        <Lightformer intensity={1.2} position={[-6, 3, 2]} scale={[4, 4, 1]} color={palette.silver} />
-        <Lightformer intensity={0.8} position={[6, 1, 3]} scale={[4, 4, 1]} color={palette.brand} />
-        <Lightformer form="ring" intensity={1.0} position={[3, 2, 5]} scale={2.5} color={palette.silver} />
+        {/* Big soft sky card overhead */}
+        <Lightformer
+          intensity={1.9}
+          position={[0, 6, -2]}
+          rotation-x={Math.PI / 2}
+          scale={[14, 14, 1]}
+          color="#dbe2ca"
+        />
+        {/* Warm side card, camera-right */}
+        <Lightformer intensity={1.1} position={[7, 2.5, 4]} scale={[4, 3, 1]} color="#f0dcb4" />
+        {/* Dim olive horizon fill */}
+        <Lightformer intensity={0.6} position={[-7, 1, 3]} scale={[6, 2.5, 1]} color={palette.brand} />
       </Environment>
     </>
   )
