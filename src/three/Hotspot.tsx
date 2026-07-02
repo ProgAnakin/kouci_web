@@ -16,7 +16,13 @@ export function Hotspot({ position, label, detail }: HotspotProps) {
   const [open, setOpen] = useState(false)
 
   return (
-    <Html position={position} center distanceFactor={9} zIndexRange={[30, 0]} className="select-none">
+    <Html
+      position={position}
+      center
+      distanceFactor={9}
+      zIndexRange={[30, 0]}
+      className="select-none"
+    >
       <div className="pointer-events-auto relative">
         <button
           type="button"

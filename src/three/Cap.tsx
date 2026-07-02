@@ -49,7 +49,13 @@ export function Cap({ position, color, number, delay = 0, reducedMotion = false 
       {/* Cap dome */}
       <mesh castShadow scale={[1, 0.62, 1]}>
         <sphereGeometry args={[0.2, 28, 22]} />
-        <meshPhysicalMaterial color={color} roughness={0.35} metalness={0.05} clearcoat={0.9} clearcoatRoughness={0.3} />
+        <meshPhysicalMaterial
+          color={color}
+          roughness={0.35}
+          metalness={0.05}
+          clearcoat={0.9}
+          clearcoatRoughness={0.3}
+        />
       </mesh>
       {/* Ear protectors */}
       {[-0.19, 0.19].map((x) => (

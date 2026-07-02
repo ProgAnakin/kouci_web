@@ -78,14 +78,14 @@ src/
 
 The brand palette is defined in **three** mirrored places — keep them in sync:
 
-| Token | Hex | Tailwind | CSS var |
-| --- | --- | --- | --- |
-| Background | `#131512` | `bg` | `--color-bg` |
-| Surface | `#1F221B` | `surface` | `--color-surface` |
-| Brand (olive) | `#7E8B63` | `brand` | `--color-brand` |
-| Brand light | `#9FAC82` | `brand-light` | `--color-brand-light` |
-| Silver | `#C5C9C0` | `silver` | `--color-silver` |
-| Text | `#E6E8E2` | `ink` | `--color-ink` |
+| Token         | Hex       | Tailwind      | CSS var               |
+| ------------- | --------- | ------------- | --------------------- |
+| Background    | `#131512` | `bg`          | `--color-bg`          |
+| Surface       | `#1F221B` | `surface`     | `--color-surface`     |
+| Brand (olive) | `#7E8B63` | `brand`       | `--color-brand`       |
+| Brand light   | `#9FAC82` | `brand-light` | `--color-brand-light` |
+| Silver        | `#C5C9C0` | `silver`      | `--color-silver`      |
+| Text          | `#E6E8E2` | `ink`         | `--color-ink`         |
 
 - Tailwind tokens: `tailwind.config.js`
 - CSS variables: `src/index.css`
@@ -110,8 +110,8 @@ The brand palette is defined in **three** mirrored places — keep them in sync:
 - The hero shows a **static poster instantly** and crossfades the 3D in once
   the renderer is ready.
 - **No post-processing library** — the cinematic grade is renderer ACES + MSAA
-  + a faux-bloom sprite + a CSS vignette (keeps the bundle light and runtime
-  cheap; see HeroCanvas).
+  - a faux-bloom sprite + a CSS vignette (keeps the bundle light and runtime
+    cheap; see HeroCanvas).
 - Smooth scroll (Lenis) uses a light frame-based `lerp` and leaves touch
   devices on native scrolling.
 - Repeated 3D elements (pins, shot markers, droplets, spray) use **instancing**

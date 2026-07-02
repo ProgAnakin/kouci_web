@@ -59,7 +59,11 @@ export function Navbar() {
               </li>
             ))}
             <li>
-              <Link to="/blog" className={linkClass} aria-current={pathname.startsWith('/blog') ? 'page' : undefined}>
+              <Link
+                to="/blog"
+                className={linkClass}
+                aria-current={pathname.startsWith('/blog') ? 'page' : undefined}
+              >
                 Blog
               </Link>
             </li>

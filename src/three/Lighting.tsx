@@ -21,7 +21,13 @@ export function Lighting() {
       <directionalLight position={[-2, 2.5, -7]} intensity={1.6} color={palette.brandLight} />
       {/* Bounce off the water up into chins and arms — kept gentle so the PBR
           water doesn't draw a hot specular column under it. */}
-      <pointLight position={[5, 0.5, 2]} intensity={2} distance={8} decay={2} color={palette.brand} />
+      <pointLight
+        position={[5, 0.5, 2]}
+        intensity={2}
+        distance={8}
+        decay={2}
+        color={palette.brand}
+      />
 
       <Environment resolution={128} frames={1}>
         {/* Big soft sky card overhead */}
@@ -35,7 +41,12 @@ export function Lighting() {
         {/* Warm side card, camera-right */}
         <Lightformer intensity={1.1} position={[7, 2.5, 4]} scale={[4, 3, 1]} color="#f0dcb4" />
         {/* Dim olive horizon fill */}
-        <Lightformer intensity={0.6} position={[-7, 1, 3]} scale={[6, 2.5, 1]} color={palette.brand} />
+        <Lightformer
+          intensity={0.6}
+          position={[-7, 1, 3]}
+          scale={[6, 2.5, 1]}
+          color={palette.brand}
+        />
       </Environment>
     </>
   )

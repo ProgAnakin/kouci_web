@@ -69,12 +69,15 @@ export function EarlyAccess() {
         <Reveal className="card mx-auto max-w-3xl overflow-hidden p-8 md:p-12">
           <div className="text-center">
             <p className="eyebrow justify-center">Early access</p>
-            <h2 id="early-access-title" className="mt-4 text-3xl font-semibold text-ink md:text-4xl">
+            <h2
+              id="early-access-title"
+              className="mt-4 text-3xl font-semibold text-ink md:text-4xl"
+            >
               Be first on deck
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-silver">
-              Join the coaches shaping Kouci. We’ll email you the moment early access opens —
-              no spam, just the launch.
+              Join the coaches shaping Kouci. We’ll email you the moment early access opens — no
+              spam, just the launch.
             </p>
           </div>
 
@@ -83,7 +86,9 @@ export function EarlyAccess() {
               role="status"
               className="mx-auto mt-10 max-w-md rounded-2xl border border-brand/30 bg-brand/10 p-6 text-center"
             >
-              <p className="font-display text-lg font-semibold text-brand-light">You’re on the list.</p>
+              <p className="font-display text-lg font-semibold text-brand-light">
+                You’re on the list.
+              </p>
               <p className="mt-2 text-sm text-silver">
                 Thanks, {name.trim().split(' ')[0] || 'coach'}. We’ll be in touch at {email.trim()}.
               </p>

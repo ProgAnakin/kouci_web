@@ -27,20 +27,52 @@ export function FeatureVisual({ id }: { id: FeatureId }) {
     case 'penalty':
       return (
         <svg viewBox="0 0 240 150" className={common} role="presentation" aria-hidden="true">
-          <rect x="34" y="28" width="172" height="86" rx="3" fill="none" stroke="#C5C9C0" strokeWidth="3" />
+          <rect
+            x="34"
+            y="28"
+            width="172"
+            height="86"
+            rx="3"
+            fill="none"
+            stroke="#C5C9C0"
+            strokeWidth="3"
+          />
           {/* net hint */}
           {[0, 1, 2, 3].map((i) => (
-            <line key={`v${i}`} x1={34 + (i + 1) * 34.4} y1="28" x2={34 + (i + 1) * 34.4} y2="114" stroke="#2c2f27" />
+            <line
+              key={`v${i}`}
+              x1={34 + (i + 1) * 34.4}
+              y1="28"
+              x2={34 + (i + 1) * 34.4}
+              y2="114"
+              stroke="#2c2f27"
+            />
           ))}
           {[0, 1].map((i) => (
-            <line key={`h${i}`} x1="34" y1={28 + (i + 1) * 28.6} x2="206" y2={28 + (i + 1) * 28.6} stroke="#2c2f27" />
+            <line
+              key={`h${i}`}
+              x1="34"
+              y1={28 + (i + 1) * 28.6}
+              x2="206"
+              y2={28 + (i + 1) * 28.6}
+              stroke="#2c2f27"
+            />
           ))}
           {/* goals */}
-          {[[58, 48], [188, 52], [64, 96], [180, 92], [120, 40]].map(([x, y], i) => (
+          {[
+            [58, 48],
+            [188, 52],
+            [64, 96],
+            [180, 92],
+            [120, 40],
+          ].map(([x, y], i) => (
             <circle key={`g${i}`} cx={x} cy={y} r="7" fill="#9FAC82" />
           ))}
           {/* misses */}
-          {[[120, 72], [120, 20]].map(([x, y], i) => (
+          {[
+            [120, 72],
+            [120, 20],
+          ].map(([x, y], i) => (
             <circle key={`m${i}`} cx={x} cy={y} r="5" fill="#C5C9C0" opacity="0.65" />
           ))}
         </svg>
@@ -55,7 +87,13 @@ export function FeatureVisual({ id }: { id: FeatureId }) {
               <path d="M0 0 L8 4 L0 8 z" fill="#9FAC82" />
             </marker>
           </defs>
-          <path d="M60 100 C 90 70, 120 70, 150 50" fill="none" stroke="#9FAC82" strokeWidth="3" markerEnd="url(#ah)" />
+          <path
+            d="M60 100 C 90 70, 120 70, 150 50"
+            fill="none"
+            stroke="#9FAC82"
+            strokeWidth="3"
+            markerEnd="url(#ah)"
+          />
           <circle cx="60" cy="100" r="9" fill="#7E8B63" />
           <circle cx="150" cy="50" r="9" fill="#C5C9C0" />
           <circle cx="95" cy="95" r="9" fill="#9FAC82" />
@@ -66,7 +104,12 @@ export function FeatureVisual({ id }: { id: FeatureId }) {
         <svg viewBox="0 0 240 150" className={common} role="presentation" aria-hidden="true">
           <g transform="translate(20 18)">
             <circle cx="6" cy="6" r="5" fill="#9FAC82">
-              <animate attributeName="opacity" values="1;0.3;1" dur="1.4s" repeatCount="indefinite" />
+              <animate
+                attributeName="opacity"
+                values="1;0.3;1"
+                dur="1.4s"
+                repeatCount="indefinite"
+              />
             </circle>
             <text x="20" y="10" fontSize="10" fontWeight="700" fill="#C5C9C0" letterSpacing="2">
               LIVE
@@ -78,7 +121,15 @@ export function FeatureVisual({ id }: { id: FeatureId }) {
               <text x="8" y="12" textAnchor="middle" fontSize="9" fontWeight="700" fill="#131512">
                 {i + 2}
               </text>
-              <rect x="26" y="4" width={140 - i * 22} height="8" rx="4" fill="#9FAC82" opacity={0.8 - i * 0.15} />
+              <rect
+                x="26"
+                y="4"
+                width={140 - i * 22}
+                height="8"
+                rx="4"
+                fill="#9FAC82"
+                opacity={0.8 - i * 0.15}
+              />
               <rect x={190} y="2" width="22" height="12" rx="3" fill="#1F221B" stroke="#2c2f27" />
             </g>
           ))}

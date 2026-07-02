@@ -10,13 +10,7 @@ interface SectionHeadingProps {
   id?: string
 }
 
-export function SectionHeading({
-  eyebrow,
-  title,
-  lead,
-  align = 'left',
-  id,
-}: SectionHeadingProps) {
+export function SectionHeading({ eyebrow, title, lead, align = 'left', id }: SectionHeadingProps) {
   return (
     <div className={align === 'center' ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl'}>
       {eyebrow && <span className="eyebrow">{eyebrow}</span>}

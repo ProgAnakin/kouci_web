@@ -36,11 +36,23 @@ const easeOutBack = (x: number) => {
   return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2)
 }
 
-function Bar({ size, position }: { size: [number, number, number]; position: [number, number, number] }) {
+function Bar({
+  size,
+  position,
+}: {
+  size: [number, number, number]
+  position: [number, number, number]
+}) {
   return (
     <mesh position={position}>
       <boxGeometry args={size} />
-      <meshPhysicalMaterial color={palette.silver} roughness={0.3} metalness={0.3} clearcoat={0.8} clearcoatRoughness={0.3} />
+      <meshPhysicalMaterial
+        color={palette.silver}
+        roughness={0.3}
+        metalness={0.3}
+        clearcoat={0.8}
+        clearcoatRoughness={0.3}
+      />
     </mesh>
   )
 }

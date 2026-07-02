@@ -6,11 +6,7 @@ import { Html, useProgress } from '@react-three/drei'
  */
 export function CanvasFallback() {
   return (
-    <div
-      className="grid h-full w-full place-items-center bg-bg"
-      role="status"
-      aria-live="polite"
-    >
+    <div className="grid h-full w-full place-items-center bg-bg" role="status" aria-live="polite">
       <div className="flex flex-col items-center gap-3">
         <span className="h-8 w-8 animate-spin rounded-full border-2 border-silver/25 border-t-brand-light" />
         <span className="text-[11px] uppercase tracking-[0.25em] text-silver">Loading scene</span>

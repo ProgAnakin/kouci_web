@@ -28,7 +28,6 @@ export class ErrorBoundary extends Component<Props, State> {
   componentDidCatch(error: Error, info: ErrorInfo) {
     if (import.meta.env.DEV) {
       const tag = this.props.label ? `ErrorBoundary: ${this.props.label}` : 'ErrorBoundary'
-      // eslint-disable-next-line no-console
       console.error(`[${tag}]`, error, info.componentStack)
     }
   }

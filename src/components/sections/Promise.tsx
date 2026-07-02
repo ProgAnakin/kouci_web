@@ -17,7 +17,10 @@ const proofs = [
 
 export function PromiseSection() {
   return (
-    <section aria-labelledby="promise-title" className="relative border-t border-white/5 py-24 md:py-32">
+    <section
+      aria-labelledby="promise-title"
+      className="relative border-t border-white/5 py-24 md:py-32"
+    >
       <div className="container-content">
         <Reveal>
           <p className="eyebrow">The promise</p>
@@ -28,12 +31,17 @@ export function PromiseSection() {
             The pool moves fast. Your decisions should move faster.
           </h2>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-silver">
-            Every set, every exclusion, every penalty tells a story. Kouci captures it — and
-            hands you the clarity to act on it. Stop coaching from memory. Start coaching from data.
+            Every set, every exclusion, every penalty tells a story. Kouci captures it — and hands
+            you the clarity to act on it. Stop coaching from memory. Start coaching from data.
           </p>
         </Reveal>
 
-        <Reveal as="dl" stagger delay={0.1} className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-white/5 bg-white/5 sm:grid-cols-3">
+        <Reveal
+          as="dl"
+          stagger
+          delay={0.1}
+          className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-white/5 bg-white/5 sm:grid-cols-3"
+        >
           {proofs.map((p) => (
             <div key={p.head} className="bg-bg p-7">
               <dt className="font-display text-lg font-semibold text-brand-light">{p.head}</dt>

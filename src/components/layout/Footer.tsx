@@ -40,9 +40,19 @@ function YouTubeIcon({ className }: IconProps) {
 // Real Kouci profiles. Flip `enabled` to show/hide a network without touching
 // the markup; only enabled links with a real href are rendered.
 const socials = [
-  { name: 'Instagram', href: 'https://www.instagram.com/kouci.wp', icon: InstagramIcon, enabled: true },
+  {
+    name: 'Instagram',
+    href: 'https://www.instagram.com/kouci.wp',
+    icon: InstagramIcon,
+    enabled: true,
+  },
   { name: 'X', href: 'https://x.com/KouciWP', icon: XIcon, enabled: true },
-  { name: 'LinkedIn', href: 'https://www.linkedin.com/company/kouciwp/', icon: LinkedInIcon, enabled: true },
+  {
+    name: 'LinkedIn',
+    href: 'https://www.linkedin.com/company/kouciwp/',
+    icon: LinkedInIcon,
+    enabled: true,
+  },
   { name: 'YouTube', href: 'https://www.youtube.com/@KouciWP', icon: YouTubeIcon, enabled: true },
 ]
 
@@ -56,8 +66,8 @@ export function Footer() {
               <Logo />
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-silver">
-              Water polo tactical &amp; statistical analysis for coaches and analysts.
-              Master Every Play.
+              Water polo tactical &amp; statistical analysis for coaches and analysts. Master Every
+              Play.
             </p>
           </div>
 

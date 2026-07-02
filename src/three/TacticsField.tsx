@@ -98,21 +98,68 @@ export function TacticsField({ reducedMotion = false }: { reducedMotion?: boolea
       {/* Board */}
       <mesh position={[0, -0.05, 0]} receiveShadow>
         <boxGeometry args={[FIELD_W + 0.4, 0.1, FIELD_D + 0.4]} />
-        <meshPhysicalMaterial color={palette.surface} roughness={0.65} metalness={0.05} clearcoat={0.4} clearcoatRoughness={0.6} />
+        <meshPhysicalMaterial
+          color={palette.surface}
+          roughness={0.65}
+          metalness={0.05}
+          clearcoat={0.4}
+          clearcoatRoughness={0.6}
+        />
       </mesh>
 
       {/* Field markings: goal lines, halfway, and the 2m / 5m lines. */}
-      <Line size={[FIELD_W, 0.012, 0.05]} position={[0, 0.011, -FIELD_D / 2]} color={palette.silver} />
-      <Line size={[FIELD_W, 0.012, 0.05]} position={[0, 0.011, FIELD_D / 2]} color={palette.silver} />
-      <Line size={[0.05, 0.012, FIELD_D]} position={[-FIELD_W / 2, 0.011, 0]} color={palette.silver} />
-      <Line size={[0.05, 0.012, FIELD_D]} position={[FIELD_W / 2, 0.011, 0]} color={palette.silver} />
-      <Line size={[0.05, 0.012, FIELD_D]} position={[0, 0.011, 0]} color={palette.brandLight} opacity={0.7} />
+      <Line
+        size={[FIELD_W, 0.012, 0.05]}
+        position={[0, 0.011, -FIELD_D / 2]}
+        color={palette.silver}
+      />
+      <Line
+        size={[FIELD_W, 0.012, 0.05]}
+        position={[0, 0.011, FIELD_D / 2]}
+        color={palette.silver}
+      />
+      <Line
+        size={[0.05, 0.012, FIELD_D]}
+        position={[-FIELD_W / 2, 0.011, 0]}
+        color={palette.silver}
+      />
+      <Line
+        size={[0.05, 0.012, FIELD_D]}
+        position={[FIELD_W / 2, 0.011, 0]}
+        color={palette.silver}
+      />
+      <Line
+        size={[0.05, 0.012, FIELD_D]}
+        position={[0, 0.011, 0]}
+        color={palette.brandLight}
+        opacity={0.7}
+      />
       {/* 5m lines */}
-      <Line size={[0.04, 0.012, FIELD_D]} position={[-1.8, 0.011, 0]} color={palette.brandLight} opacity={0.4} />
-      <Line size={[0.04, 0.012, FIELD_D]} position={[1.8, 0.011, 0]} color={palette.brandLight} opacity={0.4} />
+      <Line
+        size={[0.04, 0.012, FIELD_D]}
+        position={[-1.8, 0.011, 0]}
+        color={palette.brandLight}
+        opacity={0.4}
+      />
+      <Line
+        size={[0.04, 0.012, FIELD_D]}
+        position={[1.8, 0.011, 0]}
+        color={palette.brandLight}
+        opacity={0.4}
+      />
       {/* 2m lines */}
-      <Line size={[0.04, 0.012, FIELD_D]} position={[-2.5, 0.011, 0]} color={palette.brand} opacity={0.5} />
-      <Line size={[0.04, 0.012, FIELD_D]} position={[2.5, 0.011, 0]} color={palette.brand} opacity={0.5} />
+      <Line
+        size={[0.04, 0.012, FIELD_D]}
+        position={[-2.5, 0.011, 0]}
+        color={palette.brand}
+        opacity={0.5}
+      />
+      <Line
+        size={[0.04, 0.012, FIELD_D]}
+        position={[2.5, 0.011, 0]}
+        color={palette.brand}
+        opacity={0.5}
+      />
 
       <Goal x={-FIELD_W / 2} />
       <Goal x={FIELD_W / 2} />
@@ -120,7 +167,13 @@ export function TacticsField({ reducedMotion = false }: { reducedMotion?: boolea
       {/* Colored halos under the caps — one instanced draw call, additive. */}
       <Instances limit={CAPS.length} range={CAPS.length}>
         <ringGeometry args={[0.24, 0.34, 32]} />
-        <meshBasicMaterial transparent opacity={0.45} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
+        <meshBasicMaterial
+          transparent
+          opacity={0.45}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+          toneMapped={false}
+        />
         {CAPS.map((c, i) => (
           <Instance
             key={i}
@@ -147,11 +200,26 @@ export function TacticsField({ reducedMotion = false }: { reducedMotion?: boolea
 
       {/* Animated 3D arrows */}
       {ARROWS.map((a, i) => (
-        <Arrow key={i} from={a.from} to={a.to} color={a.color} reducedMotion={reducedMotion} delay={i * 0.22} />
+        <Arrow
+          key={i}
+          from={a.from}
+          to={a.to}
+          color={a.color}
+          reducedMotion={reducedMotion}
+          delay={i * 0.22}
+        />
       ))}
 
       {/* Fine glints drifting over the board. */}
-      <Sparkles count={20} scale={[FIELD_W, 1.4, FIELD_D]} position={[0, 0.6, 0]} size={1.6} speed={reducedMotion ? 0 : 0.25} opacity={0.4} color={palette.brandLight} />
+      <Sparkles
+        count={20}
+        scale={[FIELD_W, 1.4, FIELD_D]}
+        position={[0, 0.6, 0]}
+        size={1.6}
+        speed={reducedMotion ? 0 : 0.25}
+        opacity={0.4}
+        color={palette.brandLight}
+      />
 
       <Hotspot
         position={[0, 0.5, 1.4]}

@@ -21,7 +21,14 @@ interface PanelProps {
   renderCanvas: (active: boolean) => ReactNode
 }
 
-function ShowcasePanel({ title, description, ariaLabel, srDescription, legend, renderCanvas }: PanelProps) {
+function ShowcasePanel({
+  title,
+  description,
+  ariaLabel,
+  srDescription,
+  legend,
+  renderCanvas,
+}: PanelProps) {
   const [ref, mount, active] = useCanvasActivation<HTMLDivElement>({ rootMargin: '300px' })
 
   return (
@@ -32,7 +39,11 @@ function ShowcasePanel({ title, description, ariaLabel, srDescription, legend, r
         aria-label={ariaLabel}
         className="relative aspect-[4/3] w-full bg-bg sm:aspect-[16/10]"
       >
-        {mount ? <Suspense fallback={<CanvasFallback />}>{renderCanvas(active)}</Suspense> : <CanvasFallback />}
+        {mount ? (
+          <Suspense fallback={<CanvasFallback />}>{renderCanvas(active)}</Suspense>
+        ) : (
+          <CanvasFallback />
+        )}
       </div>
       <div className="p-6 md:p-8">
         <h3 className="text-xl font-semibold text-ink md:text-2xl">{title}</h3>
@@ -46,12 +57,22 @@ function ShowcasePanel({ title, description, ariaLabel, srDescription, legend, r
 }
 
 function Dot({ color }: { color: string }) {
-  return <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: color }} aria-hidden="true" />
+  return (
+    <span
+      className="h-2.5 w-2.5 rounded-full"
+      style={{ backgroundColor: color }}
+      aria-hidden="true"
+    />
+  )
 }
 
 export function Showcase() {
   return (
-    <section id="showcase" aria-labelledby="showcase-title" className="border-t border-white/5 py-24 md:py-32">
+    <section
+      id="showcase"
+      aria-labelledby="showcase-title"
+      className="border-t border-white/5 py-24 md:py-32"
+    >
       <div className="container-content">
         <SectionHeading
           id="showcase-title"

@@ -29,7 +29,7 @@ It is designed around how water polo is actually coached — not adapted from a 
 
 ## Built for the pool deck
 
-Every decision in Kouci starts with a simple question: *does this help a coach win the next game?* The interface is fast, works on the devices you already have, and keeps your data yours.
+Every decision in Kouci starts with a simple question: _does this help a coach win the next game?_ The interface is fast, works on the devices you already have, and keeps your data yours.
 
 > Good analysis is not about more numbers. It is about the right number, at the right moment, in a form you can act on.
 

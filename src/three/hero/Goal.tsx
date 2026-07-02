@@ -108,7 +108,12 @@ export function Goal({ position = [0, 0, 0], rotationY = 0, width = 3, height = 
         <cylinderGeometry args={[floatR, floatR, width + floatR * 2, 14]} />
       </mesh>
       {[-half, half].map((x) => (
-        <mesh key={`f${x}`} position={[x, 0.02, -depth / 2]} rotation-x={Math.PI / 2} material={frameMat}>
+        <mesh
+          key={`f${x}`}
+          position={[x, 0.02, -depth / 2]}
+          rotation-x={Math.PI / 2}
+          material={frameMat}
+        >
           <cylinderGeometry args={[floatR, floatR, depth, 14]} />
         </mesh>
       ))}

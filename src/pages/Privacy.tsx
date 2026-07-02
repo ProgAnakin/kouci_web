@@ -40,8 +40,8 @@ export function Privacy() {
           </li>
           <li>
             <strong>Basic analytics:</strong> aggregated, anonymous usage statistics (page views,
-            country, device type) via Vercel Web Analytics. This uses <strong>no cookies</strong> and
-            does not identify you.
+            country, device type) via Vercel Web Analytics. This uses <strong>no cookies</strong>{' '}
+            and does not identify you.
           </li>
         </ul>
 
@@ -66,8 +66,8 @@ export function Privacy() {
         <h2>5. International transfers</h2>
         <p>
           Formspree and Vercel are based in the United States, so your data may be processed outside
-          the European Economic Area. Where that happens, it is covered by the appropriate safeguards
-          (e.g. Standard Contractual Clauses / EU–US Data Privacy Framework).
+          the European Economic Area. Where that happens, it is covered by the appropriate
+          safeguards (e.g. Standard Contractual Clauses / EU–US Data Privacy Framework).
         </p>
 
         <h2>6. How long we keep it</h2>
@@ -83,8 +83,7 @@ export function Privacy() {
           <li>have it deleted, or ask us to stop using it (withdraw consent);</li>
           <li>receive a copy of it (portability);</li>
           <li>
-            lodge a complaint with the Portuguese supervisory authority, the{' '}
-            <strong>CNPD</strong> (
+            lodge a complaint with the Portuguese supervisory authority, the <strong>CNPD</strong> (
             <a href="https://www.cnpd.pt" target="_blank" rel="noopener noreferrer">
               cnpd.pt
             </a>
@@ -98,7 +97,8 @@ export function Privacy() {
 
         <h2>8. Changes to this policy</h2>
         <p>
-          If we change how we handle your data, we will update this page and its “last updated” date.
+          If we change how we handle your data, we will update this page and its “last updated”
+          date.
         </p>
       </article>
     </main>

@@ -47,8 +47,7 @@ export default function HeroCanvas({ active = true, onReady }: HeroCanvasProps) 
 
   if (!isWebGLAvailable()) return fallback
 
-  const isMobile =
-    typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
+  const isMobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
 
   return (
     <ErrorBoundary label="HeroCanvas" fallback={fallback}>
@@ -63,39 +62,39 @@ export default function HeroCanvas({ active = true, onReady }: HeroCanvasProps) 
           onReady?.()
         }}
       >
-      <Suspense fallback={<SceneLoader />}>
-        {/* Lights + the baked Lightformer environment the speculars reflect. */}
-        <Lighting />
+        <Suspense fallback={<SceneLoader />}>
+          {/* Lights + the baked Lightformer environment the speculars reflect. */}
+          <Lighting />
 
-        {/* Night sky */}
-        <Stars
-          radius={22}
-          depth={10}
-          count={isMobile ? 220 : 550}
-          factor={2.2}
-          saturation={0}
-          fade
-          speed={reduced ? 0 : 0.35}
-        />
+          {/* Night sky */}
+          <Stars
+            radius={22}
+            depth={10}
+            count={isMobile ? 220 : 550}
+            factor={2.2}
+            saturation={0}
+            fade
+            speed={reduced ? 0 : 0.35}
+          />
 
-        <Water reducedMotion={reduced} segments={isMobile ? 72 : 140} />
+          <Water reducedMotion={reduced} segments={isMobile ? 72 : 140} />
 
-        {/* Floating goal behind the ball, at true scale relative to it —
+          {/* Floating goal behind the ball, at true scale relative to it —
             deep and right, so it never reaches the headline. */}
-        <Goal
-          position={[17.5, WATER_Y, -9]}
-          rotationY={-0.45}
-          width={GOAL_WIDTH}
-          height={GOAL_HEIGHT}
-        />
+          <Goal
+            position={[17.5, WATER_Y, -9]}
+            rotationY={-0.45}
+            width={GOAL_WIDTH}
+            height={GOAL_HEIGHT}
+          />
 
-        {/* The match ball riding the swell — the centrepiece. */}
-        <BallScene position={isMobile ? [3.7, 2.2] : [4.5, 2.2]} reducedMotion={reduced} />
+          {/* The match ball riding the swell — the centrepiece. */}
+          <BallScene position={isMobile ? [3.7, 2.2] : [4.5, 2.2]} reducedMotion={reduced} />
 
-        <CameraRig reducedMotion={reduced} />
-        <AdaptiveDpr pixelated />
-      </Suspense>
-    </Canvas>
+          <CameraRig reducedMotion={reduced} />
+          <AdaptiveDpr pixelated />
+        </Suspense>
+      </Canvas>
     </ErrorBoundary>
   )
 }

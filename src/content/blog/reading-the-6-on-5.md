@@ -9,7 +9,7 @@ cover: /assets/blog/six-on-five.png
 
 A single exclusion swings a water polo match more than almost any event in team sport. For twenty seconds you have a six-on-five — and how you use those seconds, over a season, separates the teams that medal from the teams that do not.
 
-The problem is that power plays *feel* chaotic. The ball moves fast, the defence shifts, and it is hard to tell from the bench whether a goal came from a good system or a lucky finish. That is exactly the kind of question data answers well.
+The problem is that power plays _feel_ chaotic. The ball moves fast, the defence shifts, and it is hard to tell from the bench whether a goal came from a good system or a lucky finish. That is exactly the kind of question data answers well.
 
 ## The four questions that matter
 
@@ -38,13 +38,13 @@ The right side is dragging the whole power play down. Maybe the shooter there is
 
 ## Time is a tell
 
-Time-to-shot is the most underrated power-play stat. Teams that shoot in the first eight seconds usually do it off a *designed* movement. Teams that shoot at fifteen-plus seconds are often *improvising* because the first option failed.
+Time-to-shot is the most underrated power-play stat. Teams that shoot in the first eight seconds usually do it off a _designed_ movement. Teams that shoot at fifteen-plus seconds are often _improvising_ because the first option failed.
 
 Neither is wrong — but if 70% of your goals come late, your set play is not creating the early look you drew up. The whiteboard says one thing; the pool says another.
 
 ## From numbers to plays
 
-This is where the statistical and the tactical sides meet. Once you know *where* and *when* you score, you can:
+This is where the statistical and the tactical sides meet. Once you know _where_ and _when_ you score, you can:
 
 - Animate the set play that produces your best early look.
 - Rehearse the secondary option for when the first is taken away.

@@ -16,9 +16,4 @@ export const palette = {
 export type PaletteKey = keyof typeof palette
 
 /** Convenience array used to color repeated 3D elements (pins, points). */
-export const pinColors = [
-  palette.brandLight,
-  palette.silver,
-  palette.brand,
-  palette.ink,
-] as const
+export const pinColors = [palette.brandLight, palette.silver, palette.brand, palette.ink] as const

@@ -22,7 +22,11 @@ const audience = [
 
 export function Audience() {
   return (
-    <section id="audience" aria-labelledby="audience-title" className="border-t border-white/5 py-24 md:py-32">
+    <section
+      id="audience"
+      aria-labelledby="audience-title"
+      className="border-t border-white/5 py-24 md:py-32"
+    >
       <div className="container-content">
         <SectionHeading
           id="audience-title"

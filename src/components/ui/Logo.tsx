@@ -22,7 +22,14 @@ export function Logo({ className, showWordmark = true, size = 32 }: LogoProps) {
         className="shrink-0"
       >
         <defs>
-          <linearGradient id="kouci-mark" x1="4" y1="2" x2="28" y2="30" gradientUnits="userSpaceOnUse">
+          <linearGradient
+            id="kouci-mark"
+            x1="4"
+            y1="2"
+            x2="28"
+            y2="30"
+            gradientUnits="userSpaceOnUse"
+          >
             <stop stopColor="#9FAC82" />
             <stop offset="1" stopColor="#7E8B63" />
           </linearGradient>

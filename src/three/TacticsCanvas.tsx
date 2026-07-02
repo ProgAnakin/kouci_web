@@ -30,24 +30,34 @@ export default function TacticsCanvas({ active = true }: { active?: boolean }) {
         frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(palette.bg), 0)}
       >
-      <Suspense fallback={<SceneLoader />}>
-        <hemisphereLight args={[palette.brandLight, palette.bg, 0.55]} />
-        <directionalLight position={[3, 6, 4]} intensity={1.1} color={palette.ink} castShadow />
-        <Environment resolution={48} frames={1}>
-          <Lightformer intensity={1.8} position={[2, 5, 3]} scale={[6, 6, 1]} color={palette.brandLight} />
-          <Lightformer intensity={0.8} position={[-4, 2, -2]} scale={[3, 3, 1]} color={palette.silver} />
-        </Environment>
-        <TacticsField reducedMotion={reduced} />
-        <ContactShadows
-          position={[0, -0.11, 0]}
-          opacity={0.4}
-          scale={12}
-          blur={2.4}
-          far={4}
-          color="#000000"
-          frames={reduced ? 1 : Infinity}
-        />
-      </Suspense>
+        <Suspense fallback={<SceneLoader />}>
+          <hemisphereLight args={[palette.brandLight, palette.bg, 0.55]} />
+          <directionalLight position={[3, 6, 4]} intensity={1.1} color={palette.ink} castShadow />
+          <Environment resolution={48} frames={1}>
+            <Lightformer
+              intensity={1.8}
+              position={[2, 5, 3]}
+              scale={[6, 6, 1]}
+              color={palette.brandLight}
+            />
+            <Lightformer
+              intensity={0.8}
+              position={[-4, 2, -2]}
+              scale={[3, 3, 1]}
+              color={palette.silver}
+            />
+          </Environment>
+          <TacticsField reducedMotion={reduced} />
+          <ContactShadows
+            position={[0, -0.11, 0]}
+            opacity={0.4}
+            scale={12}
+            blur={2.4}
+            far={4}
+            color="#000000"
+            frames={reduced ? 1 : Infinity}
+          />
+        </Suspense>
       </Canvas>
     </ErrorBoundary>
   )
