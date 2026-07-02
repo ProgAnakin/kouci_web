@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 90" width="1200" height="90" role="img" aria-label="Animated water line in the Kouci olive palette">
+  <style>
+    .w1 { animation: drift 9s linear infinite; }
+    .w2 { animation: drift 15s linear infinite; opacity: 0.6; }
+    .w3 { animation: drift 23s linear infinite; opacity: 0.3; }
+    @keyframes drift { to { transform: translateX(-600px); } }
+    @media (prefers-reduced-motion: reduce) { .w1, .w2, .w3 { animation: none; } }
+  </style>
+  <!-- Each path repeats every 600px, so the -600px drift loops seamlessly. -->
+  <g class="w3">
+    <path fill="#C5C9C0" d="M0,38 q75,-26 150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 L1800,90 L0,90 Z" />
+  </g>
+  <g class="w2">
+    <path fill="#9FAC82" d="M0,52 q75,-30 150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 L1800,90 L0,90 Z" />
+  </g>
+  <g class="w1">
+    <path fill="#7E8B63" d="M0,66 q75,-24 150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 t150,0 L1800,90 L0,90 Z" />
+  </g>
+</svg>
