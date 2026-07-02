@@ -73,7 +73,7 @@ export function Hero() {
         )}
 
         {/* Left scrim — keeps the headline fully legible over open water while
-            the players sit clear, on the right. */}
+            the ball and goal sit clear, on the right. */}
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#131512_0%,rgba(19,21,18,0.7)_40%,transparent_70%)]" />
         {/* On phones the text sits over the scene, so add a soft global dim. */}
         <div className="pointer-events-none absolute inset-0 bg-bg/40 md:hidden" />

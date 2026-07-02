@@ -5,7 +5,6 @@ import * as THREE from 'three'
 import { Water } from './hero/Water'
 import { BallScene, GOAL_WIDTH, GOAL_HEIGHT } from './hero/BallScene'
 import { Goal } from './hero/Goal'
-import { Players, type PlayerDef } from './hero/Players'
 import { WATER_Y } from './hero/constants'
 import { CameraRig } from './CameraRig'
 import { Lighting } from './Lighting'
@@ -15,36 +14,15 @@ import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { isWebGLAvailable } from './webgl'
 
 /**
- * Hero pool scene — two clay players passing the match ball on realistic night
- * water, with a floating goal behind them at true FINA proportions (the goal
- * mouth is ~13.6 ball diameters wide). Default-exported for React.lazy.
+ * Hero pool scene — a match ball riding realistic night water, with a floating
+ * goal behind it at true FINA proportions (the goal mouth is ~13.6 ball
+ * diameters wide). Default-exported for React.lazy.
  *
  * The cinematic look comes from ACES Filmic tone mapping, MSAA, a procedural
  * environment map (drei <Environment> with Lightformers — no network fetch)
  * feeding the glossy water speculars, and a CSS vignette — no post-processing
  * pass, so the bundle stays light and the frame cheap.
  */
-
-// The two busts flank the pass, right of the headline. Positive rotationY
-// turns a model's front (+Z) toward +X (screen right); kept shallow so both
-// faces read from the camera's low-left vantage.
-function playerDefs(isMobile: boolean): { defs: PlayerDef[]; hands: { a: [number, number, number]; b: [number, number, number] } } {
-  const shift = isMobile ? -0.7 : 0
-  const ax = 3.3 + shift
-  const bx = 5.9 + shift
-  const az = 2.3
-  const bz = 1.5
-  return {
-    defs: [
-      { url: '/assets/players/player-4.glb', position: [ax, az], rotationY: -0.15, scale: 1.9, offsetY: 0.48, phase: 0 },
-      { url: '/assets/players/player-4.glb', position: [bx, bz], rotationY: -0.65, scale: 1.9, offsetY: 0.48, phase: 1.4 },
-    ],
-    hands: {
-      a: [ax + 0.52, 0.3, az - 0.18],
-      b: [bx - 0.52, 0.27, bz + 0.15],
-    },
-  }
-}
 interface HeroCanvasProps {
   /** When false the canvas stops rendering (off-screen) to free the scroll. */
   active?: boolean
@@ -69,7 +47,6 @@ export default function HeroCanvas({ active = true, onReady }: HeroCanvasProps) 
 
   const isMobile =
     typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
-  const { defs, hands } = playerDefs(isMobile)
 
   return (
     <Canvas
@@ -109,13 +86,8 @@ export default function HeroCanvas({ active = true, onReady }: HeroCanvasProps) 
           height={GOAL_HEIGHT}
         />
 
-        {/* The two clay players and the ball arcing between their hands. */}
-        <Players defs={defs} reducedMotion={reduced} />
-        <BallScene
-          position={isMobile ? [3.7, 2.2] : [4.5, 2.2]}
-          pass={hands}
-          reducedMotion={reduced}
-        />
+        {/* The match ball riding the swell — the centrepiece. */}
+        <BallScene position={isMobile ? [3.7, 2.2] : [4.5, 2.2]} reducedMotion={reduced} />
 
         <CameraRig reducedMotion={reduced} />
         <AdaptiveDpr pixelated />
