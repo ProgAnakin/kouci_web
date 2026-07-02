@@ -54,6 +54,8 @@ interface ModelPlayerProps {
   position: [number, number, number]
   /** Shared world-space ball position the head looks toward. */
   aim: MutableRefObject<THREE.Vector3>
+  /** Optional body english from the pass choreography (radians). */
+  pose?: MutableRefObject<{ lean: number; twist: number }>
   reducedMotion?: boolean
   phase?: number
 }
@@ -66,7 +68,7 @@ const _target = new THREE.Vector3()
  * AnimationMixer, and lets the head track the ball + cursor. Lazy-loaded and
  * mounted only when a model is configured (see modelConfig.ts).
  */
-export function ModelPlayer({ def, position, aim, reducedMotion = false, phase = 0 }: ModelPlayerProps) {
+export function ModelPlayer({ def, position, aim, pose, reducedMotion = false, phase = 0 }: ModelPlayerProps) {
   const gltf = useGLB(def.url)
   const model = useMemo(() => SkeletonUtils.clone(gltf.scene), [gltf])
   const mixer = useMemo(() => new THREE.AnimationMixer(model), [model])
@@ -109,14 +111,23 @@ export function ModelPlayer({ def, position, aim, reducedMotion = false, phase =
     }
 
     // No skeleton (e.g. an image-to-3D bust): animate the whole model so it
-    // feels alive — bob on the water, sway, and lean toward the ball + cursor.
+    // feels alive — bob on the water, sway, lean toward the ball + cursor, and
+    // follow the throw/catch body english fed in by the pass choreography.
     const g = group.current
     if (g && !reducedMotion) {
       const t = state.clock.elapsedTime
-      g.position.y = baseY + Math.sin(t * 1.15 + phase) * 0.03
+      const lean = pose?.current.lean ?? 0
+      const twist = pose?.current.twist ?? 0
+      // The throw drives the body down into the water a touch as it whips.
+      g.position.y = baseY + Math.sin(t * 1.15 + phase) * 0.03 - Math.abs(lean) * 0.12
       const towardBall = THREE.MathUtils.clamp(aim.current.x - g.position.x, -1.5, 1.5)
       g.rotation.y =
-        baseRotationY + Math.sin(t * 0.5 + phase) * 0.06 + towardBall * 0.08 + state.pointer.x * 0.1
+        baseRotationY +
+        twist +
+        Math.sin(t * 0.5 + phase) * 0.06 +
+        towardBall * 0.08 +
+        state.pointer.x * 0.1
+      g.rotation.x = lean + Math.sin(t * 0.9 + phase * 1.7) * 0.015
       g.rotation.z = Math.sin(t * 0.8 + phase * 1.3) * 0.02
     }
   })

@@ -21,7 +21,17 @@ export interface PlayerModelDef {
   idleClip?: string
 }
 
+// Both players use the player-4 bust until the player-7 model lands; they are
+// rotated to face each other across the pass (the bust faces +z at rotY 0).
+const player4: PlayerModelDef = {
+  url: '/assets/players/player-4.glb',
+  scale: 1.5,
+  // Lift the bust so head + shoulders ride above the waterline (the model is
+  // centred on its origin, spanning ±0.75 at this scale).
+  offsetY: 0.5,
+}
+
 export const PLAYER_MODELS: { a: PlayerModelDef | null; b: PlayerModelDef | null } = {
-  a: null,
-  b: null,
+  a: { ...player4, rotationY: 0.35 },
+  b: { ...player4, rotationY: -0.7 },
 }

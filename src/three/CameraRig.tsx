@@ -5,9 +5,9 @@ import { scrollState } from '../lib/scrollStore'
 import { heroState } from './heroState'
 
 const _look = new THREE.Vector3()
-// Aimed right, so the ball + goal sit in the right of the frame, clear of the
-// headline on the left.
-const baseLook = new THREE.Vector3(3.9, 0.5, 0.2)
+// Aimed right, so the players + ball sit in the right of the frame, clear of
+// the headline on the left.
+const baseLook = new THREE.Vector3(4.35, 0.5, 0.2)
 
 /**
  * Low, cinematic camera. Eases its position with maath damping (idle sway +

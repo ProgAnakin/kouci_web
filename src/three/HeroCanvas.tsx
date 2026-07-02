@@ -3,10 +3,8 @@ import { Canvas } from '@react-three/fiber'
 import { AdaptiveDpr, Sparkles, Stars } from '@react-three/drei'
 import * as THREE from 'three'
 import { WaterSurface } from './WaterSurface'
-import { FloatingBall } from './FloatingBall'
+import { WaterPoloPlay } from './WaterPoloPlay'
 import { Particles } from './Particles'
-import { WaterPoloGoal } from './WaterPoloGoal'
-import { WATER_Y } from './wave'
 import { CameraRig } from './CameraRig'
 import { Lighting } from './Lighting'
 import { SceneLoader } from './Loader'
@@ -15,8 +13,9 @@ import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { isWebGLAvailable } from './webgl'
 
 /**
- * Hero pool scene — a water polo ball bobbing in front of a floating goal under
- * a starry sky, with cinematic lighting. Default-exported for React.lazy.
+ * Hero pool scene — two players passing a water polo ball in front of a distant
+ * floating goal, under a starry sky with cinematic lighting. Default-exported
+ * for React.lazy.
  *
  * The cinematic look is achieved without a post-processing pass (which is a
  * heavy lazy chunk + per-frame GPU cost): the renderer's ACES Filmic tone
@@ -70,20 +69,8 @@ export default function HeroCanvas({ active = true, onReady }: HeroCanvasProps) 
 
         <WaterSurface reducedMotion={reduced} segments={isMobile ? 48 : 96} />
 
-        {/* A water polo ball bobbing on the swell in front of a floating goal —
-            the hero centrepiece. */}
-        <WaterPoloGoal
-          position={isMobile ? [4.3, WATER_Y, -2.6] : [6.4, WATER_Y, -2.6]}
-          rotation={[0, -0.62, 0]}
-          width={2.2}
-          height={0.9}
-          emissiveIntensity={0.2}
-        />
-        <FloatingBall
-          position={isMobile ? [3.5, WATER_Y, 1.0] : [4.9, WATER_Y, 1.0]}
-          radius={0.44}
-          reducedMotion={reduced}
-        />
+        {/* Two players passing the ball in a loop — the hero centrepiece. */}
+        <WaterPoloPlay reducedMotion={reduced} offsetX={isMobile ? -0.4 : 0} />
 
         {/* Atmosphere: drifting spray + fine glints over the water. */}
         <Particles count={isMobile ? 14 : 26} reducedMotion={reduced} />
