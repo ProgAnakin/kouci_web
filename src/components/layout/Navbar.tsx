@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { track } from '@vercel/analytics'
 import { ButtonLink } from '../ui/Button'
 import { Logo } from '../ui/Logo'
 
@@ -69,7 +70,11 @@ export function Navbar() {
             </li>
           </ul>
 
-          <ButtonLink href={isHome ? '#early-access' : '/#early-access'} className="!px-5 !py-2">
+          <ButtonLink
+            href={isHome ? '#early-access' : '/#early-access'}
+            className="!px-5 !py-2"
+            onClick={() => track('cta_click', { placement: 'navbar', label: 'early_access' })}
+          >
             Get Early Access
           </ButtonLink>
         </nav>

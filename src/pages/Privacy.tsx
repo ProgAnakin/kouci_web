@@ -35,8 +35,10 @@ export function Privacy() {
         <h2>2. What we collect</h2>
         <ul>
           <li>
-            <strong>Early-access form:</strong> the <strong>name</strong> and{' '}
-            <strong>email address</strong> you submit.
+            <strong>Early-access form:</strong> the <strong>name</strong>,{' '}
+            <strong>email address</strong>, <strong>club/team</strong> and <strong>role</strong> you
+            submit — plus, optionally, your <strong>country</strong> and whether you’d like a guided
+            demo.
           </li>
           <li>
             <strong>Basic analytics:</strong> aggregated, anonymous usage statistics (page views,

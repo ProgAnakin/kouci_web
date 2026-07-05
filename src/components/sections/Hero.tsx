@@ -1,6 +1,7 @@
 import { Suspense, lazy, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { track } from '@vercel/analytics'
 import { ButtonLink } from '../ui/Button'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { useCanvasActivation } from '../../hooks/useCanvasActivation'
@@ -98,10 +99,18 @@ export function Hero() {
           In development · early access opening soon
         </p>
         <div className="mt-9 flex flex-wrap items-center gap-4">
-          <ButtonLink href="#early-access" withArrow>
+          <ButtonLink
+            href="#early-access"
+            withArrow
+            onClick={() => track('cta_click', { placement: 'hero', label: 'early_access' })}
+          >
             Get Early Access
           </ButtonLink>
-          <ButtonLink href="#features" variant="ghost">
+          <ButtonLink
+            href="#features"
+            variant="ghost"
+            onClick={() => track('cta_click', { placement: 'hero', label: 'features' })}
+          >
             See the features
           </ButtonLink>
         </div>

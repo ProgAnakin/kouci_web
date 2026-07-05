@@ -14,6 +14,7 @@ export const routes: RouteRecord[] = [
     children: [
       { index: true, element: <LandingPage />, entry: 'src/pages/LandingPage.tsx' },
       { path: 'privacy', lazy: () => import('./pages/Privacy') },
+      { path: 'terms', lazy: () => import('./pages/Terms') },
       { path: 'blog', lazy: () => import('./pages/BlogIndex') },
       {
         path: 'blog/:slug',

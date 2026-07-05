@@ -3,6 +3,8 @@ import { PromiseSection } from '../components/sections/Promise'
 import { Features } from '../components/sections/Features'
 import { Showcase } from '../components/sections/Showcase'
 import { Audience } from '../components/sections/Audience'
+import { CtaBand } from '../components/sections/CtaBand'
+import { Faq, FAQ_ITEMS } from '../components/sections/Faq'
 import { EarlyAccess } from '../components/sections/EarlyAccess'
 // Reviews section is intentionally not rendered until real, attributable
 // testimonials exist (see src/components/sections/Reviews.tsx). Re-add <Reviews />
@@ -45,6 +47,15 @@ const structuredData = [
     name: SITE_NAME,
     url: SITE_URL,
   },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: FAQ_ITEMS.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  },
 ]
 
 /**
@@ -68,7 +79,9 @@ export function LandingPage() {
         <PromiseSection />
         <Features />
         <Showcase />
+        <CtaBand />
         <Audience />
+        <Faq />
         <EarlyAccess />
       </main>
     </>

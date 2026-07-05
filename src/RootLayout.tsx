@@ -1,4 +1,6 @@
 import { Outlet } from 'react-router-dom'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/react'
 import { Navbar } from './components/layout/Navbar'
 import { Footer } from './components/layout/Footer'
 import { ScrollProgress } from './components/ui/ScrollProgress'
@@ -30,6 +32,9 @@ export function RootLayout() {
       <Outlet />
 
       <Footer />
+      {/* Cookieless visit + performance telemetry (only active on Vercel). */}
+      <Analytics />
+      <SpeedInsights />
     </>
   )
 }

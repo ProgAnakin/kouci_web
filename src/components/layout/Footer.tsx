@@ -116,6 +116,9 @@ export function Footer() {
             <Link to="/privacy" className="transition-colors hover:text-brand-light">
               Privacy
             </Link>
+            <Link to="/terms" className="transition-colors hover:text-brand-light">
+              Terms
+            </Link>
             <span>Made for water polo.</span>
           </div>
         </div>
