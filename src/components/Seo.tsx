@@ -16,6 +16,8 @@ interface SeoProps {
   tags?: string[]
   /** One or more JSON-LD objects describing this page for search engines / AI. */
   jsonLd?: object | object[]
+  /** Ask crawlers not to index this page (e.g. the 404). */
+  noindex?: boolean
 }
 
 /**
@@ -34,6 +36,7 @@ export function Seo({
   author,
   tags,
   jsonLd,
+  noindex = false,
 }: SeoProps) {
   const url = absoluteUrl(path)
   const img = absoluteUrl(image || DEFAULT_OG_IMAGE)
@@ -43,6 +46,7 @@ export function Seo({
     <Head>
       <title>{title}</title>
       <meta name="description" content={description} />
+      {noindex && <meta name="robots" content="noindex" />}
       <link rel="canonical" href={url} />
 
       <meta property="og:site_name" content={SITE_NAME} />

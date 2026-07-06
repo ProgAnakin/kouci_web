@@ -25,7 +25,7 @@ export function BlogPost() {
       publisher: {
         '@type': 'Organization',
         name: SITE_NAME,
-        logo: { '@type': 'ImageObject', url: absoluteUrl('/og-image.png') },
+        logo: { '@type': 'ImageObject', url: absoluteUrl('/og-image.jpg') },
       },
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
       keywords: post.tags.join(', '),

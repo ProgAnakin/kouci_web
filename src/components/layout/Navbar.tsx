@@ -8,11 +8,14 @@ const sections = [
   { id: 'features', label: 'Features' },
   { id: 'showcase', label: 'Showcase' },
   { id: 'audience', label: 'Who it’s for' },
+  { id: 'faq', label: 'FAQ' },
 ]
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
-  const { pathname } = useLocation()
+  const [open, setOpen] = useState(false)
+  const location = useLocation()
+  const { pathname } = location
   const isHome = pathname === '/'
 
   // On the home page, section links are native anchors (smooth-scrolled by
@@ -33,6 +36,19 @@ export function Navbar() {
     }
   }, [])
 
+  // Close the mobile menu on any navigation (route or hash) and on Escape.
+  useEffect(() => {
+    setOpen(false)
+  }, [location])
+  useEffect(() => {
+    if (!open) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open])
+
   const linkClass =
     'relative text-sm text-silver transition-colors after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-brand-light after:transition-all after:duration-300 hover:text-ink hover:after:w-full'
 
@@ -42,7 +58,7 @@ export function Navbar() {
         <nav
           aria-label="Primary"
           className={`mt-4 flex items-center justify-between rounded-full border px-5 transition-all duration-300 ${
-            scrolled
+            scrolled || open
               ? 'border-white/10 bg-bg/80 py-2.5 shadow-lg shadow-black/30 backdrop-blur-xl'
               : 'border-white/5 bg-bg/40 py-3 backdrop-blur-md'
           }`}
@@ -70,14 +86,77 @@ export function Navbar() {
             </li>
           </ul>
 
-          <ButtonLink
-            href={isHome ? '#early-access' : '/#early-access'}
-            className="!px-5 !py-2"
-            onClick={() => track('cta_click', { placement: 'navbar', label: 'early_access' })}
-          >
-            Get Early Access
-          </ButtonLink>
+          <div className="flex items-center gap-2">
+            <ButtonLink
+              href={isHome ? '#early-access' : '/#early-access'}
+              className="!px-5 !py-2"
+              onClick={() => track('cta_click', { placement: 'navbar', label: 'early_access' })}
+            >
+              Get Early Access
+            </ButtonLink>
+
+            {/* Mobile menu toggle — the section links live in the disclosure
+                panel below on small screens. */}
+            <button
+              type="button"
+              aria-expanded={open}
+              aria-controls="mobile-nav"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              onClick={() => setOpen((o) => !o)}
+              className="grid h-10 w-10 place-items-center rounded-full text-ink transition-colors hover:bg-white/5 md:hidden"
+            >
+              <span className="relative block h-3.5 w-5" aria-hidden="true">
+                <span
+                  className={`absolute left-0 top-0 h-0.5 w-full rounded bg-current transition-transform duration-200 ${
+                    open ? 'translate-y-[6px] rotate-45' : ''
+                  }`}
+                />
+                <span
+                  className={`absolute left-0 top-1/2 h-0.5 w-full -translate-y-1/2 rounded bg-current transition-opacity duration-200 ${
+                    open ? 'opacity-0' : ''
+                  }`}
+                />
+                <span
+                  className={`absolute bottom-0 left-0 h-0.5 w-full rounded bg-current transition-transform duration-200 ${
+                    open ? '-translate-y-[6px] -rotate-45' : ''
+                  }`}
+                />
+              </span>
+            </button>
+          </div>
         </nav>
+
+        {/* Mobile disclosure panel. */}
+        {open && (
+          <div
+            id="mobile-nav"
+            className="mt-2 rounded-2xl border border-white/10 bg-bg/95 p-4 shadow-lg shadow-black/40 backdrop-blur-xl md:hidden"
+          >
+            <ul className="flex flex-col">
+              {sections.map((section) => (
+                <li key={section.id}>
+                  <a
+                    href={sectionHref(section.id)}
+                    onClick={() => setOpen(false)}
+                    className="block rounded-lg px-3 py-2.5 text-sm text-silver transition-colors hover:bg-white/5 hover:text-ink"
+                  >
+                    {section.label}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <Link
+                  to="/blog"
+                  onClick={() => setOpen(false)}
+                  aria-current={pathname.startsWith('/blog') ? 'page' : undefined}
+                  className="block rounded-lg px-3 py-2.5 text-sm text-silver transition-colors hover:bg-white/5 hover:text-ink"
+                >
+                  Blog
+                </Link>
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </header>
   )

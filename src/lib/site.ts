@@ -5,7 +5,7 @@
  */
 export const SITE_URL = 'https://kouci-web.vercel.app'
 export const SITE_NAME = 'Kouci'
-export const DEFAULT_OG_IMAGE = '/og-image.png'
+export const DEFAULT_OG_IMAGE = '/og-image.jpg'
 
 /** The social profiles, surfaced to search/AI via Organization structured data. */
 export const SOCIAL_LINKS = [

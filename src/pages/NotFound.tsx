@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { Seo } from '../components/Seo'
 
 const linkBase =
   'inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-all duration-200'
@@ -9,6 +10,12 @@ export function NotFound() {
       id="main"
       className="container-content flex min-h-[70vh] flex-col items-center justify-center py-32 text-center"
     >
+      <Seo
+        title="Page not found | Kouci"
+        description="That page doesn’t exist or may have moved."
+        path="/404"
+        noindex
+      />
       <span className="eyebrow justify-center">404</span>
       <h1 className="mt-4 text-4xl font-semibold text-ink md:text-5xl">Page not found</h1>
       <p className="mt-4 max-w-md text-silver">

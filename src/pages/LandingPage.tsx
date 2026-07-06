@@ -22,7 +22,7 @@ const structuredData = [
     '@type': 'SoftwareApplication',
     name: SITE_NAME,
     applicationCategory: 'SportsApplication',
-    operatingSystem: 'Web',
+    operatingSystem: 'iOS, Android',
     url: SITE_URL,
     description: DESCRIPTION,
     offers: {
@@ -37,7 +37,7 @@ const structuredData = [
     '@type': 'Organization',
     name: SITE_NAME,
     url: SITE_URL,
-    logo: absoluteUrl('/og-image.png'),
+    logo: absoluteUrl('/og-image.jpg'),
     description: 'Water polo tactical and statistical analysis for coaches and analysts.',
     sameAs: SOCIAL_LINKS,
   },

@@ -4,7 +4,7 @@ date: 2026-06-24
 excerpt: The man-up is the most data-rich moment in water polo. Here is how to read it, and what the numbers usually reveal about your own attack.
 author: Kouci Team
 tags: tactics, analysis, water-polo
-cover: /assets/blog/six-on-five.png
+cover: /assets/blog/six-on-five.jpg
 ---
 
 A single exclusion swings a water polo match more than almost any event in team sport. For twenty seconds you have a six-on-five — and how you use those seconds, over a season, separates the teams that medal from the teams that do not.

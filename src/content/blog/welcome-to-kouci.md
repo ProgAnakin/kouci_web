@@ -4,7 +4,7 @@ date: 2026-06-30
 excerpt: Why we are building a tactical and statistical analysis platform made specifically for water polo, and what early access means for you.
 author: Kouci Team
 tags: product, water-polo
-cover: /assets/blog/welcome.png
+cover: /assets/blog/welcome.jpg
 ---
 
 Water polo is one of the most demanding team sports in the world — and one of the least served by good software. Coaches still track penalties on paper, draw set plays on whiteboards that get wiped after every session, and rely on memory to tell whether the left-side attack is actually working.
@@ -23,7 +23,7 @@ Kouci turns raw match data into a tactical edge. Instead of scattered notes, you
 It is designed around how water polo is actually coached — not adapted from a generic field-sport tool.
 
 <figure>
-  <img src="/assets/blog/six-on-five.png" alt="A 6-on-5 power play laid out on a water polo field diagram" />
+  <img src="/assets/blog/six-on-five.jpg" alt="A 6-on-5 power play laid out on a water polo field diagram" />
   <figcaption>Set plays like this 6-on-5 can be built once, animated, and shared with your staff.</figcaption>
 </figure>
 
