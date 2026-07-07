@@ -1,0 +1,24 @@
+# Kouci
+
+> Water polo tactical & statistical analysis app for coaches and analysts. Turns raw match data into a tactical edge — player stats, penalty and exclusion maps, animated set plays, and live game tracking. In development; early access opening soon. Coming to iOS & Android.
+
+Kouci is built exclusively for water polo — not adapted from a generic field-sport tool. Clubs own their data entirely and can export it at any time.
+
+## Core features
+- Players: season-long roster with cap numbers tied to per-game stats.
+- Penalty shot stats: every penalty mapped on the goal (placement, goal/miss, first attempt vs. repeat, bounce off the water).
+- Tactics with animation: lay out set plays on a real water polo field and export to MP4/GIF.
+- Live match statistics: log every player's stats in real time; numbers ready at the final whistle.
+
+## Key pages
+- [Home](https://kouci-web.vercel.app/): product overview, features, early access
+- [Blog](https://kouci-web.vercel.app/blog): water polo tactics & statistical analysis
+- [Privacy Policy](https://kouci-web.vercel.app/privacy)
+- [Terms of Use](https://kouci-web.vercel.app/terms)
+
+## Blog
+- [Welcome to Kouci — Master Every Play](https://kouci-web.vercel.app/blog/welcome-to-kouci): Why we are building a tactical and statistical analysis platform made specifically for water polo, and what early access means for you.
+- [Reading the 6-on-5 — Where Power Plays Are Won](https://kouci-web.vercel.app/blog/reading-the-6-on-5): The man-up is the most data-rich moment in water polo. Here is how to read it, and what the numbers usually reveal about your own attack.
+
+## Early access
+- Coaches and clubs can request access and a guided demo at https://kouci-web.vercel.app/#early-access

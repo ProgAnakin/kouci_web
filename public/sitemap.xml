@@ -21,14 +21,14 @@
     <priority>0.2</priority>
   </url>
   <url>
-    <loc>https://kouci-web.vercel.app/blog/reading-the-6-on-5</loc>
-    <lastmod>2026-06-24</lastmod>
+    <loc>https://kouci-web.vercel.app/blog/welcome-to-kouci</loc>
+    <lastmod>2026-06-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://kouci-web.vercel.app/blog/welcome-to-kouci</loc>
-    <lastmod>2026-06-30</lastmod>
+    <loc>https://kouci-web.vercel.app/blog/reading-the-6-on-5</loc>
+    <lastmod>2026-06-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>

@@ -1,5 +1,5 @@
 import { Seo } from '../components/Seo'
-import { SITE_NAME, SITE_URL } from '../lib/site'
+import { SITE_NAME, SITE_URL, LEGAL_ENTITY, CONTACT_EMAIL } from '../lib/site'
 
 /**
  * Terms of use for this marketing site + early-access programme. Like the
@@ -26,8 +26,8 @@ export function Terms() {
 
         <h2>1. Who we are</h2>
         <p>
-          The Site is operated by <strong>[YOUR LEGAL ENTITY / NAME]</strong>, based in Portugal
-          (EU). Contact: <strong>[YOUR CONTACT EMAIL]</strong>.
+          The Site is operated by <strong>{LEGAL_ENTITY}</strong>, based in Portugal (EU). Contact:{' '}
+          <strong>{CONTACT_EMAIL}</strong>.
         </p>
 
         <h2>2. What this Site is</h2>
@@ -49,9 +49,9 @@ export function Terms() {
         <h2>4. Intellectual property</h2>
         <p>
           The Kouci name, logo, design, 3D scenes, text and imagery on this Site are owned by{' '}
-          <strong>[YOUR LEGAL ENTITY / NAME]</strong> (or used with permission) and are protected by
-          law. You may not copy, redistribute or create derivative works from them without written
-          consent, except for personal, non-commercial viewing.
+          <strong>{LEGAL_ENTITY}</strong> (or used with permission) and are protected by law. You
+          may not copy, redistribute or create derivative works from them without written consent,
+          except for personal, non-commercial viewing.
         </p>
 
         <h2>5. Acceptable use</h2>

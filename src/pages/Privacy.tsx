@@ -1,5 +1,5 @@
 import { Seo } from '../components/Seo'
-import { SITE_NAME } from '../lib/site'
+import { SITE_NAME, LEGAL_ENTITY, CONTACT_EMAIL } from '../lib/site'
 
 /**
  * Privacy policy for the site's data collection (the early-access form + basic
@@ -27,9 +27,8 @@ export function Privacy() {
 
         <h2>1. Who is responsible</h2>
         <p>
-          The controller of your data is <strong>[YOUR LEGAL ENTITY / NAME]</strong>, based in
-          Portugal (EU). For any privacy question or request, contact{' '}
-          <strong>[YOUR CONTACT EMAIL]</strong>.
+          The controller of your data is <strong>{LEGAL_ENTITY}</strong>, based in Portugal (EU).
+          For any privacy question or request, contact <strong>{CONTACT_EMAIL}</strong>.
         </p>
 
         <h2>2. What we collect</h2>
@@ -93,7 +92,7 @@ export function Privacy() {
           </li>
         </ul>
         <p>
-          To exercise any of these, email <strong>[YOUR CONTACT EMAIL]</strong> and we will respond
+          To exercise any of these, email <strong>{CONTACT_EMAIL}</strong> and we will respond
           within 30 days.
         </p>
 
