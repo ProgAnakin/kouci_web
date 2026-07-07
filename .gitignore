@@ -31,3 +31,9 @@ dist-ssr
 # TS build info
 *.tsbuildinfo
 node_modules/.tmp
+
+# Local dev-assist skills (installed via `npx skills add`) — tooling for the
+# team, not part of the shipped product. Re-add with the commands in the README
+# if needed. Remove these lines to version them instead.
+.agents/
+skills-lock.json
