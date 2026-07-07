@@ -37,8 +37,10 @@ export function Audience() {
 
         <Reveal as="ul" stagger className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {audience.map((a) => (
-            <li key={a.title} className="card flex flex-col p-6">
-              <h3 className="font-display text-lg font-semibold text-ink">{a.title}</h3>
+            <li key={a.title} className="card card-lift group flex flex-col p-6">
+              <h3 className="font-display text-lg font-semibold text-ink transition-colors duration-300 group-hover:text-brand-light">
+                {a.title}
+              </h3>
               <p className="mt-3 text-sm leading-relaxed text-silver">{a.body}</p>
             </li>
           ))}

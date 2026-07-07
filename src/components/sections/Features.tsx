@@ -26,7 +26,7 @@ export function Features() {
               from="scale"
               distance={36}
               aria-labelledby={`feature-${feature.id}`}
-              className="card grid items-center gap-8 p-6 md:grid-cols-2 md:gap-12 md:p-10"
+              className="card card-lift group grid items-center gap-8 p-6 md:grid-cols-2 md:gap-12 md:p-10"
             >
               {/* Visual — alternates side on desktop for rhythm. */}
               <div
@@ -45,7 +45,7 @@ export function Features() {
                 </div>
                 <h3
                   id={`feature-${feature.id}`}
-                  className="mt-4 text-2xl font-semibold text-ink md:text-3xl"
+                  className="mt-4 text-2xl font-semibold text-ink transition-colors duration-300 group-hover:text-brand-light md:text-3xl"
                 >
                   {feature.title}
                 </h3>

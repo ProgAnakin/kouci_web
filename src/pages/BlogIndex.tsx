@@ -61,7 +61,7 @@ export function BlogIndex() {
             <Reveal key={post.slug} delay={i * 0.05} from="up">
               <Link
                 to={`/blog/${post.slug}`}
-                className="card group flex h-full flex-col overflow-hidden"
+                className="card card-lift group flex h-full flex-col overflow-hidden"
               >
                 {post.cover && (
                   <div className="aspect-[16/9] w-full overflow-hidden">

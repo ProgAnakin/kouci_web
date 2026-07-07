@@ -73,10 +73,48 @@
 
   /* Hairline card used across feature / audience sections. */
   .card {
-    @apply rounded-2xl border border-white/5 bg-surface/70 backdrop-blur-sm transition-colors duration-300;
+    @apply rounded-2xl border border-white/5 bg-surface/70 backdrop-blur-sm;
+    transition:
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.4s ease,
+      box-shadow 0.4s ease,
+      background-color 0.4s ease;
   }
   .card:hover {
     @apply border-white/10;
+  }
+
+  /* Interactive cards (clickable / list items) lift with a brand glow on hover. */
+  .card-lift:hover {
+    transform: translateY(-5px);
+    border-color: rgba(159, 172, 130, 0.28);
+    background-color: rgba(31, 34, 27, 0.92);
+    box-shadow:
+      0 24px 50px -26px rgba(126, 139, 99, 0.55),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Premium sheen sweep across the primary CTA on hover. */
+  .btn-sheen {
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-sheen::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      110deg,
+      transparent 35%,
+      rgba(255, 255, 255, 0.28) 50%,
+      transparent 65%
+    );
+    transform: translateX(-130%);
+    transition: transform 0.7s ease;
+    pointer-events: none;
+  }
+  .btn-sheen:hover::after {
+    transform: translateX(130%);
   }
 
   .eyebrow {
@@ -115,5 +153,13 @@
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+  }
+
+  /* No lift or sheen travel when reduced motion is requested. */
+  .card-lift:hover {
+    transform: none;
+  }
+  .btn-sheen::after {
+    display: none;
   }
 }
