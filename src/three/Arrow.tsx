@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, type MutableRefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 
@@ -10,6 +10,9 @@ interface ArrowProps {
   /** Phase offset (0–1) so multiple arrows don't draw in lockstep. */
   delay?: number
   thickness?: number
+  /** Externally-driven draw progress (0–1). When provided, the arrow follows it
+   *  each frame (e.g. synced to a swimming cap) instead of its own loop. */
+  progressRef?: MutableRefObject<number>
 }
 
 const HEAD_LEN = 0.34
@@ -26,7 +29,8 @@ export function Arrow({
   color,
   reducedMotion = false,
   delay = 0,
-  thickness = 0.045,
+  thickness = 0.06,
+  progressRef,
 }: ArrowProps) {
   const shaft = useRef<THREE.Mesh>(null)
   const head = useRef<THREE.Mesh>(null)
@@ -43,10 +47,14 @@ export function Arrow({
   useFrame((state) => {
     let p = 1
     if (!reducedMotion) {
-      // Sawtooth: draw across 80% of the cycle, hold, then reset.
-      const cycle = (state.clock.elapsedTime * 0.32 + delay) % 1
-      const raw = Math.min(cycle / 0.8, 1)
-      p = 1 - Math.pow(1 - raw, 3) // easeOutCubic
+      if (progressRef) {
+        p = THREE.MathUtils.clamp(progressRef.current, 0, 1)
+      } else {
+        // Sawtooth: draw across 80% of the cycle, hold, then reset.
+        const cycle = (state.clock.elapsedTime * 0.32 + delay) % 1
+        const raw = Math.min(cycle / 0.8, 1)
+        p = 1 - Math.pow(1 - raw, 3) // easeOutCubic
+      }
     }
 
     const shaftLen = Math.max(0.0001, p * shaftMax)
@@ -68,7 +76,7 @@ export function Arrow({
         <meshStandardMaterial
           color={color}
           emissive={color}
-          emissiveIntensity={0.35}
+          emissiveIntensity={0.55}
           roughness={0.45}
           metalness={0.1}
         />
@@ -78,7 +86,7 @@ export function Arrow({
         <meshStandardMaterial
           color={color}
           emissive={color}
-          emissiveIntensity={0.35}
+          emissiveIntensity={0.55}
           roughness={0.45}
           metalness={0.1}
         />

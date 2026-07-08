@@ -93,9 +93,15 @@ function makeWaterNormalMap(): THREE.CanvasTexture {
 export function Water({
   reducedMotion = false,
   segments = 128,
+  size = [80, 50],
+  position = [2.5, WATER_Y, -6],
 }: {
   reducedMotion?: boolean
   segments?: number
+  /** Plane size in world units (defaults to the hero pool). */
+  size?: [number, number]
+  /** World position of the plane (defaults to the hero pool). */
+  position?: [number, number, number]
 }) {
   const uTime = useRef({ value: 0 })
   const normalMap = useMemo(makeWaterNormalMap, [])
@@ -180,13 +186,8 @@ export function Water({
   })
 
   return (
-    <mesh
-      rotation-x={-Math.PI / 2}
-      position={[2.5, WATER_Y, -6]}
-      material={material}
-      frustumCulled={false}
-    >
-      <planeGeometry args={[80, 50, segments, Math.round(segments * 0.7)]} />
+    <mesh rotation-x={-Math.PI / 2} position={position} material={material} frustumCulled={false}>
+      <planeGeometry args={[size[0], size[1], segments, Math.round(segments * 0.7)]} />
     </mesh>
   )
 }

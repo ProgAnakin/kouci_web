@@ -1,8 +1,10 @@
 import { Suspense } from 'react'
-import { Canvas } from '@react-three/fiber'
-import { ContactShadows, Environment, Lightformer } from '@react-three/drei'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import { damp3 } from 'maath/easing'
 import * as THREE from 'three'
 import { TacticsField } from './TacticsField'
+import { Lighting } from './Lighting'
+import { Water } from './hero/Water'
 import { SceneLoader } from './Loader'
 import { palette } from '../lib/theme'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
@@ -10,9 +12,34 @@ import { isWebGLAvailable } from './webgl'
 import { ErrorBoundary } from '../components/ui/ErrorBoundary'
 
 /**
- * Tactics board scene: a water polo field with instanced pins and animated
- * 3D arrows. Default-exported for React.lazy; only mounted once it scrolls
- * near the viewport (see Showcase).
+ * Gentle presentation camera: a slow lissajous drift + pointer parallax, always
+ * aimed at the middle of the field so the board stays perfectly framed.
+ */
+function Rig({ reduced }: { reduced: boolean }) {
+  const { camera } = useThree()
+  useFrame((state, delta) => {
+    const t = state.clock.elapsedTime
+    const k = reduced ? 0 : 1
+    damp3(
+      camera.position,
+      [
+        0.1 + k * (Math.sin(t * 0.16) * 0.16 + state.pointer.x * 0.25),
+        2.3 + k * (Math.cos(t * 0.13) * 0.1 - state.pointer.y * 0.15),
+        6.8 + k * Math.sin(t * 0.09) * 0.18,
+      ],
+      0.6,
+      delta,
+    )
+    camera.lookAt(0.05, -0.05, 0)
+  })
+  return null
+}
+
+/**
+ * Tactics board scene: a full possession played out on real water — numbered
+ * caps, synced swim arrows, passes and a finish, framed by two floating goals.
+ * Default-exported for React.lazy; only mounted once it scrolls near the
+ * viewport (see Showcase).
  */
 export default function TacticsCanvas({ active = true }: { active?: boolean }) {
   const reduced = usePrefersReducedMotion()
@@ -24,39 +51,24 @@ export default function TacticsCanvas({ active = true }: { active?: boolean }) {
     <ErrorBoundary label="TacticsCanvas" fallback={fallback}>
       <Canvas
         dpr={[1, 2]}
-        shadows
         gl={{ antialias: true, alpha: true }}
-        camera={{ position: [0, 3.6, 6.4], fov: 40, near: 0.1, far: 100 }}
+        camera={{ position: [0.1, 2.3, 6.8], fov: 37, near: 0.1, far: 60 }}
         frameloop={reduced ? 'demand' : active ? 'always' : 'never'}
-        onCreated={({ gl }) => gl.setClearColor(new THREE.Color(palette.bg), 0)}
+        onCreated={({ gl, scene }) => {
+          gl.setClearColor(new THREE.Color(palette.bg), 0)
+          // Fades the pool's edges into the card background for a seamless frame.
+          scene.fog = new THREE.Fog(palette.bg, 6.5, 13.5)
+        }}
       >
         <Suspense fallback={<SceneLoader />}>
-          <hemisphereLight args={[palette.brandLight, palette.bg, 0.55]} />
-          <directionalLight position={[3, 6, 4]} intensity={1.1} color={palette.ink} castShadow />
-          <Environment resolution={48} frames={1}>
-            <Lightformer
-              intensity={1.8}
-              position={[2, 5, 3]}
-              scale={[6, 6, 1]}
-              color={palette.brandLight}
-            />
-            <Lightformer
-              intensity={0.8}
-              position={[-4, 2, -2]}
-              scale={[3, 3, 1]}
-              color={palette.silver}
-            />
-          </Environment>
+          {/* Same cinematic rig as the hero, so the pools match across scenes. */}
+          <Lighting />
+
+          {/* The pool itself — same living water as the hero. */}
+          <Water reducedMotion={reduced} segments={72} size={[24, 15]} position={[0, 0, -1]} />
+
           <TacticsField reducedMotion={reduced} />
-          <ContactShadows
-            position={[0, -0.11, 0]}
-            opacity={0.4}
-            scale={12}
-            blur={2.4}
-            far={4}
-            color="#000000"
-            frames={reduced ? 1 : Infinity}
-          />
+          <Rig reduced={reduced} />
         </Suspense>
       </Canvas>
     </ErrorBoundary>
