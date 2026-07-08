@@ -229,7 +229,8 @@ export function PenaltyMap({ reducedMotion = false }: { reducedMotion?: boolean 
       </mesh>
 
       <Hotspot
-        position={[-2.15, 1.4, 0.3]}
+        position={[-2.1, 1.38, 0.3]}
+        align="start"
         label="Shot placement"
         detail="Every penalty mapped: goal or miss, first attempt or repeat, bounce or not."
       />

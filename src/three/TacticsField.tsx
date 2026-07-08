@@ -306,17 +306,25 @@ export function TacticsField({ reducedMotion = false }: { reducedMotion?: boolea
         </group>
       ))}
 
-      {/* Swim arrows, drawn in sync with the swimmers. */}
-      {ATTACKERS.map((a, i) => (
-        <Arrow
-          key={`arrow-${a.number}`}
-          from={[a.path[0], 0.16, a.path[1]]}
-          to={[a.path[2], 0.16, a.path[3]]}
-          color={a.color}
-          reducedMotion={reducedMotion}
-          progressRef={arrowProgress[i]}
-        />
-      ))}
+      {/* Swim arrows, drawn in sync with the swimmers. Trimmed at both ends so
+          the stroke starts clear of the departing cap and never pokes the
+          arriving one. */}
+      {ATTACKERS.map((a, i) => {
+        const [sx, sz, ex, ez] = a.path
+        const len = Math.hypot(ex - sx, ez - sz)
+        const ux = (ex - sx) / len
+        const uz = (ez - sz) / len
+        return (
+          <Arrow
+            key={`arrow-${a.number}`}
+            from={[sx + ux * 0.34, 0.16, sz + uz * 0.34]}
+            to={[ex - ux * 0.3, 0.16, ez - uz * 0.3]}
+            color={a.color}
+            reducedMotion={reducedMotion}
+            progressRef={arrowProgress[i]}
+          />
+        )
+      })}
 
       {/* The match ball being worked around (hero ball, scaled down). */}
       <group ref={ball} position={[-1.9, 0.05, 0.05]}>
@@ -366,6 +374,7 @@ export function TacticsField({ reducedMotion = false }: { reducedMotion?: boolea
 
       <Hotspot
         position={[0.9, 0.35, 2.45]}
+        direction="up"
         label="Caps & animated arrows"
         detail="Set the play by cap number, animate it, export to MP4 or GIF for your players."
       />
