@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { AnimatePresence, LazyMotion, domAnimation, m, useReducedMotion } from 'motion/react'
+import { AnimatePresence, m, useReducedMotion } from 'motion/react'
 import { track } from '@vercel/analytics'
 import { ButtonLink } from '../ui/Button'
 import { Logo } from '../ui/Logo'
@@ -128,51 +128,48 @@ export function Navbar() {
           </div>
         </nav>
 
-        {/* Mobile disclosure panel — spring slide-down via motion (LazyMotion +
-            the lightweight `m` component keep it out of the main bundle). The
-            header is fixed, so the panel never pushes page content. */}
-        <LazyMotion features={domAnimation}>
-          <AnimatePresence initial={false}>
-            {open && (
-              <m.div
-                id="mobile-nav"
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={
-                  reduce
-                    ? { duration: 0 }
-                    : { type: 'spring', stiffness: 420, damping: 32, mass: 0.7 }
-                }
-                className="md:hidden"
-              >
-                <ul className="mt-2 flex flex-col rounded-2xl border border-white/10 bg-bg/95 p-2 shadow-lg shadow-black/40 backdrop-blur-xl">
-                  {sections.map((section) => (
-                    <li key={section.id}>
-                      <a
-                        href={sectionHref(section.id)}
-                        onClick={() => setOpen(false)}
-                        className="block rounded-lg px-3 py-2.5 text-sm text-silver transition-colors hover:bg-white/5 hover:text-ink"
-                      >
-                        {section.label}
-                      </a>
-                    </li>
-                  ))}
-                  <li>
-                    <Link
-                      to="/blog"
+        {/* Mobile disclosure panel — spring slide-down via motion. The header is
+            fixed, so the panel never pushes page content. */}
+        <AnimatePresence initial={false}>
+          {open && (
+            <m.div
+              id="mobile-nav"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={
+                reduce
+                  ? { duration: 0 }
+                  : { type: 'spring', stiffness: 420, damping: 32, mass: 0.7 }
+              }
+              className="md:hidden"
+            >
+              <ul className="mt-2 flex flex-col rounded-2xl border border-white/10 bg-bg/95 p-2 shadow-lg shadow-black/40 backdrop-blur-xl">
+                {sections.map((section) => (
+                  <li key={section.id}>
+                    <a
+                      href={sectionHref(section.id)}
                       onClick={() => setOpen(false)}
-                      aria-current={pathname.startsWith('/blog') ? 'page' : undefined}
                       className="block rounded-lg px-3 py-2.5 text-sm text-silver transition-colors hover:bg-white/5 hover:text-ink"
                     >
-                      Blog
-                    </Link>
+                      {section.label}
+                    </a>
                   </li>
-                </ul>
-              </m.div>
-            )}
-          </AnimatePresence>
-        </LazyMotion>
+                ))}
+                <li>
+                  <Link
+                    to="/blog"
+                    onClick={() => setOpen(false)}
+                    aria-current={pathname.startsWith('/blog') ? 'page' : undefined}
+                    className="block rounded-lg px-3 py-2.5 text-sm text-silver transition-colors hover:bg-white/5 hover:text-ink"
+                  >
+                    Blog
+                  </Link>
+                </li>
+              </ul>
+            </m.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   )

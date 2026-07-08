@@ -58,7 +58,7 @@ export function BlogIndex() {
       ) : (
         <div className="mt-14 grid gap-6 md:grid-cols-2">
           {posts.map((post, i) => (
-            <Reveal key={post.slug} delay={i * 0.05} from="up">
+            <Reveal key={post.slug} delay={i * 0.05} pop>
               <Link
                 to={`/blog/${post.slug}`}
                 className="card card-lift group flex h-full flex-col overflow-hidden"

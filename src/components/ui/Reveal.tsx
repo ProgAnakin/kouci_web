@@ -19,12 +19,16 @@ type RevealProps = {
   distance?: number
   /** Stagger direct children instead of animating the wrapper as one block. */
   stagger?: boolean
+  /** Expressive entrance for cards: scales up from below with a springy
+   *  overshoot and a wider stagger. */
+  pop?: boolean
   id?: string
   'aria-label'?: string
   'aria-labelledby'?: string
 }
 
-function fromVars(from: RevealDir, distance: number) {
+function fromVars(from: RevealDir, distance: number, pop: boolean) {
+  if (pop) return { y: distance, scale: 0.9, autoAlpha: 0 }
   switch (from) {
     case 'left':
       return { x: -distance, autoAlpha: 0 }
@@ -51,6 +55,7 @@ export function Reveal({
   from = 'up',
   distance = 28,
   stagger = false,
+  pop = false,
   ...rest
 }: RevealProps) {
   const Tag = (as ?? 'div') as ElementType
@@ -65,11 +70,15 @@ export function Reveal({
     const ctx = gsap.context(() => {
       const targets = stagger ? Array.from(el.children) : el
       gsap.from(targets, {
-        ...fromVars(from, distance),
-        duration: 0.95,
-        ease: 'power4.out',
+        ...fromVars(from, distance, pop),
+        duration: pop ? 1.05 : 0.95,
+        // A gentle back-out overshoot gives cards a lively "settle into place".
+        ease: pop ? 'back.out(1.6)' : 'power4.out',
         delay,
-        stagger: stagger ? 0.1 : 0,
+        stagger: stagger ? (pop ? 0.12 : 0.1) : 0,
+        // Drop the inline transform on completion so CSS hover states (e.g.
+        // .card-lift) aren't blocked by a leftover transform from the entrance.
+        clearProps: 'transform',
         scrollTrigger: {
           trigger: el,
           start: 'top 84%',
@@ -79,7 +88,7 @@ export function Reveal({
     }, ref)
 
     return () => ctx.revert()
-  }, [reduced, delay, from, distance, stagger])
+  }, [reduced, delay, from, distance, stagger, pop])
 
   return (
     <Tag ref={ref as never} className={className} {...rest}>

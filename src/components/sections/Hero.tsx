@@ -1,4 +1,4 @@
-import { Suspense, lazy, useLayoutEffect, useRef, useState } from 'react'
+import { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { track } from '@vercel/analytics'
@@ -47,6 +47,71 @@ export function Hero() {
       })
     }, sectionRef)
     return () => ctx.revert()
+  }, [reduced])
+
+  // Pointer micro-parallax: each text element drifts a few px toward the cursor
+  // at a different depth, giving the headline a sense of layers. Driven through
+  // the CSS `translate` property (independent of the `transform` GSAP animates,
+  // so the two never fight), rAF-smoothed, fine-pointer only, reduced-motion off.
+  useEffect(() => {
+    if (reduced) return
+    if (typeof window === 'undefined' || !window.matchMedia('(pointer: fine)').matches) return
+    const section = sectionRef.current
+    const content = contentRef.current
+    if (!section || !content) return
+
+    const items = Array.from(content.children) as HTMLElement[]
+    // Per-element depth (px at full deflection): headline moves most.
+    const depth = [7, 15, 10, 5, 6]
+    let tx = 0
+    let ty = 0
+    let cx = 0
+    let cy = 0
+    let raf = 0
+    let running = false
+
+    const frame = () => {
+      cx += (tx - cx) * 0.09
+      cy += (ty - cy) * 0.09
+      items.forEach((el, i) => {
+        const d = depth[i] ?? 5
+        el.style.translate = `${(cx * d).toFixed(2)}px ${(cy * d * 0.55).toFixed(2)}px`
+      })
+      const settled = Math.abs(tx - cx) < 0.002 && Math.abs(ty - cy) < 0.002 && tx === 0 && ty === 0
+      if (settled) {
+        running = false
+      } else {
+        raf = requestAnimationFrame(frame)
+      }
+    }
+    const kick = () => {
+      if (!running) {
+        running = true
+        raf = requestAnimationFrame(frame)
+      }
+    }
+    const onMove = (e: PointerEvent) => {
+      const r = section.getBoundingClientRect()
+      tx = ((e.clientX - r.left) / r.width - 0.5) * 2
+      ty = ((e.clientY - r.top) / r.height - 0.5) * 2
+      kick()
+    }
+    const onLeave = () => {
+      tx = 0
+      ty = 0
+      kick()
+    }
+
+    window.addEventListener('pointermove', onMove, { passive: true })
+    section.addEventListener('pointerleave', onLeave)
+    return () => {
+      window.removeEventListener('pointermove', onMove)
+      section.removeEventListener('pointerleave', onLeave)
+      cancelAnimationFrame(raf)
+      items.forEach((el) => {
+        el.style.translate = ''
+      })
+    }
   }, [reduced])
 
   return (

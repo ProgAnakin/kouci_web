@@ -39,6 +39,7 @@ export function PromiseSection() {
         <Reveal
           as="dl"
           stagger
+          pop
           delay={0.1}
           className="mt-16 grid gap-px overflow-hidden rounded-2xl border border-white/5 bg-white/5 sm:grid-cols-3"
         >
