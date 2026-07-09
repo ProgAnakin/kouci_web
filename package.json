@@ -40,6 +40,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.30.4",
+    "stripe": "^22.3.0",
     "three": "^0.169.0",
     "vite-react-ssg": "^0.9.1-beta.1"
   },

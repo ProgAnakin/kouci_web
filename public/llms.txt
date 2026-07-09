@@ -20,5 +20,7 @@ Kouci is built exclusively for water polo — not adapted from a generic field-s
 - [Welcome to Kouci — Master Every Play](https://kouci-web.vercel.app/blog/welcome-to-kouci): Why we are building a tactical and statistical analysis platform made specifically for water polo, and what early access means for you.
 - [Reading the 6-on-5 — Where Power Plays Are Won](https://kouci-web.vercel.app/blog/reading-the-6-on-5): The man-up is the most data-rich moment in water polo. Here is how to read it, and what the numbers usually reveal about your own attack.
 
-## Early access
-- Coaches and clubs can request access and a guided demo at https://kouci-web.vercel.app/#early-access
+## Pricing
+- Club License (v1): €2,000 one-time per club — every team, unlimited staff,
+  install + training included. Full details: https://kouci-web.vercel.app/pricing.md
+- Buy at https://kouci-web.vercel.app/checkout · guided demo at https://kouci-web.vercel.app/#early-access

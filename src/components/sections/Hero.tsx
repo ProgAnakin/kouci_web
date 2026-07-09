@@ -2,7 +2,7 @@ import { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from 're
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { track } from '@vercel/analytics'
-import { ButtonLink } from '../ui/Button'
+import { ButtonLink, ButtonTo } from '../ui/Button'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { useCanvasActivation } from '../../hooks/useCanvasActivation'
 
@@ -155,28 +155,27 @@ export function Hero() {
           Master <span className="text-brand-light">Every Play</span>
         </h1>
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-silver">
-          The water polo app that turns raw match data into a tactical edge — player stats, penalty
-          maps, animated tactics and live game tracking. Built for coaches, coming to iOS &amp;
-          Android.
+          The water polo app your club buys once and owns — player stats, penalty maps, animated
+          tactics and live match tracking. Stop coaching from memory; start coaching from data.
         </p>
         <p className="mt-4 inline-flex items-center gap-2 text-sm text-silver/70">
           <span className="h-1.5 w-1.5 rounded-full bg-brand-light" aria-hidden="true" />
-          In development · early access opening soon
+          v1 founding-club licenses open · the price only goes up
         </p>
         <div className="mt-9 flex flex-wrap items-center gap-4">
-          <ButtonLink
-            href="#early-access"
+          <ButtonTo
+            to="/checkout"
             withArrow
-            onClick={() => track('cta_click', { placement: 'hero', label: 'early_access' })}
+            onClick={() => track('cta_click', { placement: 'hero', label: 'checkout' })}
           >
-            Get Early Access
-          </ButtonLink>
+            Get Kouci for your club
+          </ButtonTo>
           <ButtonLink
-            href="#features"
+            href="#pricing"
             variant="ghost"
-            onClick={() => track('cta_click', { placement: 'hero', label: 'features' })}
+            onClick={() => track('cta_click', { placement: 'hero', label: 'pricing' })}
           >
-            See the features
+            See what it costs
           </ButtonLink>
         </div>
       </div>

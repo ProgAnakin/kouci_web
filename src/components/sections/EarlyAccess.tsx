@@ -29,7 +29,7 @@ export function EarlyAccess() {
   const [club, setClub] = useState('')
   const [role, setRole] = useState('')
   const [country, setCountry] = useState('')
-  const [wantsDemo, setWantsDemo] = useState(false)
+  const [wantsDemo, setWantsDemo] = useState(true)
   const [consent, setConsent] = useState(false)
   // Honeypot: real users leave this empty; bots that fill every field trip it,
   // and Formspree silently drops any submission where `_gotcha` is non-empty.
@@ -95,16 +95,16 @@ export function EarlyAccess() {
       <div className="container-content relative">
         <Reveal className="card mx-auto max-w-3xl overflow-hidden p-8 md:p-12">
           <div className="text-center">
-            <p className="eyebrow justify-center">Early access</p>
+            <p className="eyebrow justify-center">Not ready to buy today?</p>
             <h2
               id="early-access-title"
               className="mt-4 text-3xl font-semibold text-ink md:text-4xl"
             >
-              Be first on deck
+              See it on your club first
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-silver">
-              Join the clubs shaping Kouci. Early-access members hear first — and get the best
-              conditions we’ll ever offer. No spam, just the launch.
+              A 30-minute guided demo, on your club’s context — your teams, your questions. We’ll
+              also reserve your founder price while you decide. No spam, ever.
             </p>
           </div>
 

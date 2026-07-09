@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, m, useReducedMotion } from 'motion/react'
 import { track } from '@vercel/analytics'
-import { ButtonLink } from '../ui/Button'
+import { ButtonTo } from '../ui/Button'
 import { Logo } from '../ui/Logo'
 
 const sections = [
   { id: 'features', label: 'Features' },
   { id: 'showcase', label: 'Showcase' },
-  { id: 'audience', label: 'Who it’s for' },
+  { id: 'pricing', label: 'Pricing' },
   { id: 'faq', label: 'FAQ' },
 ]
 
@@ -91,13 +91,13 @@ export function Navbar() {
           </ul>
 
           <div className="flex items-center gap-2">
-            <ButtonLink
-              href={isHome ? '#early-access' : '/#early-access'}
+            <ButtonTo
+              to="/checkout"
               className="whitespace-nowrap !px-5 !py-2"
-              onClick={() => track('cta_click', { placement: 'navbar', label: 'early_access' })}
+              onClick={() => track('cta_click', { placement: 'navbar', label: 'checkout' })}
             >
-              Get Early Access
-            </ButtonLink>
+              Get the License
+            </ButtonTo>
 
             {/* Mobile menu toggle — the section links live in the disclosure
                 panel below on small screens. */}

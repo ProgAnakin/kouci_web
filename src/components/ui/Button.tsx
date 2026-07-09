@@ -1,4 +1,5 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react'
+import { Link, type LinkProps } from 'react-router-dom'
 
 type Variant = 'primary' | 'ghost'
 
@@ -53,6 +54,22 @@ export function ButtonLink({
       {children}
       {withArrow && <Arrow />}
     </a>
+  )
+}
+
+/** Router-Link flavour — used for cross-page CTAs (keeps the page transition). */
+export function ButtonTo({
+  variant = 'primary',
+  children,
+  className = '',
+  withArrow = false,
+  ...rest
+}: CommonProps & LinkProps) {
+  return (
+    <Link className={`${base} ${variants[variant]} ${className}`} {...rest}>
+      {children}
+      {withArrow && <Arrow />}
+    </Link>
   )
 }
 

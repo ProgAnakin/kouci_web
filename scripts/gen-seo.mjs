@@ -33,6 +33,7 @@ const posts = readdirSync(BLOG_DIR)
 /* ---------------------------------------------------------------- sitemap.xml */
 const routes = [
   { loc: '/', changefreq: 'weekly', priority: '1.0' },
+  { loc: '/checkout', changefreq: 'weekly', priority: '0.9' },
   { loc: '/blog', changefreq: 'weekly', priority: '0.8' },
   { loc: '/privacy', changefreq: 'yearly', priority: '0.2' },
   { loc: '/terms', changefreq: 'yearly', priority: '0.2' },
@@ -83,12 +84,36 @@ Kouci is built exclusively for water polo — not adapted from a generic field-s
 ## Blog
 ${postLines}
 
-## Early access
-- Coaches and clubs can request access and a guided demo at ${SITE_URL}/#early-access
+## Pricing
+- Club License (v1): €2,000 one-time per club — every team, unlimited staff,
+  install + training included. Full details: ${SITE_URL}/pricing.md
+- Buy at ${SITE_URL}/checkout · guided demo at ${SITE_URL}/#early-access
 `
 
 writeFileSync(join(root, 'public/llms.txt'), llms)
 
+/* ------------------------------------------------------------------ pricing.md */
+// Machine-readable pricing for AI buying agents (keep in sync with
+// src/lib/commerce.ts and the Stripe Price object).
+const pricing = `# Pricing — Kouci
+
+## Club License (v1) — founder price
+- Price: €2,000 one-time (per club, not per season, not per user)
+- Includes: every team and age group in the club; unlimited coaches, assistants
+  and analysts; all v1 tools (players & caps, penalty shot maps, animated
+  tactics, live match statistics); assisted installation + staff training;
+  full data export at any time; founder status (locked v1 price, roadmap input)
+- Version ladder: v1 €2,000 (now) → v2 €2,600 (planned) → v3 €3,400 (planned).
+  New versions launch at a higher price for new clubs; license owners only pay
+  for optional add-ons.
+- White-label club app (your crest + colors): coming soon, free for license
+  holders.
+- Buy: ${SITE_URL}/checkout (secure checkout by Stripe; invoice + tax ID
+  collected at checkout)
+- Guided demo before buying: ${SITE_URL}/#early-access
+`
+writeFileSync(join(root, 'public/pricing.md'), pricing)
+
 console.log(
-  `[gen-seo] sitemap.xml (${routes.length} URLs) + llms.txt (${posts.length} posts) written`,
+  `[gen-seo] sitemap.xml (${routes.length} URLs) + llms.txt (${posts.length} posts) + pricing.md written`,
 )
