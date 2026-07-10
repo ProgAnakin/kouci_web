@@ -37,7 +37,7 @@ const structuredData = [
     '@type': 'Organization',
     name: SITE_NAME,
     url: SITE_URL,
-    logo: absoluteUrl('/og-image.jpg'),
+    logo: absoluteUrl('/brand/kouci-logo-512.png'),
     description: 'Water polo tactical and statistical analysis for coaches and analysts.',
     sameAs: SOCIAL_LINKS,
   },

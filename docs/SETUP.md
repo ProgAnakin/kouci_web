@@ -43,21 +43,22 @@ commit — if a commit is rejected, read its output. CI runs lint + format-check
 
 ## 4 · Where to edit what
 
-| You want to change…                  | Edit this                                                                            |
-| ------------------------------------ | ------------------------------------------------------------------------------------ |
-| Hero headline / subline / CTAs       | `src/components/sections/Hero.tsx`                                                   |
-| Feature cards (titles, bullets)      | `src/data/features.ts`                                                               |
-| Audience cards                       | `src/components/sections/Audience.tsx`                                               |
-| FAQ questions & answers              | `src/components/sections/Faq.tsx` (`FAQ_ITEMS`)                                      |
-| Early-access / demo form copy        | `src/components/sections/EarlyAccess.tsx`                                            |
-| Blog posts                           | `src/content/blog/*.md` (see below)                                                  |
-| Blog images                          | `public/assets/blog/` (see its README)                                               |
-| Brand colors                         | `tailwind.config.js` + `src/index.css` + `src/lib/theme.ts` — keep all three in sync |
-| Legal identity (privacy/terms)       | `src/lib/site.ts` → `LEGAL_ENTITY`, `CONTACT_EMAIL`                                  |
-| Canonical domain                     | `VITE_SITE_URL` in `.env` / Vercel env                                               |
-| Social links                         | `src/lib/site.ts` (`SOCIAL_LINKS`) + `src/components/layout/Footer.tsx`              |
-| License price & what's included      | `src/lib/commerce.ts` (billing branch only)                                          |
-| 3D scenes (hero / tactics / penalty) | `src/three/` — ask before touching; they're tuned                                    |
+| You want to change…                  | Edit this                                                                                                        |
+| ------------------------------------ | ---------------------------------------------------------------------------------------------------------------- |
+| Hero headline / subline / CTAs       | `src/components/sections/Hero.tsx`                                                                               |
+| Feature cards (titles, bullets)      | `src/data/features.ts`                                                                                           |
+| Audience cards                       | `src/components/sections/Audience.tsx`                                                                           |
+| FAQ questions & answers              | `src/components/sections/Faq.tsx` (`FAQ_ITEMS`)                                                                  |
+| Early-access / demo form copy        | `src/components/sections/EarlyAccess.tsx`                                                                        |
+| Blog posts                           | `src/content/blog/*.md` (see below)                                                                              |
+| Blog images                          | `public/assets/blog/` (see its README)                                                                           |
+| Brand colors                         | `tailwind.config.js` + `src/index.css` + `src/lib/theme.ts` — keep all three in sync                             |
+| Legal identity (privacy/terms)       | `src/lib/site.ts` → `LEGAL_ENTITY`, `CONTACT_EMAIL`                                                              |
+| Canonical domain                     | `VITE_SITE_URL` in `.env` / Vercel env                                                                           |
+| Social links                         | `src/lib/site.ts` (`SOCIAL_LINKS`) + `src/components/layout/Footer.tsx`                                          |
+| Logo / favicon / share card          | `public/brand/` + `public/favicon*`; share card: edit `scripts/og-template.html`, then `node scripts/gen-og.mjs` |
+| License price & what's included      | `src/lib/commerce.ts` (billing branch only)                                                                      |
+| 3D scenes (hero / tactics / penalty) | `src/three/` — ask before touching; they're tuned                                                                |
 
 **New blog post:** copy an existing file in `src/content/blog/`, rename it
 (the filename becomes the URL slug), edit the frontmatter (`title`, `date`,

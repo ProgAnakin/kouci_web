@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <!--
+    Open Graph card template (1200x630). Rendered to public/og-image.jpg by
+    scripts/gen-og.mjs — edit here, then re-run `node scripts/gen-og.mjs`.
+    %%…%% placeholders (fonts, mark, domain) are injected by the generator.
+  -->
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: 'Sora Variable';
+        font-weight: 100 800;
+        src: url(data:font/woff2;base64,%%SORA%%) format('woff2-variations');
+      }
+      @font-face {
+        font-family: 'Inter Variable';
+        font-weight: 100 900;
+        src: url(data:font/woff2;base64,%%INTER%%) format('woff2-variations');
+      }
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+      body {
+        position: relative;
+        font-family: 'Inter Variable', system-ui, sans-serif;
+        background:
+          radial-gradient(1100px 700px at 18% 12%, rgba(159, 172, 130, 0.07), transparent 60%),
+          radial-gradient(900px 600px at 100% 100%, rgba(0, 0, 0, 0.5), transparent 55%),
+          #171a15;
+        color: #f4f6f0;
+      }
+      .grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 47px 47px;
+        mask-image: radial-gradient(900px 620px at 35% 40%, #000 40%, transparent 100%);
+        -webkit-mask-image: radial-gradient(900px 620px at 35% 40%, #000 40%, transparent 100%);
+      }
+      .content {
+        position: absolute;
+        inset: 0;
+        padding: 64px 80px;
+      }
+      .lockup {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .lockup img {
+        height: 62px;
+        width: auto;
+      }
+      .lockup span {
+        font-family: 'Sora Variable', sans-serif;
+        font-size: 30px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 52px;
+        padding: 9px 18px;
+        border: 1px solid rgba(159, 172, 130, 0.35);
+        border-radius: 999px;
+        background: rgba(159, 172, 130, 0.08);
+        color: #b9c49e;
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 3px;
+      }
+      .eyebrow i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #9fac82;
+      }
+      h1 {
+        margin-top: 30px;
+        font-family: 'Sora Variable', sans-serif;
+        font-size: 74px;
+        font-weight: 700;
+        line-height: 1.08;
+        letter-spacing: -2px;
+      }
+      h1 em {
+        font-style: normal;
+        color: #9fac82;
+      }
+      .sub {
+        margin-top: 26px;
+        max-width: 560px;
+        font-size: 25px;
+        line-height: 1.42;
+        color: #a9b0a3;
+      }
+      .domain {
+        position: absolute;
+        left: 80px;
+        bottom: 56px;
+        font-size: 19px;
+        color: #8a9184;
+      }
+      .cta {
+        position: absolute;
+        right: 80px;
+        bottom: 46px;
+        padding: 14px 26px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.05);
+        color: #c9d1bc;
+        font-size: 19px;
+        font-weight: 600;
+      }
+      /* Wireframe ball, echoing the hero scene. */
+      .ball {
+        position: absolute;
+        right: 96px;
+        top: 200px;
+        width: 210px;
+        height: 210px;
+      }
+      .ball div {
+        position: absolute;
+        inset: 0;
+        border: 1.5px solid rgba(159, 172, 130, 0.3);
+        border-radius: 50%;
+      }
+      .ball .m1 {
+        transform: scaleX(0.45);
+      }
+      .ball .m2 {
+        transform: scaleY(0.42);
+      }
+      .ball .m3 {
+        transform: scaleY(0.78) scaleX(0.9);
+      }
+      .ball .hi {
+        inset: 28%;
+        border: none;
+        background: radial-gradient(
+          circle at 40% 35%,
+          rgba(244, 246, 240, 0.14),
+          rgba(244, 246, 240, 0) 60%
+        );
+      }
+      /* Water line along the bottom. */
+      .wave {
+        position: absolute;
+        inset-inline: 0;
+        bottom: 0;
+        height: 96px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid"></div>
+    <div class="ball">
+      <div></div>
+      <div class="m1"></div>
+      <div class="m2"></div>
+      <div class="m3"></div>
+      <div class="hi"></div>
+    </div>
+    <svg class="wave" viewBox="0 0 1200 96" preserveAspectRatio="none" aria-hidden="true">
+      <path
+        d="M0 58 C 180 30, 340 78, 560 58 C 780 38, 950 80, 1200 50 L 1200 96 L 0 96 Z"
+        fill="#20251c"
+      />
+      <path
+        d="M0 74 C 220 52, 420 92, 640 72 C 860 52, 1020 90, 1200 68 L 1200 96 L 0 96 Z"
+        fill="#181c14"
+      />
+    </svg>
+    <div class="content">
+      <div class="lockup">
+        <img src="data:image/png;base64,%%MARK%%" alt="" />
+        <span>Kouci</span>
+      </div>
+      <div class="eyebrow"><i></i>WATER POLO ANALYSIS</div>
+      <h1>Master<br /><em>Every Play.</em></h1>
+      <p class="sub">Tactical &amp; statistical analysis platform built for water polo coaches and analysts.</p>
+      <div class="domain">%%DOMAIN%%</div>
+      <div class="cta">Join Early Access&ensp;→</div>
+    </div>
+  </body>
+</html>

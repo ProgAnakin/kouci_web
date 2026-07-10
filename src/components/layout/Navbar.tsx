@@ -66,7 +66,9 @@ export function Navbar() {
           }`}
         >
           <Link to="/" aria-label="Kouci — home" className="rounded-full">
-            <Logo />
+            {/* On very small screens the KC mark stands alone — the wordmark
+                would collide with the CTA button. */}
+            <Logo wordmarkClassName="hidden min-[440px]:inline" />
           </Link>
 
           <ul className="hidden items-center gap-8 md:flex">
@@ -91,7 +93,7 @@ export function Navbar() {
           <div className="flex items-center gap-2">
             <ButtonLink
               href={isHome ? '#early-access' : '/#early-access'}
-              className="!px-5 !py-2"
+              className="whitespace-nowrap !px-5 !py-2"
               onClick={() => track('cta_click', { placement: 'navbar', label: 'early_access' })}
             >
               Get Early Access

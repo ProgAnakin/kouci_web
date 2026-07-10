@@ -25,7 +25,7 @@ export function BlogPost() {
       publisher: {
         '@type': 'Organization',
         name: SITE_NAME,
-        logo: { '@type': 'ImageObject', url: absoluteUrl('/og-image.jpg') },
+        logo: { '@type': 'ImageObject', url: absoluteUrl('/brand/kouci-logo-512.png') },
       },
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
       keywords: post.tags.join(', '),
