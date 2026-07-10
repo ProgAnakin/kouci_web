@@ -37,9 +37,8 @@ npm run dev        # → http://localhost:5173
 | `npm run typecheck` | TypeScript only                                            |
 
 A pre-commit hook (Husky + lint-staged) auto-formats and lints whatever you
-commit — if a commit is rejected, read its output. CI runs lint + format-check
-
-- build on every push.
+commit — if a commit is rejected, read its output. CI runs lint, format-check
+and build on every push.
 
 ## 4 · Where to edit what
 
