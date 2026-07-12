@@ -1,4 +1,4 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { track } from '@vercel/analytics'
 import { Seo } from '../components/Seo'
@@ -45,6 +45,12 @@ function CheckIcon() {
 export function Checkout() {
   const [params] = useSearchParams()
   const cancelled = params.get('cancelled') === '1'
+
+  // Funnel measurement: landing on this page is the step before checkout_submit.
+  useEffect(() => {
+    track('checkout_view', { cancelled })
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- fire once per visit
+  }, [])
 
   const [club, setClub] = useState('')
   const [name, setName] = useState('')

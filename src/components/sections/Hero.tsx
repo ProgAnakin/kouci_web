@@ -187,14 +187,18 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Scroll cue */}
-      <div
-        className="absolute bottom-7 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-silver/70"
-        aria-hidden="true"
+      {/* Scroll cue — a real link, so the hint is also the shortcut. */}
+      <a
+        href="#pain"
+        aria-label="Scroll to why Kouci exists"
+        className="absolute bottom-7 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 rounded-full px-3 py-1 text-silver/70 transition-colors hover:text-brand-light"
       >
         <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-        <span className="h-9 w-px animate-pulse bg-gradient-to-b from-silver/60 to-transparent" />
-      </div>
+        <span
+          aria-hidden="true"
+          className="h-9 w-px animate-pulse bg-gradient-to-b from-silver/60 to-transparent"
+        />
+      </a>
     </section>
   )
 }

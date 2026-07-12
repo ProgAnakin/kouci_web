@@ -71,9 +71,14 @@
     @apply mx-auto w-full max-w-content px-6 md:px-8;
   }
 
-  /* Hairline card used across feature / audience sections. */
+  /* Hairline card used across feature / audience sections. A soft ambient
+     drop + top hairline give every surface the same resting elevation, so
+     the hover lift reads as a change of state rather than a new style. */
   .card {
     @apply rounded-2xl border border-white/5 bg-surface/70 backdrop-blur-sm;
+    box-shadow:
+      0 6px 28px -18px rgba(0, 0, 0, 0.55),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.03);
     transition:
       transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
       border-color 0.4s ease,

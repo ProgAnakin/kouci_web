@@ -34,7 +34,13 @@ export function PageTransition() {
         key={pathname}
         initial={reduce ? false : { opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
+        // Exits run at ~60% of the enter duration (ease-in), so leaving a page
+        // feels responsive and arriving on one feels settled.
+        exit={
+          reduce
+            ? { opacity: 0, transition: { duration: 0 } }
+            : { opacity: 0, y: -10, transition: { duration: 0.2, ease: [0.4, 0, 1, 1] } }
+        }
         transition={{ duration: reduce ? 0 : 0.34, ease: [0.16, 1, 0.3, 1] }}
       >
         <FrozenOutlet />

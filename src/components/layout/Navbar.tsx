@@ -15,10 +15,35 @@ const sections = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  // Scroll-spy: which home section is currently in view (null over the hero).
+  const [active, setActive] = useState<string | null>(null)
   const location = useLocation()
   const { pathname } = location
   const isHome = pathname === '/'
   const reduce = useReducedMotion()
+
+  // Highlight the nav link of the section under the reading line. The hero is
+  // observed too so returning to the top clears the highlight.
+  useEffect(() => {
+    if (!isHome) {
+      setActive(null)
+      return
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
+          setActive(entry.target.id === 'hero' ? null : entry.target.id)
+        }
+      },
+      { rootMargin: '-35% 0px -55% 0px' },
+    )
+    for (const id of ['hero', ...sections.map((s) => s.id)]) {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    }
+    return () => observer.disconnect()
+  }, [isHome])
 
   // On the home page, section links are native anchors (smooth-scrolled by
   // Lenis). From any other page they point back to the home section.
@@ -74,7 +99,11 @@ export function Navbar() {
           <ul className="hidden items-center gap-8 md:flex">
             {sections.map((section) => (
               <li key={section.id}>
-                <a href={sectionHref(section.id)} className={linkClass}>
+                <a
+                  href={sectionHref(section.id)}
+                  aria-current={active === section.id ? 'true' : undefined}
+                  className={`${linkClass} ${active === section.id ? 'text-ink after:w-full' : ''}`}
+                >
                   {section.label}
                 </a>
               </li>
@@ -167,7 +196,10 @@ export function Navbar() {
                     <a
                       href={sectionHref(section.id)}
                       onClick={() => setOpen(false)}
-                      className="block rounded-lg px-3 py-2.5 text-sm text-silver transition-colors hover:bg-white/5 hover:text-ink"
+                      aria-current={active === section.id ? 'true' : undefined}
+                      className={`block rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-white/5 hover:text-ink ${
+                        active === section.id ? 'bg-white/5 text-brand-light' : 'text-silver'
+                      }`}
                     >
                       {section.label}
                     </a>

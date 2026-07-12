@@ -84,6 +84,15 @@ export function Footer() {
             <a href="/#features" className="text-silver transition-colors hover:text-brand-light">
               Features
             </a>
+            <a
+              href="/#early-access"
+              className="text-silver transition-colors hover:text-brand-light"
+            >
+              Book a demo
+            </a>
+            <a href="/#faq" className="text-silver transition-colors hover:text-brand-light">
+              FAQ
+            </a>
             <Link to="/blog" className="text-silver transition-colors hover:text-brand-light">
               Blog
             </Link>
