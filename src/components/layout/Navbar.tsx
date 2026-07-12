@@ -131,10 +131,25 @@ export function Navbar() {
         </nav>
 
         {/* Mobile disclosure panel — spring slide-down via motion. The header is
-            fixed, so the panel never pushes page content. */}
+            fixed, so the panel never pushes page content. A scrim dims the page
+            behind the open menu (and closes it on tap) so the panel reads
+            cleanly over the hero. */}
         <AnimatePresence initial={false}>
           {open && (
             <m.div
+              key="scrim"
+              aria-hidden="true"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={reduce ? { duration: 0 } : { duration: 0.25, ease: 'easeOut' }}
+              onClick={() => setOpen(false)}
+              className="fixed inset-0 -z-10 bg-black/55 backdrop-blur-[2px] md:hidden"
+            />
+          )}
+          {open && (
+            <m.div
+              key="panel"
               id="mobile-nav"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}

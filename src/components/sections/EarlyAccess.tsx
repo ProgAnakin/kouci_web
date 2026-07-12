@@ -254,7 +254,11 @@ export function EarlyAccess() {
               </div>
 
               <Button type="submit" className="w-full" disabled={status === 'submitting'}>
-                {status === 'submitting' ? 'Sending…' : 'Request Access'}
+                {status === 'submitting'
+                  ? 'Sending…'
+                  : wantsDemo
+                    ? 'Book my demo'
+                    : 'Request access'}
               </Button>
             </form>
           )}

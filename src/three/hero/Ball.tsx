@@ -1,5 +1,6 @@
 import { forwardRef, useEffect, useMemo } from 'react'
 import * as THREE from 'three'
+import { HERO_COLORS } from './constants'
 
 /**
  * Color texture modelled on a real match ball in the Kouci colourway (like the
@@ -17,9 +18,11 @@ function makeColorTexture(): THREE.CanvasTexture {
   const ctx = canvas.getContext('2d')!
 
   // Panels: 8 vertical bands (4 seams × 2 hemispheres), alternating colour.
+  // Uses the shared hero palette so the ball stays on-brand but reads bright
+  // against the dark water instead of sinking into it.
   const panel = w / 8
   for (let i = 0; i < 8; i++) {
-    ctx.fillStyle = i % 2 === 0 ? '#57613c' : '#cfc492'
+    ctx.fillStyle = i % 2 === 0 ? HERO_COLORS.ballOlive : HERO_COLORS.ballCream
     ctx.fillRect(i * panel, 0, panel, h)
   }
 
@@ -50,7 +53,7 @@ function makeColorTexture(): THREE.CanvasTexture {
   ctx.fillRect(0, h / 2 - 2, w, 4)
 
   // Pole caps (texture poles pinch, so wide flat bands read as neat discs).
-  ctx.fillStyle = '#5c6543'
+  ctx.fillStyle = HERO_COLORS.ballOlive
   ctx.fillRect(0, 0, w, 14)
   ctx.fillRect(0, h - 14, w, 14)
   ctx.fillStyle = 'rgba(23, 24, 18, 0.85)'
@@ -140,13 +143,13 @@ export const Ball = forwardRef<THREE.Group, BallProps>(function Ball({ radius = 
           map={colorTex}
           bumpMap={bumpTex}
           bumpScale={0.35}
-          roughness={0.62}
-          sheen={0.22}
-          sheenRoughness={0.65}
+          roughness={0.58}
+          sheen={0.3}
+          sheenRoughness={0.6}
           sheenColor={new THREE.Color('#c9cfa0')}
-          clearcoat={0.08}
-          clearcoatRoughness={0.65}
-          envMapIntensity={0.45}
+          clearcoat={0.12}
+          clearcoatRoughness={0.55}
+          envMapIntensity={0.62}
         />
       </mesh>
     </group>

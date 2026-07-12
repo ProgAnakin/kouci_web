@@ -1,4 +1,5 @@
 import { Reveal } from '../ui/Reveal'
+import { IconChip, IconHistory, IconMoon, IconNotebook } from '../ui/icons'
 
 /**
  * The problem, told the way it is lived on deck. This section exists to make a
@@ -7,14 +8,17 @@ import { Reveal } from '../ui/Reveal'
  */
 const pains = [
   {
+    icon: <IconHistory />,
     head: 'The exclusion nobody remembers',
     body: 'By Monday, the details that decide games — who conceded, where, in which quarter — are gone. So decisions get made on gut feeling, again.',
   },
   {
+    icon: <IconNotebook />,
     head: 'A season locked in notebooks',
     body: 'Years of matches live in paper pads and half-finished spreadsheets. When a coach moves on, the club’s entire memory walks out the door with them.',
   },
   {
+    icon: <IconMoon />,
     head: 'Sunday nights lost to admin',
     body: 'Hours rebuilding stats after every match weekend — or, more honestly, never doing it at all. That’s coaching time, spent on data entry.',
   },
@@ -51,7 +55,8 @@ export function Pain() {
         >
           {pains.map((p) => (
             <div key={p.head} className="bg-bg p-7">
-              <dt className="font-display text-lg font-semibold text-brand-light">{p.head}</dt>
+              <IconChip>{p.icon}</IconChip>
+              <dt className="mt-4 font-display text-lg font-semibold text-brand-light">{p.head}</dt>
               <dd className="mt-2 text-sm leading-relaxed text-silver">{p.body}</dd>
             </div>
           ))}
