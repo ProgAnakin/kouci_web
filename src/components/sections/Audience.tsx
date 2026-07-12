@@ -35,6 +35,7 @@ export function Audience() {
       <div className="container-content">
         <SectionHeading
           id="audience-title"
+          layout="split"
           eyebrow="Who it’s for"
           title="Made for the people on the bench"
           lead="Kouci is built for everyone who lives and dies by the next set — not just the scoreboard."

@@ -13,6 +13,7 @@ export function Features() {
       <div className="container-content">
         <SectionHeading
           id="features-title"
+          layout="split"
           eyebrow="What Kouci does"
           title="Four tools that turn a season into signal"
           lead="From the first roster of the year to the last whistle of the final, every part of Kouci feeds the same picture of your team."

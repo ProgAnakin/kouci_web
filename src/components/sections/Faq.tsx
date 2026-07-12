@@ -103,19 +103,33 @@ export function Faq() {
       className="border-t border-white/5 py-24 md:py-32"
     >
       <div className="container-content">
-        <SectionHeading
-          eyebrow="FAQ"
-          id="faq-title"
-          title="Questions coaches ask us"
-          lead="Short and straight — the way you'd want it on the pool deck."
-          align="center"
-        />
+        {/* Editorial two-column layout: the heading rail stays pinned on the
+            left while the questions scroll on the right — no centered void. */}
+        <div className="grid gap-x-12 gap-y-10 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <div className="lg:sticky lg:top-28">
+              <SectionHeading
+                eyebrow="FAQ"
+                id="faq-title"
+                title="Questions coaches ask us"
+                lead="Short and straight — the way you'd want it on the pool deck."
+              />
+              <p className="mt-8 text-sm leading-relaxed text-silver">
+                Something we didn’t cover?{' '}
+                <a href="#early-access" className="text-brand-light hover:underline">
+                  Ask it in a live demo
+                </a>{' '}
+                — we answer everything on a call.
+              </p>
+            </div>
+          </div>
 
-        <Reveal className="mx-auto mt-12 max-w-2xl space-y-3">
-          {FAQ_ITEMS.map((item) => (
-            <FaqItem key={item.q} q={item.q} a={item.a} />
-          ))}
-        </Reveal>
+          <Reveal className="space-y-3 lg:col-span-8">
+            {FAQ_ITEMS.map((item) => (
+              <FaqItem key={item.q} q={item.q} a={item.a} />
+            ))}
+          </Reveal>
+        </div>
       </div>
     </section>
   )

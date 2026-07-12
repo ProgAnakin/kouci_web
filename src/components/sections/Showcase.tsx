@@ -76,12 +76,15 @@ export function Showcase() {
       <div className="container-content">
         <SectionHeading
           id="showcase-title"
+          layout="split"
           eyebrow="See it move"
           title="Water polo is a visual game. So is Kouci."
           lead="The tactics board and the penalty map are where the data becomes a decision. Drag-free, drawn in 3D, ready to share."
         />
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-2">
+        {/* The scenes break out past the text measure on wide screens — the
+            widest, most cinematic moment on the page. */}
+        <div className="mt-14 grid gap-6 lg:grid-cols-2 xl:-mx-14">
           <ShowcasePanel
             title="Animated tactics board"
             description="Set the formation with numbered caps, then watch the play animate along 3D arrows. Export the sequence to MP4 or GIF and send it to the group chat."

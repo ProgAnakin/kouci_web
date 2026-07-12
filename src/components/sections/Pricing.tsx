@@ -45,12 +45,12 @@ export function Pricing() {
         <SectionHeading
           eyebrow="Founding clubs"
           id="pricing-title"
+          layout="split"
           title="Bought once. Owned by the club. Not another subscription."
           lead="Clubs don’t rent their pool or their goals — why rent their data? One payment covers every team, every coach, every season."
-          align="center"
         />
 
-        <Reveal className="mx-auto mt-14 max-w-3xl">
+        <Reveal className="mt-14">
           <div className="card card-lift overflow-hidden">
             <div className="grid md:grid-cols-[1.2fr_1fr]">
               {/* Left: the license */}
