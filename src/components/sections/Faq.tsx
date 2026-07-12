@@ -19,7 +19,7 @@ export const FAQ_ITEMS = [
   },
   {
     q: 'How much does Kouci cost?',
-    a: 'The v1 Club License is €2,000, paid once. It covers your whole club — every team, every age group, unlimited coaches — with assisted installation and staff training included. It is not a subscription: no per-season or per-user fees.',
+    a: 'The v1 Club License is €2,000 (excl. VAT where applicable), paid once. It covers your whole club — every team, every age group, unlimited coaches — with assisted installation and staff training included. It is not a subscription: no per-season or per-user fees. Pay by card, or by bank transfer against an invoice.',
   },
   {
     q: 'Why does the price go up with each version?',

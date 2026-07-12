@@ -5,7 +5,16 @@ import { Seo } from '../components/Seo'
 import { Field } from '../components/ui/Field'
 import { Button } from '../components/ui/Button'
 import { LICENSE, LICENSE_INCLUDES, VERSION_LADDER, formatPrice } from '../lib/commerce'
-import { SITE_NAME } from '../lib/site'
+import { CONTACT_EMAIL, SITE_NAME } from '../lib/site'
+
+// Until the real contact address is filled into site.ts the invoice path
+// falls back to the demo/contact form instead of a dead mailto.
+const HAS_CONTACT_EMAIL = !CONTACT_EMAIL.startsWith('[')
+const INVOICE_MAILTO = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
+  `Invoice request — ${LICENSE.name} (${LICENSE.version})`,
+)}&body=${encodeURIComponent(
+  'Hi Kouci,\n\nWe would like to pay the Club License by bank transfer.\n\nClub name:\nBilling address:\nVAT ID (if any):\nContact person:\n',
+)}`
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -132,9 +141,16 @@ export function Checkout() {
 
           <p className="mt-6 font-display text-5xl font-bold text-ink">
             {formatPrice(LICENSE.price)}
+            <span className="ml-2 align-middle font-sans text-sm font-normal text-silver/70">
+              excl. VAT
+            </span>
           </p>
           <p className="mt-1 text-sm text-silver">
             Not per season. Not per user. Yours — like buying the boat, not renting the lane.
+          </p>
+          <p className="mt-2 text-xs leading-relaxed text-silver/70">
+            VAT is added at checkout where applicable — enter your club’s VAT ID for a compliant
+            invoice.
           </p>
 
           <ul className="mt-8 space-y-3">
@@ -232,7 +248,7 @@ export function Checkout() {
               label="Email"
               type="email"
               autoComplete="email"
-              placeholder="direction@club.com"
+              placeholder="office@club.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               error={errors.email}
@@ -272,6 +288,14 @@ export function Checkout() {
                 : `Pay ${formatPrice(LICENSE.price)} — secure checkout`}
             </Button>
 
+            <p className="text-center text-xs text-silver/60">
+              By paying you agree to the{' '}
+              <Link to="/terms" className="text-silver underline underline-offset-2 hover:text-ink">
+                License Terms
+              </Link>
+              .
+            </p>
+
             <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-silver/70">
               <span className="inline-flex items-center gap-1.5">
                 <svg
@@ -289,6 +313,30 @@ export function Checkout() {
               <span>Invoice &amp; tax ID collected at checkout</span>
               <span>·</span>
               <span>We never see your card</span>
+            </div>
+
+            {/* Bank-transfer path — how most European club treasuries actually pay. */}
+            <div className="rounded-xl border border-white/10 bg-bg/50 px-4 py-3.5 text-center text-sm text-silver">
+              <span className="font-medium text-ink">Prefer bank transfer?</span> Most clubs pay by
+              invoice —{' '}
+              {HAS_CONTACT_EMAIL ? (
+                <a
+                  href={INVOICE_MAILTO}
+                  onClick={() => track('invoice_request_click')}
+                  className="text-brand-light hover:underline"
+                >
+                  request an invoice
+                </a>
+              ) : (
+                <Link
+                  to="/#early-access"
+                  onClick={() => track('invoice_request_click')}
+                  className="text-brand-light hover:underline"
+                >
+                  ask for an invoice via the demo form
+                </Link>
+              )}{' '}
+              and we’ll send payment details within one business day. Same price, same license.
             </div>
           </form>
         </section>

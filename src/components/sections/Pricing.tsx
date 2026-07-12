@@ -55,16 +55,18 @@ export function Pricing() {
             <div className="grid md:grid-cols-[1.2fr_1fr]">
               {/* Left: the license */}
               <div className="p-8 md:p-10">
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
                   <h3 className="font-display text-xl font-semibold text-ink">{LICENSE.name}</h3>
-                  <span className="rounded-full border border-brand/30 bg-brand/10 px-3 py-1 text-xs font-medium text-brand-light">
+                  <span className="whitespace-nowrap rounded-full border border-brand/30 bg-brand/10 px-3 py-1 text-xs font-medium text-brand-light">
                     {LICENSE.version} · founder price
                   </span>
                 </div>
-                <p className="mt-5 font-display text-5xl font-bold text-ink">
-                  {formatPrice(LICENSE.price)}
-                  <span className="ml-2 align-middle font-sans text-sm font-normal text-silver">
-                    one-time · per club
+                <p className="mt-5 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                  <span className="font-display text-5xl font-bold text-ink">
+                    {formatPrice(LICENSE.price)}
+                  </span>
+                  <span className="whitespace-nowrap text-sm text-silver">
+                    one-time · per club · excl. VAT
                   </span>
                 </p>
 
@@ -80,10 +82,11 @@ export function Pricing() {
                   ))}
                 </ul>
 
-                <div className="mt-8 flex flex-wrap items-center gap-4">
+                <div className="mt-8 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-4">
                   <ButtonTo
                     to="/checkout"
                     withArrow
+                    className="w-full justify-center sm:w-auto"
                     onClick={() => track('cta_click', { placement: 'pricing', label: 'checkout' })}
                   >
                     Get the Club License
@@ -91,11 +94,15 @@ export function Pricing() {
                   <ButtonLink
                     href="#early-access"
                     variant="ghost"
+                    className="w-full justify-center sm:w-auto"
                     onClick={() => track('cta_click', { placement: 'pricing', label: 'demo' })}
                   >
                     See a demo first
                   </ButtonLink>
                 </div>
+                <p className="mt-4 text-xs text-silver/70">
+                  Pay by card — or by bank transfer with an invoice, like most clubs.
+                </p>
               </div>
 
               {/* Right: the ladder + white-label */}
