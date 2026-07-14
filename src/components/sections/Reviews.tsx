@@ -74,7 +74,7 @@ export function Reviews() {
           id="reviews-title"
           title="What coaches are saying"
           lead="Kouci is being shaped hand-in-hand with the coaches and analysts using it first."
-          align="center"
+          layout="center"
         />
 
         <Reveal as="div" stagger className="mt-14 grid gap-6 md:grid-cols-3">

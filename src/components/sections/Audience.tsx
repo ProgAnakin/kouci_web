@@ -1,20 +1,25 @@
 import { Reveal } from '../ui/Reveal'
 import { SectionHeading } from '../ui/SectionHeading'
+import { IconChip, IconClipboard, IconGlobe, IconShield, IconTrend } from '../ui/icons'
 
 const audience = [
   {
+    icon: <IconClipboard />,
     title: 'Head coaches',
     body: 'Walk into every game knowing exactly what each player did last time — and what the opponent tends to do under pressure.',
   },
   {
+    icon: <IconTrend />,
     title: 'Analysts',
     body: 'Turn a season of matches into clean, queryable data instead of a stack of notebooks and half-remembered moments.',
   },
   {
+    icon: <IconShield />,
     title: 'Clubs',
     body: 'Give every team in the club one shared way to track players, penalties and tactics from youth squads up.',
   },
   {
+    icon: <IconGlobe />,
     title: 'Federations',
     body: 'Standardize how matches are recorded and scouted across programs, with data that travels between staff.',
   },
@@ -30,6 +35,7 @@ export function Audience() {
       <div className="container-content">
         <SectionHeading
           id="audience-title"
+          layout="split"
           eyebrow="Who it’s for"
           title="Made for the people on the bench"
           lead="Kouci is built for everyone who lives and dies by the next set — not just the scoreboard."
@@ -38,7 +44,8 @@ export function Audience() {
         <Reveal as="ul" stagger pop className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {audience.map((a) => (
             <li key={a.title} className="card card-lift group flex flex-col p-6">
-              <h3 className="font-display text-lg font-semibold text-ink transition-colors duration-300 group-hover:text-brand-light">
+              <IconChip>{a.icon}</IconChip>
+              <h3 className="mt-4 font-display text-lg font-semibold text-ink transition-colors duration-300 group-hover:text-brand-light">
                 {a.title}
               </h3>
               <p className="mt-3 text-sm leading-relaxed text-silver">{a.body}</p>

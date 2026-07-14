@@ -1,4 +1,5 @@
 import type { AnchorHTMLAttributes, ButtonHTMLAttributes, ReactNode } from 'react'
+import { Link, type LinkProps } from 'react-router-dom'
 
 type Variant = 'primary' | 'ghost'
 
@@ -7,9 +8,9 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary:
-    'btn-sheen bg-brand text-bg hover:bg-brand-light hover:shadow-[0_10px_34px_-10px] hover:shadow-brand/70',
+    'btn-sheen bg-gradient-to-b from-brand-light to-brand text-bg shadow-[inset_0_1px_0_rgba(255,255,255,0.22),0_2px_10px_-2px_rgba(0,0,0,0.5)] hover:to-brand-light hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.28),0_12px_36px_-10px_rgba(126,139,99,0.75)]',
   ghost:
-    'border border-silver/25 text-ink hover:border-brand-light/70 hover:bg-white/5 hover:text-brand-light',
+    'border border-white/15 bg-white/[0.03] text-ink hover:border-brand-light/60 hover:bg-brand/10 hover:text-brand-light',
 }
 
 function Arrow() {
@@ -53,6 +54,22 @@ export function ButtonLink({
       {children}
       {withArrow && <Arrow />}
     </a>
+  )
+}
+
+/** Router-Link flavour — used for cross-page CTAs (keeps the page transition). */
+export function ButtonTo({
+  variant = 'primary',
+  children,
+  className = '',
+  withArrow = false,
+  ...rest
+}: CommonProps & LinkProps) {
+  return (
+    <Link className={`${base} ${variants[variant]} ${className}`} {...rest}>
+      {children}
+      {withArrow && <Arrow />}
+    </Link>
   )
 }
 

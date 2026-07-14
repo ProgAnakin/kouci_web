@@ -13,6 +13,8 @@ export const routes: RouteRecord[] = [
     entry: 'src/RootLayout.tsx',
     children: [
       { index: true, element: <LandingPage />, entry: 'src/pages/LandingPage.tsx' },
+      { path: 'checkout', lazy: () => import('./pages/Checkout') },
+      { path: 'checkout/success', lazy: () => import('./pages/CheckoutSuccess') },
       { path: 'privacy', lazy: () => import('./pages/Privacy') },
       { path: 'terms', lazy: () => import('./pages/Terms') },
       { path: 'blog', lazy: () => import('./pages/BlogIndex') },

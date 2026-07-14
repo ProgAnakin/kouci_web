@@ -2,7 +2,7 @@ import { Suspense, lazy, useEffect, useLayoutEffect, useRef, useState } from 're
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { track } from '@vercel/analytics'
-import { ButtonLink } from '../ui/Button'
+import { ButtonLink, ButtonTo } from '../ui/Button'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 import { useCanvasActivation } from '../../hooks/useCanvasActivation'
 
@@ -126,9 +126,11 @@ export function Hero() {
         {/* Lightweight poster: shows instantly, the canvas fades in over it. */}
         <div className="absolute inset-0 bg-[radial-gradient(120%_80%_at_70%_32%,rgba(126,139,99,0.16),transparent_55%),linear-gradient(to_bottom,#0c0d0a_0%,#131512_72%)]" />
 
+        {/* On phones the whole scene shifts down so the goal clears the copy and
+            the ball settles below the CTAs instead of behind them. */}
         {mount && (
           <div
-            className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+            className={`absolute inset-0 transition-opacity duration-700 ease-out max-md:translate-y-[9%] ${
               loaded ? 'opacity-100' : 'opacity-0'
             }`}
           >
@@ -142,7 +144,7 @@ export function Hero() {
             the ball and goal sit clear, on the right. */}
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#131512_0%,rgba(19,21,18,0.7)_40%,transparent_70%)]" />
         {/* On phones the text sits over the scene, so add a soft global dim. */}
-        <div className="pointer-events-none absolute inset-0 bg-bg/40 md:hidden" />
+        <div className="pointer-events-none absolute inset-0 bg-bg/55 md:hidden" />
         {/* Top + bottom fades for grounding. */}
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-bg/45 via-transparent to-bg" />
         {/* Cinematic vignette (replaces the post-processing one — free). */}
@@ -155,40 +157,48 @@ export function Hero() {
           Master <span className="text-brand-light">Every Play</span>
         </h1>
         <p className="mt-6 max-w-xl text-lg leading-relaxed text-silver">
-          The water polo app that turns raw match data into a tactical edge — player stats, penalty
-          maps, animated tactics and live game tracking. Built for coaches, coming to iOS &amp;
-          Android.
+          The water polo app your club buys once and owns — player stats, penalty maps, animated
+          tactics and live match tracking. Stop coaching from memory; start coaching from data.
         </p>
-        <p className="mt-4 inline-flex items-center gap-2 text-sm text-silver/70">
-          <span className="h-1.5 w-1.5 rounded-full bg-brand-light" aria-hidden="true" />
-          In development · early access opening soon
+        <p className="mt-4 flex max-w-xl items-start gap-2 text-sm text-silver/70">
+          <span
+            className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-brand-light"
+            aria-hidden="true"
+          />
+          v1 founding-club licenses open · the price only goes up
         </p>
-        <div className="mt-9 flex flex-wrap items-center gap-4">
-          <ButtonLink
-            href="#early-access"
+        <div className="mt-9 flex max-w-md flex-col items-stretch gap-3 sm:max-w-none sm:flex-row sm:items-center sm:gap-4">
+          <ButtonTo
+            to="/checkout"
             withArrow
-            onClick={() => track('cta_click', { placement: 'hero', label: 'early_access' })}
+            className="w-full justify-center sm:w-auto"
+            onClick={() => track('cta_click', { placement: 'hero', label: 'checkout' })}
           >
-            Get Early Access
-          </ButtonLink>
+            Get Kouci for your club
+          </ButtonTo>
           <ButtonLink
-            href="#features"
+            href="#pricing"
             variant="ghost"
-            onClick={() => track('cta_click', { placement: 'hero', label: 'features' })}
+            className="w-full justify-center sm:w-auto"
+            onClick={() => track('cta_click', { placement: 'hero', label: 'pricing' })}
           >
-            See the features
+            See what it costs
           </ButtonLink>
         </div>
       </div>
 
-      {/* Scroll cue */}
-      <div
-        className="absolute bottom-7 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 text-silver/70"
-        aria-hidden="true"
+      {/* Scroll cue — a real link, so the hint is also the shortcut. */}
+      <a
+        href="#pain"
+        aria-label="Scroll to why Kouci exists"
+        className="absolute bottom-7 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2 rounded-full px-3 py-1 text-silver/70 transition-colors hover:text-brand-light"
       >
         <span className="text-[10px] uppercase tracking-[0.3em]">Scroll</span>
-        <span className="h-9 w-px animate-pulse bg-gradient-to-b from-silver/60 to-transparent" />
-      </div>
+        <span
+          aria-hidden="true"
+          className="h-9 w-px animate-pulse bg-gradient-to-b from-silver/60 to-transparent"
+        />
+      </a>
     </section>
   )
 }

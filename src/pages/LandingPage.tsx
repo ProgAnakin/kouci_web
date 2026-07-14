@@ -1,6 +1,7 @@
 import { Hero } from '../components/sections/Hero'
-import { PromiseSection } from '../components/sections/Promise'
+import { Pain } from '../components/sections/Pain'
 import { Features } from '../components/sections/Features'
+import { Pricing } from '../components/sections/Pricing'
 import { Showcase } from '../components/sections/Showcase'
 import { Audience } from '../components/sections/Audience'
 import { CtaBand } from '../components/sections/CtaBand'
@@ -11,6 +12,7 @@ import { EarlyAccess } from '../components/sections/EarlyAccess'
 // below <Audience /> once the placeholder quotes are replaced.
 import { Seo } from '../components/Seo'
 import { SITE_URL, SITE_NAME, SOCIAL_LINKS, absoluteUrl } from '../lib/site'
+import { LICENSE } from '../lib/commerce'
 import { usePageScroll } from '../hooks/usePageScroll'
 
 const DESCRIPTION =
@@ -27,9 +29,10 @@ const structuredData = [
     description: DESCRIPTION,
     offers: {
       '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-      description: 'Early access',
+      price: String(LICENSE.price),
+      priceCurrency: LICENSE.currency,
+      description: `${LICENSE.name} (${LICENSE.version}) — one-time payment per club`,
+      url: absoluteUrl('/checkout'),
     },
   },
   {
@@ -37,7 +40,7 @@ const structuredData = [
     '@type': 'Organization',
     name: SITE_NAME,
     url: SITE_URL,
-    logo: absoluteUrl('/og-image.jpg'),
+    logo: absoluteUrl('/brand/kouci-logo-512.png'),
     description: 'Water polo tactical and statistical analysis for coaches and analysts.',
     sameAs: SOCIAL_LINKS,
   },
@@ -76,11 +79,12 @@ export function LandingPage() {
       />
       <main id="main">
         <Hero />
-        <PromiseSection />
+        <Pain />
         <Features />
         <Showcase />
         <CtaBand />
         <Audience />
+        <Pricing />
         <Faq />
         <EarlyAccess />
       </main>

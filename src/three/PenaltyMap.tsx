@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { Instance, Instances } from '@react-three/drei'
 import * as THREE from 'three'
@@ -6,6 +6,33 @@ import { palette } from '../lib/theme'
 import { Hotspot } from './Hotspot'
 import { Ball } from './hero/Ball'
 import { Goal } from './hero/Goal'
+import { HERO_COLORS } from './hero/constants'
+
+/**
+ * Tiny striped ball texture for the scored markers — panels + seams only (no
+ * grain or print; the markers are too small for either to read). One canvas
+ * shared by all instances.
+ */
+function makeMarkerTexture(): THREE.CanvasTexture {
+  const w = 256
+  const h = 128
+  const canvas = document.createElement('canvas')
+  canvas.width = w
+  canvas.height = h
+  const ctx = canvas.getContext('2d')!
+  const panel = w / 8
+  for (let i = 0; i < 8; i++) {
+    ctx.fillStyle = i % 2 === 0 ? HERO_COLORS.ballOlive : HERO_COLORS.ballCream
+    ctx.fillRect(i * panel, 0, panel, h)
+  }
+  ctx.fillStyle = HERO_COLORS.ballSeam
+  for (const u of [0, 0.25, 0.5, 0.75]) {
+    ctx.fillRect(u * w - 2, 0, 4, h)
+  }
+  const tex = new THREE.CanvasTexture(canvas)
+  tex.colorSpace = THREE.SRGBColorSpace
+  return tex
+}
 
 export const GOAL_W = 3.4
 export const GOAL_H = 1.05
@@ -77,6 +104,9 @@ const _pc = new THREE.Vector3()
  * saves freeze at the keeper's stop; the wide one splashes past the post.
  */
 export function PenaltyMap({ reducedMotion = false }: { reducedMotion?: boolean }) {
+  const markerTex = useMemo(makeMarkerTexture, [])
+  useEffect(() => () => markerTex.dispose(), [markerTex])
+
   const goalMat = useRef<THREE.MeshStandardMaterial>(null)
   const goalRefs = useRef<(THREE.Object3D | null)[]>([])
   const missRefs = useRef<(THREE.Object3D | null)[]>([])
@@ -159,30 +189,33 @@ export function PenaltyMap({ reducedMotion = false }: { reducedMotion?: boolean 
       {/* The floating goal itself — same build as the hero's. */}
       <Goal position={[0, 0.01, 0]} width={GOAL_W} height={GOAL_H} />
 
-      {/* Scored shots — emissive, pulsing */}
+      {/* Scored shots — mini match balls lodged in the net, with a soft pulse.
+          Each instance gets its own spin so the panels don't read repeated. */}
       <Instances limit={GOALS.length} range={GOALS.length}>
-        <sphereGeometry args={[0.085, 20, 20]} />
+        <sphereGeometry args={[0.085, 24, 20]} />
         <meshStandardMaterial
           ref={goalMat}
-          color={palette.brandLight}
+          map={markerTex}
           emissive={palette.brand}
           emissiveIntensity={0.5}
-          roughness={0.35}
+          roughness={0.42}
         />
         {GOALS.map((s, i) => (
           <Instance
             key={i}
             ref={(el: THREE.Object3D | null) => (goalRefs.current[i] = el)}
             position={s.target.toArray()}
+            rotation={[0.5 + i * 0.7, i * 1.9, i * 0.35]}
             scale={reducedMotion ? 1 : 0.0001}
           />
         ))}
       </Instances>
 
-      {/* Missed / saved shots — muted silver, smaller */}
+      {/* Saved / missed shots — hollow silver rings: the shot that was stopped,
+          not the ball that went in. Shape carries the meaning, not just color. */}
       <Instances limit={MISSES.length} range={MISSES.length}>
-        <sphereGeometry args={[0.062, 16, 16]} />
-        <meshStandardMaterial color={palette.silver} roughness={0.6} transparent opacity={0.75} />
+        <torusGeometry args={[0.055, 0.017, 12, 28]} />
+        <meshStandardMaterial color={palette.silver} roughness={0.55} transparent opacity={0.85} />
         {MISSES.map((s, i) => (
           <Instance
             key={i}

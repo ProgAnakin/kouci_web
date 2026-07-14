@@ -75,9 +75,12 @@ export function Footer() {
             <span className="text-xs font-medium uppercase tracking-[0.18em] text-silver/50">
               Explore
             </span>
-            <Link to="/blog" className="text-silver transition-colors hover:text-brand-light">
-              Blog
+            <Link to="/checkout" className="text-silver transition-colors hover:text-brand-light">
+              Get the license
             </Link>
+            <a href="/#pricing" className="text-silver transition-colors hover:text-brand-light">
+              Pricing
+            </a>
             <a href="/#features" className="text-silver transition-colors hover:text-brand-light">
               Features
             </a>
@@ -85,8 +88,14 @@ export function Footer() {
               href="/#early-access"
               className="text-silver transition-colors hover:text-brand-light"
             >
-              Early access
+              Book a demo
             </a>
+            <a href="/#faq" className="text-silver transition-colors hover:text-brand-light">
+              FAQ
+            </a>
+            <Link to="/blog" className="text-silver transition-colors hover:text-brand-light">
+              Blog
+            </Link>
           </nav>
 
           <nav aria-label="Social" className="flex flex-wrap items-center gap-x-5 gap-y-3">

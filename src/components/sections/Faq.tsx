@@ -18,20 +18,28 @@ export const FAQ_ITEMS = [
     a: 'Kouci is an iOS & Android app. It runs on the phone or tablet you already bring to the pool deck, and it is designed to be usable courtside during a live match.',
   },
   {
-    q: 'When does it launch?',
-    a: 'Kouci is in active development with early access opening soon. Join the early-access list and you will be the first to know — clubs on the list get priority onboarding.',
+    q: 'How much does Kouci cost?',
+    a: 'The v1 Club License is €2,000 (excl. VAT where applicable), paid once. It covers your whole club — every team, every age group, unlimited coaches — with assisted installation and staff training included. It is not a subscription: no per-season or per-user fees. Pay by card, or by bank transfer against an invoice.',
   },
   {
-    q: 'How much will it cost?',
-    a: 'Pricing will be announced with the launch. Clubs on the early-access list hear first — and get the best conditions we will ever offer.',
+    q: 'Why does the price go up with each version?',
+    a: 'Each new version of Kouci launches at a higher price for new clubs, because the product keeps growing. Clubs that already own a license never pay for it again — future versions only bring optional add-ons. Buying v1 is the best deal Kouci will ever have.',
+  },
+  {
+    q: 'What happens after I buy?',
+    a: 'You receive your receipt and invoice immediately. Within 24 hours we contact you to schedule the assisted installation and a training session for your coaching staff — most clubs are tracking their first match within a week.',
+  },
+  {
+    q: 'Will my club get its own branded app?',
+    a: 'Soon. White-label builds — your crest and club colors baked into your own app — are in development. License holders get them first, at no extra license cost; we will ask for your logo the moment it ships.',
   },
   {
     q: 'Who owns the data my club records?',
     a: 'Your club does, entirely. Your players, matches and statistics are yours — Kouci never sells data, and you can export everything at any time.',
   },
   {
-    q: 'Can I see Kouci before the launch?',
-    a: 'Yes. Request a guided demo in the early-access form — a 30-minute walkthrough of Kouci applied to your club’s context.',
+    q: 'Can I see Kouci before buying?',
+    a: 'Yes. Request a guided demo in the form below — a 30-minute walkthrough of Kouci applied to your club’s context, before you spend a euro.',
   },
 ]
 
@@ -95,19 +103,33 @@ export function Faq() {
       className="border-t border-white/5 py-24 md:py-32"
     >
       <div className="container-content">
-        <SectionHeading
-          eyebrow="FAQ"
-          id="faq-title"
-          title="Questions coaches ask us"
-          lead="Short and straight — the way you'd want it on the pool deck."
-          align="center"
-        />
+        {/* Editorial two-column layout: the heading rail stays pinned on the
+            left while the questions scroll on the right — no centered void. */}
+        <div className="grid gap-x-12 gap-y-10 lg:grid-cols-12">
+          <div className="lg:col-span-4">
+            <div className="lg:sticky lg:top-28">
+              <SectionHeading
+                eyebrow="FAQ"
+                id="faq-title"
+                title="Questions coaches ask us"
+                lead="Short and straight — the way you'd want it on the pool deck."
+              />
+              <p className="mt-8 text-sm leading-relaxed text-silver">
+                Something we didn’t cover?{' '}
+                <a href="#early-access" className="text-brand-light hover:underline">
+                  Ask it in a live demo
+                </a>{' '}
+                — we answer everything on a call.
+              </p>
+            </div>
+          </div>
 
-        <Reveal className="mx-auto mt-12 max-w-2xl space-y-3">
-          {FAQ_ITEMS.map((item) => (
-            <FaqItem key={item.q} q={item.q} a={item.a} />
-          ))}
-        </Reveal>
+          <Reveal className="space-y-3 lg:col-span-8">
+            {FAQ_ITEMS.map((item) => (
+              <FaqItem key={item.q} q={item.q} a={item.a} />
+            ))}
+          </Reveal>
+        </div>
       </div>
     </section>
   )

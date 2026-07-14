@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 
 /**
@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom'
  */
 export function ScrollToHash() {
   const { pathname, hash } = useLocation()
+  const firstRender = useRef(true)
 
   useEffect(() => {
     if (hash) {
@@ -18,9 +19,20 @@ export function ScrollToHash() {
       const raf = requestAnimationFrame(() => {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
       })
+      firstRender.current = false
       return () => cancelAnimationFrame(raf)
     }
     window.scrollTo(0, 0)
+    // After a real navigation (not initial load), hand keyboard/screen-reader
+    // focus to the new page's main region so tabbing starts in the content.
+    if (!firstRender.current) {
+      const main = document.getElementById('main')
+      if (main) {
+        main.tabIndex = -1
+        main.focus({ preventScroll: true })
+      }
+    }
+    firstRender.current = false
   }, [pathname, hash])
 
   return null

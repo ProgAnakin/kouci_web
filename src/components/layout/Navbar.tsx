@@ -2,23 +2,48 @@ import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { AnimatePresence, m, useReducedMotion } from 'motion/react'
 import { track } from '@vercel/analytics'
-import { ButtonLink } from '../ui/Button'
+import { ButtonTo } from '../ui/Button'
 import { Logo } from '../ui/Logo'
 
 const sections = [
   { id: 'features', label: 'Features' },
   { id: 'showcase', label: 'Showcase' },
-  { id: 'audience', label: 'Who it’s for' },
+  { id: 'pricing', label: 'Pricing' },
   { id: 'faq', label: 'FAQ' },
 ]
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
+  // Scroll-spy: which home section is currently in view (null over the hero).
+  const [active, setActive] = useState<string | null>(null)
   const location = useLocation()
   const { pathname } = location
   const isHome = pathname === '/'
   const reduce = useReducedMotion()
+
+  // Highlight the nav link of the section under the reading line. The hero is
+  // observed too so returning to the top clears the highlight.
+  useEffect(() => {
+    if (!isHome) {
+      setActive(null)
+      return
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue
+          setActive(entry.target.id === 'hero' ? null : entry.target.id)
+        }
+      },
+      { rootMargin: '-35% 0px -55% 0px' },
+    )
+    for (const id of ['hero', ...sections.map((s) => s.id)]) {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    }
+    return () => observer.disconnect()
+  }, [isHome])
 
   // On the home page, section links are native anchors (smooth-scrolled by
   // Lenis). From any other page they point back to the home section.
@@ -66,13 +91,19 @@ export function Navbar() {
           }`}
         >
           <Link to="/" aria-label="Kouci — home" className="rounded-full">
-            <Logo />
+            {/* On very small screens the KC mark stands alone — the wordmark
+                would collide with the CTA button. */}
+            <Logo wordmarkClassName="hidden min-[440px]:inline" />
           </Link>
 
           <ul className="hidden items-center gap-8 md:flex">
             {sections.map((section) => (
               <li key={section.id}>
-                <a href={sectionHref(section.id)} className={linkClass}>
+                <a
+                  href={sectionHref(section.id)}
+                  aria-current={active === section.id ? 'true' : undefined}
+                  className={`${linkClass} ${active === section.id ? 'text-ink after:w-full' : ''}`}
+                >
                   {section.label}
                 </a>
               </li>
@@ -89,13 +120,13 @@ export function Navbar() {
           </ul>
 
           <div className="flex items-center gap-2">
-            <ButtonLink
-              href={isHome ? '#early-access' : '/#early-access'}
-              className="!px-5 !py-2"
-              onClick={() => track('cta_click', { placement: 'navbar', label: 'early_access' })}
+            <ButtonTo
+              to="/checkout"
+              className="whitespace-nowrap !px-5 !py-2"
+              onClick={() => track('cta_click', { placement: 'navbar', label: 'checkout' })}
             >
-              Get Early Access
-            </ButtonLink>
+              Get the License
+            </ButtonTo>
 
             {/* Mobile menu toggle — the section links live in the disclosure
                 panel below on small screens. */}
@@ -129,10 +160,25 @@ export function Navbar() {
         </nav>
 
         {/* Mobile disclosure panel — spring slide-down via motion. The header is
-            fixed, so the panel never pushes page content. */}
+            fixed, so the panel never pushes page content. A scrim dims the page
+            behind the open menu (and closes it on tap) so the panel reads
+            cleanly over the hero. */}
         <AnimatePresence initial={false}>
           {open && (
             <m.div
+              key="scrim"
+              aria-hidden="true"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={reduce ? { duration: 0 } : { duration: 0.25, ease: 'easeOut' }}
+              onClick={() => setOpen(false)}
+              className="fixed inset-0 -z-10 bg-black/55 backdrop-blur-[2px] md:hidden"
+            />
+          )}
+          {open && (
+            <m.div
+              key="panel"
               id="mobile-nav"
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -150,7 +196,10 @@ export function Navbar() {
                     <a
                       href={sectionHref(section.id)}
                       onClick={() => setOpen(false)}
-                      className="block rounded-lg px-3 py-2.5 text-sm text-silver transition-colors hover:bg-white/5 hover:text-ink"
+                      aria-current={active === section.id ? 'true' : undefined}
+                      className={`block rounded-lg px-3 py-2.5 text-sm transition-colors hover:bg-white/5 hover:text-ink ${
+                        active === section.id ? 'bg-white/5 text-brand-light' : 'text-silver'
+                      }`}
                     >
                       {section.label}
                     </a>
